@@ -144,7 +144,7 @@ SDL_Rect *createFish(SDL_Renderer *renderer, int x, int y, int w, int h, int siz
     return tab_rect;
 }
 
-void moveFish(SDL_Renderer *renderer, SDL_Rect *tab, int taille, int dir, int h, int w)
+void moveFish(SDL_Renderer *renderer, SDL_Rect *tab, int taille, int dir, int w, int h)
 {
     int i;
     SDL_SetRenderDrawColor(renderer, 0, 94, 184, 255);
