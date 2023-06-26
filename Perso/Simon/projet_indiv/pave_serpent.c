@@ -72,6 +72,7 @@ int main(int argc, char **argv)
     SDL_Renderer *renderer = SDL_CreateRenderer(window_1, -1, 0);
     draw(renderer, 10, h/4, 50, h/2);
     draw(renderer, w-60, h/4, 50, h/2);
+    draw(renderer, w/2-10, h/2-10, 20, 20);
     SDL_RenderPresent(renderer);
     SDL_Delay(10000);
     SDL_DestroyRenderer(renderer);
