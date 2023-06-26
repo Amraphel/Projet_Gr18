@@ -279,7 +279,8 @@ int main(int argc, char **argv)
             }
         }
     }
-
+    free(fish);
+    fish=NULL;
     end_sdl(1, "Normal ending", window, renderer);
     return EXIT_SUCCESS;
 }
