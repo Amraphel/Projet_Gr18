@@ -302,16 +302,36 @@ int main(int argc, char **argv)
 
             SDL_Delay(500);
             int h = 500, w = 500;
+            int r = 255, g = 112, b= 0;
             while(!event_reduction_fenetre)
             {
               while(h > 250 && w > 250)
               {
                 w -= 50;
                 h -= 50;
+                r -= 8;
+                g -= 12;
+                b += 8;
+                
                 SDL_SetWindowSize(window_3, w, h);
-                SDL_SetRenderDrawColor(renderer3, 212, 42, 42, 255);
+                SDL_SetRenderDrawColor(renderer3, r, g, b, 255);
                 SDL_RenderClear(renderer3);
                 SDL_RenderPresent(renderer3); 
+                SDL_Delay(150);
+              }
+              while( h < 500 && w < 500)
+              {
+                w += 50;
+                h += 50;
+                r += 8;
+                g += 12;
+                b -= 8;
+                
+                SDL_SetWindowSize(window_3, w, h);
+                SDL_SetRenderDrawColor(renderer3, r, g, b, 255);
+                SDL_RenderClear(renderer3);
+                SDL_RenderPresent(renderer3); 
+                SDL_Delay(150);
               }
               event_reduction_fenetre = SDL_TRUE;
             }
