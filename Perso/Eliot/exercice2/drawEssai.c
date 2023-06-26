@@ -60,14 +60,15 @@ int getMaxSize(int *w, int *h)
 void draw(SDL_Renderer *renderer, int x, int y ,int w, int h)
 {
     SDL_Rect rectangle;
-    SDL_Rect dond;
+
+
     SDL_SetRenderDrawColor(renderer,
-                           50, 0, 50, // mode Red, Green, Blue (tous dans 0..255)
-                           255);     // 0 = transparent ; 255 = opaque
-    rectangle.x = x;                 // x haut gauche du rectangle
-    rectangle.y = y;                 // y haut gauche du rectangle
-    rectangle.w = w;               // sa largeur (w = width)
-    rectangle.h = h;               // sa hauteur (h = height)
+                           50, 0, 50, 
+                           255);    
+    rectangle.x = x;                 
+    rectangle.y = y;                 
+    rectangle.w = w;               
+    rectangle.h = h;               
 
     SDL_RenderFillRect(renderer, &rectangle);
 
@@ -112,13 +113,24 @@ int main(int argc, char **argv)
     if (renderer == NULL)
         end_sdl(0, "ERROR RENDERER CREATION", window, renderer);
 
-    /*********************************************************************************************************************/
-    /*                                     On dessine dans le renderer                                                   */
-    /*********************************************************************************************************************/
-    /*             Cette partie pourrait avantageusement être remplacée par la boucle évènementielle                     */
-    draw(renderer, 0, 0, 400, 400);              // appel de la fonction qui crée l'image
-    SDL_RenderPresent(renderer); // affichage
-    SDL_Delay(1000);             // Pause exprimée en ms
+    SDL_Rect fond;
+    fond.x=0;
+    fond.y=0;
+    int fondW;
+    int fondH;
+    SDL_GetWindowSize(window,&fondW,&fondH);
+    fond.w= fondW;
+    fond.h=fondH;
+
+    SDL_SetRenderDrawColor(renderer,
+                           255, 255, 255, 
+                           255);  
+    SDL_RenderFillRect(renderer, &fond);
+
+
+    draw(renderer, 0, 0, 400, 400);              
+    SDL_RenderPresent(renderer); 
+    SDL_Delay(5000);             
 
     /* on referme proprement la SDL */
     end_sdl(1, "Normal ending", window, renderer);
