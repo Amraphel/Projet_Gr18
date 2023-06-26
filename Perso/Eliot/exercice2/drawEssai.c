@@ -57,18 +57,15 @@ int getMaxSize(int *w, int *h)
     return 0;
 }
 
-void draw(SDL_Renderer *renderer, int x, int y ,int w, int h)
+void draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
     SDL_Rect rectangle;
 
-
-    SDL_SetRenderDrawColor(renderer,
-                           50, 0, 50, 
-                           255);    
-    rectangle.x = x;                 
-    rectangle.y = y;                 
-    rectangle.w = w;               
-    rectangle.h = h;               
+    SDL_SetRenderDrawColor(renderer, 50, 0, 50, 255);
+    rectangle.x = x;
+    rectangle.y = y;
+    rectangle.w = w;
+    rectangle.h = h;
 
     SDL_RenderFillRect(renderer, &rectangle);
 
@@ -78,13 +75,42 @@ void draw(SDL_Renderer *renderer, int x, int y ,int w, int h)
                        400, 400); // x,y seconde extrémité
 }
 
+SDL_Rect *createFish(SDL_Renderer *renderer, int x, int y, int w, int h, int size)
+{
+    SDL_Rect *tab_rect = malloc(sizeof(SDL_Rect) * size);
+    int i;
+    int tailleQueue = size * 0.3;
+    fprintf(stderr,"%d",tailleQueue);
+    for (i = 0; i < size; i++)
+    {
+        if (i < tailleQueue)
+        {
+            if (i < tailleQueue/2)
+            {
+                SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
+            }
+            else
+            {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            }
+            SDL_Rect rectangle;
+            rectangle.x = x + i * w *tailleQueue/size;
+            rectangle.y = y + i*h *1/(tailleQueue*2);
+            rectangle.w = w*tailleQueue/size;
+            rectangle.h = h - i *h *1/(tailleQueue);
+            SDL_RenderFillRect(renderer, &rectangle);
+        }
+    }
+    return tab_rect;
+}
+
 int main(int argc, char **argv)
 {
     (void)argc;
     (void)argv;
     int w;
     int h;
-    
+
     SDL_Window *window = NULL;
     SDL_Renderer *renderer = NULL;
 
@@ -94,14 +120,13 @@ int main(int argc, char **argv)
     /*                         Initialisation de la SDL  + gestion de l'échec possible                                   */
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
         end_sdl(0, "ERROR SDL INIT", window, renderer);
-    getMaxSize(&w,&h);
+    getMaxSize(&w, &h);
     SDL_GetCurrentDisplayMode(0, &screen);
-
 
     /* Création de la fenêtre */
     window = SDL_CreateWindow("Premier dessin",
                               SDL_WINDOWPOS_CENTERED,
-                              SDL_WINDOWPOS_CENTERED, w* 0.66,
+                              SDL_WINDOWPOS_CENTERED, w * 0.66,
                               w * 0.66,
                               SDL_WINDOW_OPENGL);
     if (window == NULL)
@@ -114,25 +139,23 @@ int main(int argc, char **argv)
         end_sdl(0, "ERROR RENDERER CREATION", window, renderer);
 
     SDL_Rect fond;
-    fond.x=0;
-    fond.y=0;
+    fond.x = 0;
+    fond.y = 0;
     int fondW;
     int fondH;
-    SDL_GetWindowSize(window,&fondW,&fondH);
-    fond.w= fondW;
-    fond.h=fondH;
+    SDL_GetWindowSize(window, &fondW, &fondH);
+    fond.w = fondW;
+    fond.h = fondH;
 
     SDL_SetRenderDrawColor(renderer,
-                           255, 255, 255, 
-                           255);  
+                           0, 94, 184,
+                           255);
     SDL_RenderFillRect(renderer, &fond);
 
+    createFish(renderer, 50,50,50,50, 600);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(5000);
 
-    draw(renderer, 0, 0, 400, 400);              
-    SDL_RenderPresent(renderer); 
-    SDL_Delay(5000);             
-
-    /* on referme proprement la SDL */
     end_sdl(1, "Normal ending", window, renderer);
     return EXIT_SUCCESS;
 }
