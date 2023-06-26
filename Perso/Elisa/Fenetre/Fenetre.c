@@ -73,7 +73,8 @@ int main(int argc, char **argv)
   SDL_bool
       program_on = SDL_TRUE,   // Booléen pour dire que le programme doit continuer
       paused = SDL_FALSE,      // Booléen pour dire que le programme est en pause
-      event_utile = SDL_FALSE; // Booléen pour savoir si on a trouvé un event traité
+      event_utile = SDL_FALSE,
+      event_souris = SDL_FALSE; // Booléen pour savoir si on a trouvé un event traité
   SDL_Event event;             // Evènement à traiter
   SDL_Renderer                 // Renderer
       *renderer = NULL,
@@ -200,9 +201,25 @@ int main(int argc, char **argv)
           SDL_Rect pos = {0, 0, 0, 0};                              // rectangle où le texte va être prositionné
           SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
           SDL_RenderCopy(renderer2, my_texture, NULL, &pos);        // Ecriture du texte dans le renderer
+          
+          SDL_RenderPresent(renderer2); // Affichage
+          int x = 0;
+          SDL_Delay(250); // Petite pause
+
+          while (!event_souris)
+          {
+            SDL_RenderClear(renderer2);
+            SDL_Delay(200); // Petite pause
+            x += 100;
+            pos.x = x; 
+            if (x >= 300)
+              event_souris = SDL_TRUE;
+               SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
+            SDL_RenderCopy(renderer2, my_texture, NULL, &pos);        // Ecriture du texte dans le renderer
+            SDL_RenderPresent(renderer2);
+          }
           SDL_DestroyTexture(my_texture);                           // On n'a plus besoin de la texture avec le texte
 
-          SDL_RenderPresent(renderer2); // Affichage
 
           break;
         case SDLK_SPACE:    // ou 'SPC'
