@@ -172,12 +172,7 @@ void moveFish(SDL_Renderer *renderer, SDL_Rect *tab, int taille, int dir, int h,
             tab[i].x = (tab[i].x + 30)%w;
             break;
         case 3:
-            if((tab[i].y+tab[i].w - 30)<0){
-                tab[i].y = (h+tab[i].y - 30)%h;
-            }else {
-                tab[i].y = (h+tab[i].y - 30)%h;
-            }
-            
+            tab[i].y = (h+tab[i].y - 30)%h;
             break;
         case 4:
             tab[i].y = (tab[i].y + 30)%h;
