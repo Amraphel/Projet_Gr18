@@ -77,7 +77,7 @@ void draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 
 SDL_Rect *createFish(SDL_Renderer *renderer, int x, int y, int w, int h, int size)
 {
-    SDL_Rect *tab_rect = malloc(sizeof(SDL_Rect) * size + 1);
+    SDL_Rect *tab_rect = malloc(sizeof(SDL_Rect) * (size + 1));
     int i;
     int tailleQueue = size * 0.3;
     int miCorp = size * 0.6;
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
     window = SDL_CreateWindow("Premier dessin",
                               SDL_WINDOWPOS_CENTERED,
                               SDL_WINDOWPOS_CENTERED, w * 0.66,
-                              w * 0.66,
+                              h * 0.66,
                               SDL_WINDOW_OPENGL);
     if (window == NULL)
         end_sdl(0, "ERROR WINDOW CREATION", window, renderer);
