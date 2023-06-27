@@ -1,4 +1,5 @@
 #include "arbre.h"
+#include <time.h>
 
 
 int **initMatrice(int nombreDePoint)
@@ -41,18 +42,30 @@ void generer(int **matrice, int inf, int sup)
     }
 }
 
+void genererGrahe(int **matrice, float p)
+{
+    int taillMatrice = sizeof(matrice);
+    for (int i = 0; i <= taillMatrice; i++)
+    {
+        for (int j = i + 1; j <= taillMatrice; j++)
+        {
+            float k = rand() / (RAND_MAX + 1.0);
+            if (k < p)
+            {
+                matrice[i][j] = 1;
+                matrice[i][j] = 1;
+            }
+        }
+    }
+}
+
 int main()
 {
+
+    srand(time(NULL));
     int nb = 10;
     int** matrice = initMatrice(nb);
     generer(matrice, 0, nb -1);
-
-    for(int i = 0; i<nb; i++)
-    {
-        for(int j = 0; j <nb; j++)
-        {
-            printf("i = %i, j = %i, %i \n", i, j ,matrice[i][j]);
-        }
-    }
+    genererGrahe(matrice, 0.1);
     
 }
