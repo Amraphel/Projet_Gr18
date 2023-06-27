@@ -2,7 +2,6 @@
 #include <stdio.h>          // Penser au flag -lsdl2_image à la compilation
                             //...
 
-
 void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              char const *msg,    // message à afficher
              SDL_Window *window, // fenêtre à fermer
@@ -58,33 +57,58 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
     return my_texture;
 }
 
-void play_with_texture_1(SDL_Texture *my_texture, SDL_Window *window,
+void play_with_texture_4(SDL_Texture *my_texture,
+                         SDL_Window *window,
                          SDL_Renderer *renderer)
 {
     SDL_Rect
-        source = {0},            // Rectangle définissant la zone de la texture à récupérer
+        source = {0},            // Rectangle définissant la zone totale de la planche
         window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-        destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+        destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+        state = {0};             // Rectangle de la vignette en cours dans la planche
 
-    SDL_GetWindowSize(
-        window, &window_dimensions.w,
-        &window_dimensions.h); // Récupération des dimensions de la fenêtre
-    SDL_QueryTexture(my_texture, NULL, NULL,
-                     &source.w, &source.h); // Récupération des dimensions de l'image
+    SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+                      &window_dimensions.w,
+                      &window_dimensions.h);
+    SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+                     NULL, NULL,
+                     &source.w, &source.h);
 
-    destination = window_dimensions; // On fixe les dimensions de l'affichage à  celles de la fenêtre
+    /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
 
-    /* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
-    SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, my_texture,
-                   &source,
-                   &destination); // Création de l'élément à afficher
-    SDL_RenderPresent(renderer);  // Affichage
-    SDL_Delay(10000);             // Pause en ms
+    int nb_images = 6;
+    float zoom = 2;                      // zoom, car ces images sont un peu petites
+    int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+        offset_y = source.h ;         // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
 
-    
+    state.x = 0;            // La première vignette est en début de ligne
+    state.y = 0; // On s'intéresse à la 4ème ligne, le bonhomme qui court
+    state.w = offset_x;     // Largeur de la vignette
+    state.h = offset_y;     // Hauteur de la vignette
+
+    destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+    destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+    destination.y = // La course se fait en milieu d'écran (en vertical)
+        (window_dimensions.h - destination.h) / 2;
+
+    int speed = 9;
+    for (int x = 0; x < window_dimensions.w - destination.w; x += speed)
+    {
+        destination.x = x;   // Position en x pour l'affichage du sprite
+        state.x += offset_x; // On passe à la vignette suivante dans l'image
+        state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                             // celle de début de ligne
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+        SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                       &state,
+                       &destination);
+        SDL_RenderPresent(renderer); // Affichage
+        SDL_Delay(80);               // Pause en ms
+    }
+    SDL_RenderClear(renderer); // Effacer la fenêtre avant de rendre la main
 }
-
 
 int main(int argc, char **argv)
 {
@@ -100,19 +124,20 @@ int main(int argc, char **argv)
                 SDL_GetError()); // l'initialisation de la SDL a échoué
         exit(EXIT_FAILURE);
     }
-    window_1 = SDL_CreateWindow("", 0, 0, 200, 200, SDL_WINDOW_RESIZABLE); 
-        if (window_1 == NULL) {
-        SDL_Log("Error : SDL window 1 creation - %s\n", 
-                 SDL_GetError());                 // échec de la création de la fenêtre
-        SDL_Quit();                              // On referme la SDL       
+    window_1 = SDL_CreateWindow("", 0, 0, 1000, 1000, SDL_WINDOW_RESIZABLE);
+    if (window_1 == NULL)
+    {
+        SDL_Log("Error : SDL window 1 creation - %s\n",
+                SDL_GetError()); // échec de la création de la fenêtre
+        SDL_Quit();              // On referme la SDL
         exit(EXIT_FAILURE);
-        }
+    }
     SDL_Renderer *renderer = SDL_CreateRenderer(window_1, -1, 0);
-        SDL_Texture *my_texture = load_texture_from_image("hanako_pixel_art.png", window_1, renderer);
-        play_with_texture_1(my_texture, window_1, renderer);
-        SDL_DestroyTexture(my_texture);
-        SDL_DestroyRenderer(renderer);
-        SDL_DestroyWindow(window_1);
-        SDL_Quit();
-        IMG_Quit();
+    SDL_Texture *my_texture = load_texture_from_image("Fish_sprite.png", window_1, renderer);
+    play_with_texture_4(my_texture, window_1, renderer);
+    SDL_DestroyTexture(my_texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window_1);
+    SDL_Quit();
+    IMG_Quit();
 }
