@@ -1,9 +1,10 @@
-#ifndef CLASSIQUE
-#define CLASSIQUE
-#include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
+#ifndef ARBRE
+#define ARBRES
+#include "arbre.h"
+#endif
+#ifndef POINT
+#define POINT
+#include "point.h"
 #endif
 
 

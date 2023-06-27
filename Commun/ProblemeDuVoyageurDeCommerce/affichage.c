@@ -1,5 +1,5 @@
 #include "affichage.h"
-#include "arbre.h"
+
 
 
 void end_sdl(char ok,         
@@ -67,17 +67,17 @@ SDL_Window * initWindow(int x, int y, int w, int h){
 }
 
 
-SDL_Rect* drawPoints(SDL_Renderer* renderer, cell_t* listeNoeud, int nombreDePoint){
-    SDL_Rect tabPoint[nombreDePoint];
-    int i=0;
-    while(i<nombreDePoint){
-        SDL_Rect point;
-        point.x= listeNoeud[i].point.x;
-        point.y=listeNoeud[i].point.y;
-        point.w=20;
-        point.h=20;
-        tabPoint[i]=point;
-        i++;
-    }
+// SDL_Rect* drawPoints(SDL_Renderer* renderer, cell_t* listeNoeud, int nombreDePoint){
+//     SDL_Rect tabPoint[nombreDePoint];
+//     int i=0;
+//     while(i<nombreDePoint){
+//         SDL_Rect point;
+//         point.x= listeNoeud[i].point.x;
+//         point.y=listeNoeud[i].point.y;
+//         point.w=20;
+//         point.h=20;
+//         tabPoint[i]=point;
+//         i++;
+//     }
 
-}
+// }
