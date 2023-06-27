@@ -2,10 +2,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+#include <SDL2/SDL_image.h>
 
-/*********************************************************************************************************************/
-/*                              Programme d'exemple de création de rendu + dessin                                    */
-/*********************************************************************************************************************/
+typedef struct anime
+{
+    SDL_Rect anime[4];
+    SDL_Texture *texture;
+} anime_t;
+
 void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              char const *msg,    // message à afficher
              SDL_Window *window, // fenêtre à fermer
@@ -57,73 +61,117 @@ int getMaxSize(int *w, int *h)
     return 0;
 }
 
-void draw(SDL_Renderer *renderer, int x, int y, int w, int h)
+SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, SDL_Renderer *renderer)
 {
-    SDL_Rect rectangle;
+    SDL_Surface *my_image = NULL;
+    SDL_Texture *my_texture = NULL;
 
-    SDL_SetRenderDrawColor(renderer, 50, 0, 50, 255);
-    rectangle.x = x;
-    rectangle.y = y;
-    rectangle.w = w;
-    rectangle.h = h;
+    my_image = IMG_Load(file_image_name);
+    if (my_image == NULL)
+        end_sdl(0, "Chargement de l'image impossible", window, renderer);
 
-    SDL_RenderFillRect(renderer, &rectangle);
+    my_texture = SDL_CreateTextureFromSurface(renderer, my_image);
+    SDL_FreeSurface(my_image);
+    if (my_texture == NULL)
+        end_sdl(0, "Echec de la transformation de la surface en texture", window, renderer);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderDrawLine(renderer,
-                       0, 0,      // x,y du point de la première extrémité
-                       400, 400); // x,y seconde extrémité
+    return my_texture;
 }
 
-SDL_Rect createFish(SDL_Renderer *renderer, int x, int y, int w, int h)
+anime_t *createFish(SDL_Renderer *renderer, SDL_Window *window, int x, int y, int w, int h)
 {
-    
 
+    SDL_Texture *my_texture = load_texture_from_image("./sources/Fish_sprite_X200.png", window, renderer);
+    anime_t *animation = malloc(sizeof(anime_t));
+    if (animation)
+    {
+
+        SDL_Rect anime[4];
+        SDL_Rect
+            source = {0},            // Rectangle définissant la zone totale de la planche
+            window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+            destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+            state = {0};             // Rectangle de la vignette en cours dans la planche
+
+        SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+                          &window_dimensions.w,
+                          &window_dimensions.h);
+        SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+                         NULL, NULL,
+                         &source.w, &source.h);
+
+        /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
+
+        int nb_images = 6;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
+        float zoom = 1;                      // zoom, car ces images sont un peu petites
+        int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+            offset_y = source.h;             // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+
+        state.x = 0;        // La première vignette est en début de ligne
+        state.y = 0;        // On s'intéresse à la 4ème ligne, le bonhomme qui court
+        state.w = offset_x; // Largeur de la vignette
+        state.h = offset_y; // Hauteur de la vignette
+
+        destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+        destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+        destination.y = // La course se fait en milieu d'écran (en vertical)
+            (window_dimensions.h - destination.h) / 2;
+
+        int speed = 6;
+        for (int x = 0; x < window_dimensions.w - destination.w; x += speed)
+        {
+            destination.x = x;   // Position en x pour l'affichage du sprite
+            state.x += offset_x; // On passe à la vignette suivante dans l'image
+            state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                                 // celle de début de ligne
+
+            SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+            SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                           &state,
+                           &destination);
+            SDL_RenderPresent(renderer); // Affichage
+            SDL_Delay(80);               // Pause en ms
+        }
+        SDL_RenderClear(renderer);
+
+        anime[0] = source;
+        anime[1] = window_dimensions;
+        anime[2] = destination;
+        anime[3] = state;
+    }
+    return animation;
 }
 
-void moveFish(SDL_Renderer *renderer, SDL_Rect *tab, int taille, int dir, int w, int h)
+void moveFish(SDL_Renderer *renderer, SDL_Rect tab, int taille, int dir, int w, int h)
 {
     int i;
     SDL_SetRenderDrawColor(renderer, 0, 94, 184, 255);
     SDL_RenderClear(renderer);
-    for (i = 0; i < taille; i++)
+    switch (dir)
     {
-        if (i == taille - 1)
-        {
-            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        }
-        else if (i < (taille - 1) * 0.3 / 2 || (i < (taille - 1) * 0.6 && i > (taille - 1) * 0.3) || i > (taille - 1) * 0.8)
-        {
-            SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
-        }
-        else
-        {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        }
-        switch (dir)
-        {
-        case 1:
-            tab[i].x =(w+tab[i].x - 30)%w;
-            break;
-        case 2:
-            tab[i].x = (tab[i].x + 30)%w;
-            break;
-        case 3:
-            tab[i].y = (h+tab[i].y - 30)%h;
-            break;
-        case 4:
-            tab[i].y = (tab[i].y + 30)%h;
-            break;
-        default:
-            break;
-        }
-        SDL_RenderFillRect(renderer, &tab[i]);
+    case 1:
+        tab.x = (w + tab.x - 30) % w;
+        break;
+    case 2:
+        tab.x = (tab.x + 30) % w;
+        break;
+    case 3:
+        tab.y = (h + tab.y - 30) % h;
+        break;
+    case 4:
+        tab.y = (tab.y + 30) % h;
+        break;
+    default:
+        break;
     }
     SDL_RenderPresent(renderer);
 }
 
 int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
     int w;
     int h;
 
@@ -163,8 +211,7 @@ int main(int argc, char **argv)
     SDL_SetRenderDrawColor(renderer, 0, 94, 184, 255);
     SDL_RenderFillRect(renderer, &fond);
 
-
-    SDL_Rect fish = createFish(renderer, 50, 50, 100, 50);
+    anime_t *animation = createFish(renderer, window, 50, 50, 100, 50);
     SDL_RenderPresent(renderer);
     SDL_bool program_on = SDL_TRUE;
     SDL_bool event_utile;
@@ -208,6 +255,8 @@ int main(int argc, char **argv)
             }
         }
     }
+
+    free(animation);
     end_sdl(1, "Normal ending", window, renderer);
     return EXIT_SUCCESS;
 }
