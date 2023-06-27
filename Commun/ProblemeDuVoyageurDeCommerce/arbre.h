@@ -11,5 +11,4 @@ typedef struct cell
 {
     point_t point;
     int* lien;
-    int nbLien;
 }cell_t;
