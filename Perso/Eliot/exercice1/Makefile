@@ -1,0 +1,1 @@
+gcc feux-artifice.c -o feux_d'artifice -lSDL2 -Wall -Wextra
