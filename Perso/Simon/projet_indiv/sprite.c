@@ -57,6 +57,30 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
     return my_texture;
 }
 
+void play_with_texture_1(SDL_Texture *my_texture, SDL_Window *window,
+                         SDL_Renderer *renderer)
+{
+    SDL_Rect
+        source = {0},            // Rectangle définissant la zone de la texture à récupérer
+        window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+        destination = {0};       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+
+    SDL_GetWindowSize(
+        window, &window_dimensions.w,
+        &window_dimensions.h); // Récupération des dimensions de la fenêtre
+    SDL_QueryTexture(my_texture, NULL, NULL,
+                     &source.w, &source.h); // Récupération des dimensions de l'image
+
+    destination = window_dimensions; // On fixe les dimensions de l'affichage à  celles de la fenêtre
+
+    /* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, my_texture,
+                   &source,
+                   &destination); // Création de l'élément à afficher
+    SDL_RenderPresent(renderer);  // Affichage
+}
+
 void play_with_texture_4(SDL_Texture *my_texture,
                          SDL_Window *window,
                          SDL_Renderer *renderer)
@@ -79,12 +103,12 @@ void play_with_texture_4(SDL_Texture *my_texture,
     int nb_images = 6;
     float zoom = 2;                      // zoom, car ces images sont un peu petites
     int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
-        offset_y = source.h ;         // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+        offset_y = source.h;             // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
 
-    state.x = 0;            // La première vignette est en début de ligne
-    state.y = 0; // On s'intéresse à la 4ème ligne, le bonhomme qui court
-    state.w = offset_x;     // Largeur de la vignette
-    state.h = offset_y;     // Hauteur de la vignette
+    state.x = 0;        // La première vignette est en début de ligne
+    state.y = 0;        // On s'intéresse à la 4ème ligne, le bonhomme qui court
+    state.w = offset_x; // Largeur de la vignette
+    state.h = offset_y; // Hauteur de la vignette
 
     destination.w = offset_x * zoom; // Largeur du sprite à l'écran
     destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
@@ -99,8 +123,10 @@ void play_with_texture_4(SDL_Texture *my_texture,
         state.x += offset_x; // On passe à la vignette suivante dans l'image
         state.x %= source.w; // La vignette qui suit celle de fin de ligne est
                              // celle de début de ligne
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
         SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+        SDL_Texture *my_background = load_texture_from_image("background_ocean.png", window, renderer);
+        play_with_texture_1(my_background, window, renderer);
         SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
                        &state,
                        &destination);
