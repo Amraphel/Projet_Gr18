@@ -83,7 +83,7 @@ void play_with_texture_4(SDL_Texture *my_texture,
   /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
 
   int nb_images = 6;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
-  float zoom = 2;                      // zoom, car ces images sont un peu petites
+  float zoom = 1;                      // zoom, car ces images sont un peu petites
   int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
       offset_y = source.h ;         // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
 
@@ -99,27 +99,22 @@ void play_with_texture_4(SDL_Texture *my_texture,
       (window_dimensions.h - destination.h) / 2;
 
   int speed = 9;int x = 0;
-  //while (x < window_dimensions.w)
+
+  while (x < window_dimensions.w - destination.w)
   {
-    for (int j= 0; j<3; j++)
+    SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+    SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                   &state,
+                   &destination);
+    SDL_RenderPresent(renderer); // Affichage
+    SDL_Delay(10);               // Pause en ms
+    destination.x = x;           // Position en x pour l'affichage du sprite
+    state.x += offset_x;         // On passe à la vignette suivante dans l'image
+    if (state.x >= source.w - offset_x)
     {
-      printf("j");
-      for(int i =0; i<=6 ; i++)
-    {
-
-      SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
-      SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
-                    &state,
-                    &destination);
-      SDL_RenderPresent(renderer); // Affichage
-      SDL_Delay(80);               // Pause en ms
-      destination.x = 0;   // Position en x pour l'affichage du sprite
-      state.x += offset_x; // On passe à la vignette suivante dans l'image
-      state.x %= source.w; // La vignette qui suit celle de fin de ligne est
-                          // celle de début de ligne
-
-    }}
-    //x += speed;
+      state.x = 0;
+    }
+    x += speed;
   }
   SDL_RenderClear(renderer); // Effacer la fenêtre avant de rendre la main
 }
