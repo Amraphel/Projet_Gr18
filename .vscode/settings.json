@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "evenementfenetre.h": "c",
-        "arbre.h": "c"
+        "arbre.h": "c",
+        "sdl_image.h": "c"
     }
 }
