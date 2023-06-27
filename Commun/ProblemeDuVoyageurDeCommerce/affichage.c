@@ -63,6 +63,19 @@ SDL_Window *initWindow(int x, int y, int w, int h)
     return window;
 }
 
+SDL_Renderer *initRenderer(SDL_Window *window)
+{
+    SDL_Renderer *renderer = NULL;
+    renderer = SDL_CreateRenderer(window, -1,
+                                  SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (renderer == NULL)
+    {
+        end_sdl(0, "ERROR RENDERER CREATION", window_1, renderer);
+    }
+
+    return renderer;
+}
+
 // SDL_Rect* drawPoints(SDL_Renderer* renderer, cell_t* listeNoeud, int nombreDePoint){
 //     SDL_Rect tabPoint[nombreDePoint];
 //     int i=0;
