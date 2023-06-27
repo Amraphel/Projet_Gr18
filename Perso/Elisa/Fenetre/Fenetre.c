@@ -4,7 +4,6 @@
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
 
-
 //////////////////////////////////////
 //            Jeu fenetre           //
 //////////////////////////////////////
@@ -57,13 +56,72 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
 
   my_texture = SDL_CreateTextureFromSurface(renderer, my_image); // Chargement de l'image de la surface vers la texture
 
-
-
   SDL_FreeSurface(my_image); // la SDL_Surface ne sert que comme élément transitoire
   if (my_texture == NULL)
     end_sdl(0, "Echec de la transformation de la surface en texture", window, renderer);
 
   return my_texture;
+}
+
+void play_with_texture_4(SDL_Texture *my_texture,
+                         SDL_Window *window,
+                         SDL_Renderer *renderer)
+{
+  SDL_Rect
+      source = {0},            // Rectangle définissant la zone totale de la planche
+      window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+      destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+      state = {0};             // Rectangle de la vignette en cours dans la planche
+
+  SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+                    &window_dimensions.w,
+                    &window_dimensions.h);
+  SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+                   NULL, NULL,
+                   &source.w, &source.h);
+
+  /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
+
+  int nb_images = 6;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
+  float zoom = 2;                      // zoom, car ces images sont un peu petites
+  int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+      offset_y = source.h ;         // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+
+  state.x = 0;            // La première vignette est en début de ligne
+  state.y = 0 * offset_y; // On s'intéresse à la 4ème ligne, le bonhomme qui court
+  state.w = offset_x;     // Largeur de la vignette
+  state.h = offset_y;     // Hauteur de la vignette
+
+  destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+  destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+  destination.y = // La course se fait en milieu d'écran (en vertical)
+      (window_dimensions.h - destination.h) / 2;
+
+  int speed = 9;int x = 0;
+  //while (x < window_dimensions.w)
+  {
+    for (int j= 0; j<3; j++)
+    {
+      printf("j");
+      for(int i =0; i<=6 ; i++)
+    {
+
+      SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+      SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                    &state,
+                    &destination);
+      SDL_RenderPresent(renderer); // Affichage
+      SDL_Delay(80);               // Pause en ms
+      destination.x = 0;   // Position en x pour l'affichage du sprite
+      state.x += offset_x; // On passe à la vignette suivante dans l'image
+      state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                          // celle de début de ligne
+
+    }}
+    //x += speed;
+  }
+  SDL_RenderClear(renderer); // Effacer la fenêtre avant de rendre la main
 }
 
 int main(int argc, char **argv)
@@ -75,12 +133,12 @@ int main(int argc, char **argv)
   bool event_reduction_fenetre = false;
 
   SDL_bool
-      program_on = SDL_TRUE,   // Booléen pour dire que le programme doit continuer
-      paused = SDL_FALSE,      // Booléen pour dire que le programme est en pause
+      program_on = SDL_TRUE, // Booléen pour dire que le programme doit continuer
+      paused = SDL_FALSE,    // Booléen pour dire que le programme est en pause
       event_utile = SDL_FALSE,
       event_souris = SDL_FALSE; // Booléen pour savoir si on a trouvé un event traité
-  SDL_Event event;             // Evènement à traiter
-  SDL_Renderer                 // Renderer
+  SDL_Event event;              // Evènement à traiter
+  SDL_Renderer                  // Renderer
       *renderer = NULL,
       *renderer2 = NULL,
       *renderer3 = NULL,
@@ -137,7 +195,7 @@ int main(int argc, char **argv)
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   SDL_RenderClear(renderer);
 
-  SDL_Surface *text_surface = NULL;                                                                // la surface  (uniquement transitoire)
+  SDL_Surface *text_surface = NULL;                                                                     // la surface  (uniquement transitoire)
   text_surface = TTF_RenderText_Blended(font, "taper p ou f pour aller a la prochaine fenetre", color); // création du texte dans la surface
   if (text_surface == NULL)
     end_sdl(0, "Can't create text surface", window_1, renderer);
@@ -149,7 +207,7 @@ int main(int argc, char **argv)
 
   SDL_FreeSurface(text_surface); // la texture ne sert plus à rien
 
-  SDL_Rect pos = {10, 0, 0, 0};                                // rectangle où le texte va être prositionné
+  SDL_Rect pos = {10, 0, 0, 0};                               // rectangle où le texte va être prositionné
   SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
   SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
   SDL_DestroyTexture(text_texture);                           // On n'a plus besoin de la texture avec le texte
@@ -180,10 +238,10 @@ int main(int argc, char **argv)
           if (!p_utilise)
           {
             window_2 = SDL_CreateWindow(
-              "Fenêtre 2", // codage en utf8, donc accents possibles
-              500, 0,      // à droite de la fenêtre de gauche
-              500, 500,    // largeur = 500, hauteur = 300
-              0);
+                "Fenêtre 2", // codage en utf8, donc accents possibles
+                500, 0,      // à droite de la fenêtre de gauche
+                500, 500,    // largeur = 500, hauteur = 300
+                0);
 
             if (window_2 == NULL)
             {
@@ -199,7 +257,7 @@ int main(int argc, char **argv)
 
             // Création du renderer de la fenetre 2
             renderer2 = SDL_CreateRenderer(window_2, -1,
-                                          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+                                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             if (renderer2 == NULL)
               end_sdl(0, "ERROR RENDERER CREATION", window_2, renderer2);
 
@@ -211,7 +269,7 @@ int main(int argc, char **argv)
             SDL_Rect pos = {0, 0, 0, 0};                              // rectangle où le texte va être prositionné
             SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
             SDL_RenderCopy(renderer2, my_texture, NULL, &pos);        // Ecriture du texte dans le renderer
-            
+
             SDL_RenderPresent(renderer2); // Affichage
             int x = 0;
             int y = 0;
@@ -222,10 +280,11 @@ int main(int argc, char **argv)
               SDL_RenderClear(renderer2);
               SDL_Delay(150); // Petite pause
               x += 20;
-              pos.x = x; 
+              pos.x = x;
               if (x >= 300)
               {
-                while(x > 0){
+                while (x > 0)
+                {
                   SDL_RenderClear(renderer2);
                   SDL_Delay(150); // Petite pause
                   x -= 15;
@@ -242,43 +301,40 @@ int main(int argc, char **argv)
               SDL_RenderCopy(renderer2, my_texture, NULL, &pos);        // Ecriture du texte dans le renderer
               SDL_RenderPresent(renderer2);
             }
-            SDL_DestroyTexture(my_texture);                           // On n'a plus besoin de la texture avec le texte
+            SDL_DestroyTexture(my_texture); // On n'a plus besoin de la texture avec le texte
           }
-          
-          
+
           SDL_Surface *text_surface = NULL;                                                                // la surface  (uniquement transitoire)
           text_surface = TTF_RenderText_Blended(font, "taper f pour aller a la prochaine fenetre", color); // création du texte dans la surface
           if (text_surface == NULL)
             end_sdl(0, "Can't create text surface", window_2, renderer2);
 
-          SDL_Texture *text_texture = NULL;                                    // la texture qui contient le texte
+          SDL_Texture *text_texture = NULL;                                     // la texture qui contient le texte
           text_texture = SDL_CreateTextureFromSurface(renderer2, text_surface); // transfert de la surface à la texture
           if (text_texture == NULL)
             end_sdl(0, "Can't create texture from surface", window_2, renderer2);
 
           SDL_FreeSurface(text_surface); // la texture ne sert plus à rien
-         
-          SDL_Rect pos = { 100, 250, 0, 0};                                // rectangle où le texte va être prositionné
+
+          SDL_Rect pos = {100, 250, 0, 0};                            // rectangle où le texte va être prositionné
           SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-          SDL_RenderCopy(renderer2, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
+          SDL_RenderCopy(renderer2, text_texture, NULL, &pos);        // Ecriture du texte dans le renderer
           SDL_DestroyTexture(text_texture);                           // On n'a plus besoin de la texture avec le texte
-
-
 
           SDL_RenderPresent(renderer2); // Affichage
 
           p_utilise = true;
 
-
           break;
 
-        case SDLK_f:      //  'f'
+        case SDLK_f: //  'f'
           if (!event_reduction_fenetre)
-          {window_3 = SDL_CreateWindow(
-              "Fenêtre 3", // codage en utf8, donc accents possibles
-              500, 100,      // à droite de la fenêtre de gauche
-              500, 500,    // largeur = 500, hauteur = 300
-              0);
+          {
+            window_3 = SDL_CreateWindow(
+                "Fenêtre 3", // codage en utf8, donc accents possibles
+                500, 100,    // à droite de la fenêtre de gauche
+                500, 500,    // largeur = 500, hauteur = 300
+                0);
 
             if (window_3 == NULL)
             {
@@ -294,10 +350,9 @@ int main(int argc, char **argv)
 
             // Création du renderer de la fenetre 2
             renderer3 = SDL_CreateRenderer(window_3, -1,
-                                          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+                                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
             if (renderer3 == NULL)
               end_sdl(0, "ERROR RENDERER CREATION", window_3, renderer3);
-
 
             SDL_SetRenderDrawColor(renderer3, 255, 112, 0, 255);
             SDL_RenderClear(renderer3);
@@ -305,90 +360,94 @@ int main(int argc, char **argv)
 
             SDL_Delay(500);
             int h = 500, w = 500;
-            int r = 255, g = 112, b= 0;
-            
-              while(h > 250 && w > 250)
-              {
-                w -= 50;
-                h -= 50;
-                r -= 8;
-                g -= 12;
-                b += 8;
-                
-                SDL_SetWindowSize(window_3, w, h);
-                SDL_SetRenderDrawColor(renderer3, r, g, b, 255);
-                SDL_RenderClear(renderer3);
-                SDL_RenderPresent(renderer3); 
-                SDL_Delay(150);
-              }
-              while( h < 500 && w < 500)
-              {
-                w += 50;
-                h += 50;
-                r += 8;
-                g += 12;
-                b -= 8;
-                
-                SDL_SetWindowSize(window_3, w, h);
-                SDL_SetRenderDrawColor(renderer3, r, g, b, 255);
-                SDL_RenderClear(renderer3);
-                SDL_RenderPresent(renderer3); 
-                SDL_Delay(150);
-              }
-             
-              
-              SDL_Surface *text_surface3 = NULL;                                                                // la surface  (uniquement transitoire)
-              text_surface3 = TTF_RenderText_Blended(font, "taper e pour aller a la prochaine fenetre", color); // création du texte dans la surface
-              if (text_surface3 == NULL)
-                end_sdl(0, "Can't create text surface", window_3, renderer3);
+            int r = 255, g = 112, b = 0;
 
-              SDL_Texture *text_texture3 = NULL;                                    // la texture qui contient le texte
-              text_texture3 = SDL_CreateTextureFromSurface(renderer3, text_surface3); // transfert de la surface à la texture
-              if (text_texture3 == NULL)
-                end_sdl(0, "Can't create texture from surface", window_3, renderer3);
+            while (h > 250 && w > 250)
+            {
+              w -= 50;
+              h -= 50;
+              r -= 8;
+              g -= 12;
+              b += 8;
 
-              SDL_FreeSurface(text_surface3); // la texture ne sert plus à rien
-            
-              SDL_Rect pos3 = { 75, 250, 0, 0};                                // rectangle où le texte va être prositionné
-              SDL_QueryTexture(text_texture3, NULL, NULL, &pos3.w, &pos3.h); // récupération de la taille (w, h) du texte
-              SDL_RenderCopy(renderer3, text_texture3, NULL, &pos3);         // Ecriture du texte dans le renderer
-              SDL_DestroyTexture(text_texture3);                           // On n'a plus besoin de la texture avec le texte
+              SDL_SetWindowSize(window_3, w, h);
+              SDL_SetRenderDrawColor(renderer3, r, g, b, 255);
+              SDL_RenderClear(renderer3);
+              SDL_RenderPresent(renderer3);
+              SDL_Delay(150);
+            }
+            while (h < 500 && w < 500)
+            {
+              w += 50;
+              h += 50;
+              r += 8;
+              g += 12;
+              b -= 8;
 
-              SDL_RenderPresent(renderer3); // Affichage
-            
-    }
-    event_reduction_fenetre = true;
+              SDL_SetWindowSize(window_3, w, h);
+              SDL_SetRenderDrawColor(renderer3, r, g, b, 255);
+              SDL_RenderClear(renderer3);
+              SDL_RenderPresent(renderer3);
+              SDL_Delay(150);
+            }
+
+            SDL_Surface *text_surface3 = NULL;                                                                // la surface  (uniquement transitoire)
+            text_surface3 = TTF_RenderText_Blended(font, "taper e pour aller a la prochaine fenetre", color); // création du texte dans la surface
+            if (text_surface3 == NULL)
+              end_sdl(0, "Can't create text surface", window_3, renderer3);
+
+            SDL_Texture *text_texture3 = NULL;                                      // la texture qui contient le texte
+            text_texture3 = SDL_CreateTextureFromSurface(renderer3, text_surface3); // transfert de la surface à la texture
+            if (text_texture3 == NULL)
+              end_sdl(0, "Can't create texture from surface", window_3, renderer3);
+
+            SDL_FreeSurface(text_surface3); // la texture ne sert plus à rien
+
+            SDL_Rect pos3 = {75, 250, 0, 0};                               // rectangle où le texte va être prositionné
+            SDL_QueryTexture(text_texture3, NULL, NULL, &pos3.w, &pos3.h); // récupération de la taille (w, h) du texte
+            SDL_RenderCopy(renderer3, text_texture3, NULL, &pos3);         // Ecriture du texte dans le renderer
+            SDL_DestroyTexture(text_texture3);                             // On n'a plus besoin de la texture avec le texte
+
+            SDL_RenderPresent(renderer3); // Affichage
+          }
+          event_reduction_fenetre = true;
           break;
 
-        case SDLK_e: 
+        case SDLK_e:
           window_4 = SDL_CreateWindow(
               "Fenêtre 4", // codage en utf8, donc accents possibles
-              500, 100,      // à droite de la fenêtre de gauche
+              500, 100,    // à droite de la fenêtre de gauche
               500, 500,    // largeur = 500, hauteur = 300
               0);
 
-            if (window_4 == NULL)
-            {
-              /* L'init de la SDL : OK
-              fenêtre 1 :OK
-              fenêtre 2 : échec */
-              SDL_Log("Error : SDL window 4 creation - %s\n",
-                      SDL_GetError());     // échec de la création de la deuxième fenêtre
-              SDL_DestroyWindow(window_4); // la première fenétre (qui elle a été créée) doit être détruite
-              SDL_Quit();
-              exit(EXIT_FAILURE);
-            }
+          if (window_4 == NULL)
+          {
+            /* L'init de la SDL : OK
+            fenêtre 1 :OK
+            fenêtre 2 : échec */
+            SDL_Log("Error : SDL window 4 creation - %s\n",
+                    SDL_GetError());     // échec de la création de la deuxième fenêtre
+            SDL_DestroyWindow(window_4); // la première fenétre (qui elle a été créée) doit être détruite
+            SDL_Quit();
+            exit(EXIT_FAILURE);
+          }
 
-            // Création du renderer de la fenetre 4
-            renderer4 = SDL_CreateRenderer(window_4, -1,
-                                          SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-            if (renderer4 == NULL)
-              end_sdl(0, "ERROR RENDERER CREATION", window_4, renderer4);
+          // Création du renderer de la fenetre 4
+          renderer4 = SDL_CreateRenderer(window_4, -1,
+                                         SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+          if (renderer4 == NULL)
+            end_sdl(0, "ERROR RENDERER CREATION", window_4, renderer4);
+
+          SDL_SetRenderDrawColor(renderer4, 255, 255, 255, 255);
+          SDL_RenderClear(renderer4);
+          SDL_RenderPresent(renderer4);
+          SDL_Texture *texture = load_texture_from_image("./img/sprite/ecureuil/run/run.png", window_4, renderer4);
+          play_with_texture_4(texture, window_4, renderer4);
 
 
-            SDL_SetRenderDrawColor(renderer4, 0, 0, 0, 255);
-            SDL_RenderClear(renderer4);
-            SDL_RenderPresent(renderer4);
+          
+          SDL_RenderPresent(renderer4);
+
           break;
 
         case SDLK_SPACE:    // ou 'SPC'
