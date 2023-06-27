@@ -235,49 +235,12 @@ int main(int argc, char **argv)
         fishH = (int)*argv[2];
         size = (int)*argv[3];
     }
-    SDL_Rect *fish = createFish(renderer, 50, 50, fishW, fishH, size);
+    SDL_Rect *fish = createFish(renderer, 50, fondH/2, fishW, fishH, size);
     SDL_RenderPresent(renderer);
-    SDL_bool program_on = SDL_TRUE;
-    SDL_bool event_utile;
-    SDL_Event event;
-    while (program_on)
-    { // La boucle des évènements
-        event_utile = SDL_FALSE;
-        while (!event_utile && SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                program_on = SDL_FALSE;
-                event_utile = SDL_TRUE;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_p:
-                case SDLK_LEFT:
-                    moveFish(renderer, fish, size + 1, 1,fondW ,fondH);
-                    break;
-                case SDLK_RIGHT:
-                    moveFish(renderer, fish, size + 1, 2,fondW,fondH);
-                    break;
-                case SDLK_UP:
-                    moveFish(renderer, fish, size + 1, 3,fondW,fondH);
-                    break;
-                case SDLK_DOWN:
-                    moveFish(renderer, fish, size + 1, 4,fondW,fondH);
-                    break;
-                case SDLK_ESCAPE:
-                case SDLK_q:
-                    program_on = 0;
-                    event_utile = SDL_TRUE;
-                    break;
-                default:
-                    break;
-                }
-                break;
-            }
-        }
+    int i;
+    for(i=0; i<100; i++){
+        moveFish(renderer, fish, size+1,2,w,h);
+        SDL_Delay(100);
     }
     free(fish);
     fish=NULL;
