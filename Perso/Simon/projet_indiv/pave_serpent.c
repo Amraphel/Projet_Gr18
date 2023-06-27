@@ -78,18 +78,42 @@ int main(int argc, char **argv)
     SDL_Rect rectdroite =draw(renderer, w-60, h/4, 50, h/2);
     SDL_Rect balle =draw(renderer, w/2-10, h/2-10, 20, 20);
     SDL_RenderPresent(renderer);
-    SDL_Delay(5000);
-    if (balle.x!=w-80)
+    SDL_Delay(1000);
+    while (balle.x<w-80)
     {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        balle.x = balle.x + 200;
+        balle.x = balle.x + 2;
         SDL_RenderFillRect(renderer, &balle);
         SDL_RenderFillRect(renderer, &rectgauche);
         SDL_RenderFillRect(renderer, &rectdroite);
         SDL_RenderPresent(renderer);      
-        SDL_Delay(5000);
+        SDL_Delay(10);
+    }
+    while (balle.x>60)
+    {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        balle.x = balle.x -2;
+        SDL_RenderFillRect(renderer, &balle);
+        SDL_RenderFillRect(renderer, &rectgauche);
+        SDL_RenderFillRect(renderer, &rectdroite);
+        SDL_RenderPresent(renderer);      
+        SDL_Delay(10);
+    }
+    while (balle.x<w/2-10)
+    {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        balle.x = balle.x +2;
+        SDL_RenderFillRect(renderer, &balle);
+        SDL_RenderFillRect(renderer, &rectgauche);
+        SDL_RenderFillRect(renderer, &rectdroite);
+        SDL_RenderPresent(renderer);      
+        SDL_Delay(10);
     }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window_1);
