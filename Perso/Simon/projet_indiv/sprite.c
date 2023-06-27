@@ -105,7 +105,7 @@ void play_with_texture_4(SDL_Texture *my_texture,
     float zoom = 2;                      // zoom, car ces images sont un peu petites
     int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
         offset_y = source.h;             // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
-
+    SDL_Event event;
     state.x = 0;        // La première vignette est en début de ligne
     state.y = 0;        // On s'intéresse à la 4ème ligne, le bonhomme qui court
     state.w = offset_x; // Largeur de la vignette
@@ -116,7 +116,7 @@ void play_with_texture_4(SDL_Texture *my_texture,
 
     destination.y = // La course se fait en milieu d'écran (en vertical)
         (window_dimensions.h - destination.h) / 2;
-
+    /*
     int speed = 9;
     for (int x = 0; x < window_dimensions.w - destination.w; x += speed)
     {
@@ -124,7 +124,7 @@ void play_with_texture_4(SDL_Texture *my_texture,
         state.x += offset_x; // On passe à la vignette suivante dans l'image
         state.x %= source.w; // La vignette qui suit celle de fin de ligne est
                              // celle de début de ligne
-
+    
         SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
         SDL_Texture *my_background = load_texture_from_image("background_ocean.png", window, renderer);
         play_with_texture_1(my_background, window, renderer);
@@ -133,6 +133,78 @@ void play_with_texture_4(SDL_Texture *my_texture,
                        &destination);
         SDL_RenderPresent(renderer); // Affichage
         SDL_Delay(80);               // Pause en ms
+    }
+    */
+   SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+        SDL_Texture *my_background = load_texture_from_image("background_ocean.png", window, renderer);
+        play_with_texture_1(my_background, window, renderer);
+        SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                       &state,
+                       &destination);
+        SDL_RenderPresent(renderer); // Affichage
+    while (destination.x<window_dimensions.w-destination.w)
+    {
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_KEYDOWN:
+            switch(event.key.keysym.sym)
+            {
+                case SDLK_UP:
+                SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+                destination.y=destination.y-5;
+                state.x += offset_x; // On passe à la vignette suivante dans l'image
+                state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                             // celle de début de ligne
+                my_background = load_texture_from_image("background_ocean.png", window, renderer);
+                play_with_texture_1(my_background, window, renderer);
+                SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                       &state,
+                       &destination);
+                SDL_RenderPresent(renderer); // Affichage
+                break;
+                case SDLK_DOWN:
+                SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+                destination.y=destination.y+5;
+                state.x += offset_x; // On passe à la vignette suivante dans l'image
+                state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                             // celle de début de ligne
+                my_background = load_texture_from_image("background_ocean.png", window, renderer);
+                play_with_texture_1(my_background, window, renderer);
+                SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                       &state,
+                       &destination);
+                SDL_RenderPresent(renderer); // Affichage
+                break;
+                case SDLK_RIGHT:
+                SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+                destination.x=destination.x+5;
+                state.x += offset_x; // On passe à la vignette suivante dans l'image
+                state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                             // celle de début de ligne
+                my_background = load_texture_from_image("background_ocean.png", window, renderer);
+                play_with_texture_1(my_background, window, renderer);
+                SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                       &state,
+                       &destination);
+                SDL_RenderPresent(renderer); // Affichage
+                break;
+                case SDLK_LEFT:
+                SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+                destination.x=destination.x-5;
+                state.x += offset_x; // On passe à la vignette suivante dans l'image
+                state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+                             // celle de début de ligne
+                my_background = load_texture_from_image("background_ocean.png", window, renderer);
+                play_with_texture_1(my_background, window, renderer);
+                SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                       &state,
+                       &destination);
+                SDL_RenderPresent(renderer); // Affichage
+                break;
+            }
+            break;
+        }
     }
     SDL_RenderClear(renderer); // Effacer la fenêtre avant de rendre la main
 }
