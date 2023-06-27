@@ -11,13 +11,16 @@ HEADERS = $(wildcard $(DIRCOMM)*.h *.h)
 #liste des fichiers objets
 OBJ = $(SRC:%.c=%.o)
 
-main: $(OBJ) $(HEADERS)
+point : $(OBJ) $(HEADERS)
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 	
-affichage.o: affichage.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
+# affichage.o: affichage.c $(HEADERS)
+# 	$(CC) $(CFLAGS) -c $< -o $@
 
-arbre.o: arbre.c arbre.h
+# arbre.o: arbre.c arbre.h
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+point.o: point.c point.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
