@@ -166,16 +166,47 @@ void moveFish(SDL_Renderer *renderer, anime_t *animation, int dir, int w, int h)
     switch (dir)
     {
     case 1:
-        animation->destination.x = animation->destination.x - 10;
+        if (animation->destination.x + animation->destination.w < 0)
+        {
+            animation->destination.x = w;
+        }
+        else
+        {
+            animation->destination.x = animation->destination.x - 30;
+        }
+
         break;
     case 2:
-        animation->destination.x = animation->destination.x + 10;
+        if (animation->destination.x  > w)
+        {
+            animation->destination.x = 0;
+        }
+        else
+        {
+            animation->destination.x = (animation->destination.x + 30);
+        }
+
         break;
     case 3:
-        animation->destination.y =  animation->destination.y - 10;
+        if (animation->destination.y + animation->destination.w < 0)
+        {
+            animation->destination.y = h;
+        }
+        else
+        {
+            animation->destination.y = animation->destination.y - 30;
+        }
+
         break;
     case 4:
-        animation->destination.y = animation->destination.y + 10;
+        if (animation->destination.y > h)
+        {
+            animation->destination.y = 0;
+        }
+        else
+        {
+            animation->destination.y = (animation->destination.y + 30);
+        }
         break;
     default:
         break;
@@ -232,6 +263,7 @@ int main(int argc, char **argv)
 
     anime_t *animation = createFish(renderer, window);
     SDL_RenderPresent(renderer);
+
     SDL_bool program_on = SDL_TRUE;
     SDL_bool event_utile;
     SDL_Event event;
@@ -240,7 +272,7 @@ int main(int argc, char **argv)
         event_utile = SDL_FALSE;
         while (!event_utile && SDL_PollEvent(&event))
         {
-            animeFish(animation, renderer);
+
             switch (event.type)
             {
             case SDL_QUIT:
@@ -248,9 +280,9 @@ int main(int argc, char **argv)
                 event_utile = SDL_TRUE;
                 break;
             case SDL_KEYDOWN:
+                animeFish(animation, renderer);
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_p:
                 case SDLK_LEFT:
                     moveFish(renderer, animation, 1, fondW, fondH);
                     event_utile = SDL_TRUE;
@@ -261,9 +293,11 @@ int main(int argc, char **argv)
                     break;
                 case SDLK_UP:
                     moveFish(renderer, animation, 3, fondW, fondH);
+                    event_utile = SDL_TRUE;
                     break;
                 case SDLK_DOWN:
                     moveFish(renderer, animation, 4, fondW, fondH);
+                    event_utile = SDL_TRUE;
                     break;
                 case SDLK_ESCAPE:
                 case SDLK_q:
@@ -273,7 +307,6 @@ int main(int argc, char **argv)
                 default:
                     break;
                 }
-                break;
             }
         }
     }
