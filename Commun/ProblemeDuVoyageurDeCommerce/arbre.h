@@ -10,6 +10,6 @@
 typedef struct cell
 {
     point_t point;
-    point_t* lien;
+    int* lien;
     int nbLien;
 }cell_t;
