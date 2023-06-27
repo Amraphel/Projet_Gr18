@@ -10,7 +10,7 @@ HEADERS = $(wildcard *.h)
 #liste des fichiers objets
 OBJ = $(SRC:%.c=%.o)
 
-feux_artifice: $(HEADERS) $(OBJ) 
+drawEssai: $(HEADERS) $(OBJ) 
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 	
 
@@ -21,4 +21,4 @@ clean:
 	rm -f $(OBJ)
 
 reclean:
-	rm -f $(OBJ) feux_artifice
+	rm -f $(OBJ) drawEssai
