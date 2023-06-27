@@ -1,26 +1,25 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -g
+CFLAGS =-lSDL2 -Wall -Wextra -lSDL2_image
 LDFLAGS =
 
-
 #liste des fichiers source
-SRC = $(wildcard $(DIRCOMM)*.c *.c) 
+SRC = $(wildcard *.c) 
 
-HEADERS = $(wildcard $(DIRCOMM)*.h *.h) 
+HEADERS = $(wildcard *.h) 
 
 #liste des fichiers objets
 OBJ = $(SRC:%.c=%.o)
 
-point : $(OBJ) $(HEADERS)
+main : $(HEADERS) $(OBJ) 
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 	
-# affichage.o: affichage.c $(HEADERS)
-# 	$(CC) $(CFLAGS) -c $< -o $@
+affichage.o :point.c arbre.h affichage.h affichage.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# arbre.o: arbre.c arbre.h
-# 	$(CC) $(CFLAGS) -c $< -o $@
+arbre.o :point.c arbre.c arbre.h 
+	$(CC) $(CFLAGS) -c $< -o $@
 
-point.o: point.c point.h
+point.o : point.c point.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 
