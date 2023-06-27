@@ -5,7 +5,7 @@
 /*  exemple de création de fenêtres */
 /************************************/
 
-void draw(SDL_Renderer *renderer, int x, int y, int w, int h)
+SDL_Rect draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
     SDL_Rect rectangle;
 
@@ -22,6 +22,8 @@ void draw(SDL_Renderer *renderer, int x, int y, int w, int h)
     SDL_RenderDrawLine(renderer,
                        x, y,  // x,y du point de la première extrémité
                        w+x, h+y); // x,y seconde extrémité
+
+    return rectangle;
 }
 int getMaxSize(int *w, int *h)
 {
@@ -70,11 +72,25 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
     SDL_Renderer *renderer = SDL_CreateRenderer(window_1, -1, 0);
-    draw(renderer, 10, h/4, 50, h/2);
-    draw(renderer, w-60, h/4, 50, h/2);
-    draw(renderer, w/2-10, h/2-10, 20, 20);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_Rect rectgauche=draw(renderer, 10, h/4, 50, h/2);
+    SDL_Rect rectdroite =draw(renderer, w-60, h/4, 50, h/2);
+    SDL_Rect balle =draw(renderer, w/2-10, h/2-10, 20, 20);
     SDL_RenderPresent(renderer);
-    SDL_Delay(10000);
+    SDL_Delay(5000);
+    if (balle.x!=w-80)
+    {
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        balle.x = balle.x + 200;
+        SDL_RenderFillRect(renderer, &balle);
+        SDL_RenderFillRect(renderer, &rectgauche);
+        SDL_RenderFillRect(renderer, &rectdroite);
+        SDL_RenderPresent(renderer);      
+        SDL_Delay(5000);
+    }
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window_1);
     SDL_Quit(); // la SDL
