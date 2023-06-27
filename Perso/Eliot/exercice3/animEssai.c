@@ -75,73 +75,10 @@ void draw(SDL_Renderer *renderer, int x, int y, int w, int h)
                        400, 400); // x,y seconde extrémité
 }
 
-SDL_Rect *createFish(SDL_Renderer *renderer, int x, int y, int w, int h, int size)
+SDL_Rect createFish(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
-    SDL_Rect *tab_rect = malloc(sizeof(SDL_Rect) * (size + 1));
-    int i;
-    int tailleQueue = size * 0.3;
-    int miCorp = size * 0.6;
-    int tete = size * 0.8;
-    for (i = 0; i < size; i++)
-    {
-        SDL_Rect rectangle;
-        if (i < tailleQueue)
-        {
-            if (i < tailleQueue / 2)
-            {
-                SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
-            }
-            else
-            {
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-            }
-            rectangle.x = x + i * w * 1 / size;
-            rectangle.y = y + i * h * 1 / (tailleQueue * 2);
-            rectangle.w = w * 1 / size;
-            rectangle.h = h - i * h * 1 / (tailleQueue);
-            SDL_RenderFillRect(renderer, &rectangle);
-        }
-        else if (i < miCorp)
-        {
-            SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
-            rectangle.x = x + i * w * 1 / size;
-            rectangle.y = y + (miCorp - i) * h * 1 / ((miCorp - tailleQueue) * 2);
-            rectangle.w = w * 1 / size;
-            rectangle.h = (i - tailleQueue) * h * 1 / (miCorp - tailleQueue);
-            SDL_RenderFillRect(renderer, &rectangle);
-        }
-        else if (i < tete)
-        {
-            SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    
 
-            rectangle.x = x + i * w * 1 / size;
-            rectangle.y = y;
-            rectangle.w = w * 1 / size;
-            rectangle.h = h;
-            SDL_RenderFillRect(renderer, &rectangle);
-        }
-        else
-        {
-            SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
-
-            rectangle.x = x + i * w * 1 / size;
-            rectangle.y = y + (i - tete) * h * 1 / ((tete)*2);
-            rectangle.w = w * 1 / size;
-            rectangle.h = h - (i - tete) * h * 1 / ((tete));
-            SDL_RenderFillRect(renderer, &rectangle);
-        }
-        tab_rect[i] = rectangle;
-    }
-    SDL_Rect oeil;
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
-    oeil.x = x + (tete + tete / 10) * w / (size);
-    oeil.y = y + h / 4;
-    oeil.w = w * 1 / (size);
-    oeil.h = h / 10;
-    tab_rect[size] = oeil;
-    SDL_RenderFillRect(renderer, &oeil);
-    return tab_rect;
 }
 
 void moveFish(SDL_Renderer *renderer, SDL_Rect *tab, int taille, int dir, int w, int h)
@@ -226,24 +163,51 @@ int main(int argc, char **argv)
     SDL_SetRenderDrawColor(renderer, 0, 94, 184, 255);
     SDL_RenderFillRect(renderer, &fond);
 
-    int fishW = 200;
-    int fishH = 100;
-    int size = 100;
-    if (argc == 4)
-    {
-        fishW = (int)*argv[1];
-        fishH = (int)*argv[2];
-        size = (int)*argv[3];
-    }
-    SDL_Rect *fish = createFish(renderer, 50, fondH/2, fishW, fishH, size);
+
+    SDL_Rect fish = createFish(renderer, 50, 50, 100, 50);
     SDL_RenderPresent(renderer);
-    int i;
-    for(i=0; i<100; i++){
-        moveFish(renderer, fish, size+1,2,w,h);
-        SDL_Delay(100);
+    SDL_bool program_on = SDL_TRUE;
+    SDL_bool event_utile;
+    SDL_Event event;
+    while (program_on)
+    { // La boucle des évènements
+        event_utile = SDL_FALSE;
+        while (!event_utile && SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                program_on = SDL_FALSE;
+                event_utile = SDL_TRUE;
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_p:
+                case SDLK_LEFT:
+
+                    break;
+                case SDLK_RIGHT:
+
+                    break;
+                case SDLK_UP:
+
+                    break;
+                case SDLK_DOWN:
+
+                    break;
+                case SDLK_ESCAPE:
+                case SDLK_q:
+                    program_on = 0;
+                    event_utile = SDL_TRUE;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            }
+        }
     }
-    free(fish);
-    fish=NULL;
     end_sdl(1, "Normal ending", window, renderer);
     return EXIT_SUCCESS;
 }
