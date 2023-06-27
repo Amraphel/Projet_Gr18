@@ -58,14 +58,3 @@ void genererGrahe(int **matrice, float p)
         }
     }
 }
-
-int main()
-{
-
-    srand(time(NULL));
-    int nb = 10;
-    int** matrice = initMatrice(nb);
-    generer(matrice, 0, nb -1);
-    genererGrahe(matrice, 0.1);
-    
-}
