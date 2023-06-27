@@ -1,4 +1,4 @@
-#include "arbre.h"
+#include "graphe.h"
 #include <time.h>
 
 
@@ -57,4 +57,17 @@ void genererGraphe(int **matrice, float p)
             }
         }
     }
+}
+
+
+cell_t* matToGraphe(int ** matrice, int nbNoeud, point_t* tabPoint){
+    int i;
+    cell_t* graphe = malloc(sizeof(cell_t)*nbNoeud);
+    for(i=0; i<nbNoeud; i++){
+        cell_t noeud;
+        noeud.point=tabPoint[i];
+        noeud.lien=matrice[i];
+        graphe[i]=noeud;
+    }
+    return graphe;
 }

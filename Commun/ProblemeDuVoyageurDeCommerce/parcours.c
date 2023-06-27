@@ -1,8 +1,7 @@
 #include "parcours.h"
 
-poids_t *creerPoid(int **tabPoids, int ** Phero, int nbNoeud)
+poids_t *creerPoids(int **tabPoids, int ** Phero, int nbNoeud)
 {
-    int nbPos = 0;
     int i;
     int j;
     int nbPoids;
@@ -40,9 +39,8 @@ int sommetTousTrav(int *sommetTraverse, int nbNoeud)
     return res;
 }
 
-parcours_t* parcours(cell_t *graphes, int **poids, int nbNoeud)
+parcours_t* parcours( int **poids,int ** phero, int nbNoeud)
 {
-    cell_t depart = graphes[0];
     int numAct = 0;
     int *sommetTraverse = malloc(nbNoeud);
     int i;
@@ -52,7 +50,7 @@ parcours_t* parcours(cell_t *graphes, int **poids, int nbNoeud)
     }
     sommetTraverse[0] = 1;
 
-    poids_t* listePoid= creerPoid(poids,nbNoeud);
+    poids_t* listePoid= creerPoids(poids,phero,nbNoeud);
 
     parcours_t * parcours= NULL;
     parcours_t ** courant = &parcours;
@@ -94,6 +92,7 @@ int longParcours(parcours_t * parcours){
         longueur++;
         courant=&(*courant)->suiv;
     }
+    return longueur;
 }
 
 void updatePhero(int** tabPhero, parcours_t* parcours, double puissancePhero, double coefAtt){
