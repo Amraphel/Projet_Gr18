@@ -1,6 +1,6 @@
-#ifndef ARBRE
-#define ARBRES
-#include "arbre.h"
+#ifndef GRAPHE
+#define GRAPHE
+#include "graphe.h"
 #endif
 #ifndef POINT
 #define POINT
