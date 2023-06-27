@@ -74,11 +74,12 @@ void play_with_texture_1(SDL_Texture *my_texture, SDL_Window *window,
     destination = window_dimensions; // On fixe les dimensions de l'affichage à  celles de la fenêtre
 
     /* On veut afficher la texture de façon à ce que l'image occupe la totalité de la fenêtre */
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
     SDL_RenderCopy(renderer, my_texture,
                    &source,
                    &destination); // Création de l'élément à afficher
-    SDL_RenderPresent(renderer);  // Affichage
+ // Affichage
 }
 
 void play_with_texture_4(SDL_Texture *my_texture,
