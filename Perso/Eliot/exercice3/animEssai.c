@@ -6,7 +6,11 @@
 
 typedef struct anime
 {
-    SDL_Rect anime[4];
+    SDL_Rect source;
+    SDL_Rect window_dimensions;
+    SDL_Rect destination;
+    SDL_Rect state;
+    int nbImages;
     SDL_Texture *texture;
 } anime_t;
 
@@ -78,7 +82,7 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
     return my_texture;
 }
 
-anime_t *createFish(SDL_Renderer *renderer, SDL_Window *window, int x, int y, int w, int h)
+anime_t *createFish(SDL_Renderer *renderer, SDL_Window *window)
 {
 
     SDL_Texture *my_texture = load_texture_from_image("./sources/Fish_sprite_X200.png", window, renderer);
@@ -86,7 +90,6 @@ anime_t *createFish(SDL_Renderer *renderer, SDL_Window *window, int x, int y, in
     if (animation)
     {
 
-        SDL_Rect anime[4];
         SDL_Rect
             source = {0},            // Rectangle définissant la zone totale de la planche
             window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
@@ -118,53 +121,69 @@ anime_t *createFish(SDL_Renderer *renderer, SDL_Window *window, int x, int y, in
         destination.y = // La course se fait en milieu d'écran (en vertical)
             (window_dimensions.h - destination.h) / 2;
 
-        int speed = 6;
-        for (int x = 0; x < window_dimensions.w - destination.w; x += speed)
-        {
-            destination.x = x;   // Position en x pour l'affichage du sprite
-            state.x += offset_x; // On passe à la vignette suivante dans l'image
-            state.x %= source.w; // La vignette qui suit celle de fin de ligne est
-                                 // celle de début de ligne
+        // int speed = 6;
+        // for (int x = 0; x < window_dimensions.w - destination.w; x += speed)
+        // {
+        //     destination.x = x;   // Position en x pour l'affichage du sprite
+        //     state.x += offset_x; // On passe à la vignette suivante dans l'image
+        //     state.x %= source.w; // La vignette qui suit celle de fin de ligne est
+        //                          // celle de début de ligne
 
-            SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
-            SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
-                           &state,
-                           &destination);
-            SDL_RenderPresent(renderer); // Affichage
-            SDL_Delay(80);               // Pause en ms
-        }
-        SDL_RenderClear(renderer);
+        //     SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+        //     SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+        //                    &state,
+        //                    &destination);
+        //     SDL_RenderPresent(renderer); // Affichage
+        //     SDL_Delay(80);               // Pause en ms
+        // }
+        // SDL_RenderClear(renderer);
 
-        anime[0] = source;
-        anime[1] = window_dimensions;
-        anime[2] = destination;
-        anime[3] = state;
+        animation->source = source;
+        animation->window_dimensions = window_dimensions;
+        animation->destination = destination;
+        animation->state = state;
+        animation->nbImages = nb_images;
+        animation->texture = my_texture;
     }
     return animation;
 }
 
-void moveFish(SDL_Renderer *renderer, SDL_Rect tab, int taille, int dir, int w, int h)
+void animeFish(anime_t *animation, SDL_Renderer *renderer)
 {
-    int i;
+    animation->state.x += animation->source.w / animation->nbImages; // On passe à la vignette suivante dans l'image
+    animation->state.x %= animation->source.w;                       // La vignette qui suit celle de fin de ligne est
+    SDL_RenderClear(renderer);                                       // Effacer l'image précédente avant de dessiner la nouvelle
+    SDL_RenderCopy(renderer, animation->texture,                     // Préparation de l'affichage
+                   &animation->state,
+                   &animation->destination);
+    SDL_RenderPresent(renderer); // Affichage
+}
+
+void moveFish(SDL_Renderer *renderer, anime_t *animation, int dir, int w, int h)
+{
     SDL_SetRenderDrawColor(renderer, 0, 94, 184, 255);
     SDL_RenderClear(renderer);
     switch (dir)
     {
     case 1:
-        tab.x = (w + tab.x - 30) % w;
+        animation->destination.x = animation->destination.x - 10;
         break;
     case 2:
-        tab.x = (tab.x + 30) % w;
+        animation->destination.x = animation->destination.x + 10;
         break;
     case 3:
-        tab.y = (h + tab.y - 30) % h;
+        animation->destination.y =  animation->destination.y - 10;
         break;
     case 4:
-        tab.y = (tab.y + 30) % h;
+        animation->destination.y = animation->destination.y + 10;
         break;
     default:
         break;
     }
+
+    SDL_RenderCopy(renderer, animation->texture, // Préparation de l'affichage
+                   &animation->state,
+                   &animation->destination);
     SDL_RenderPresent(renderer);
 }
 
@@ -211,7 +230,7 @@ int main(int argc, char **argv)
     SDL_SetRenderDrawColor(renderer, 0, 94, 184, 255);
     SDL_RenderFillRect(renderer, &fond);
 
-    anime_t *animation = createFish(renderer, window, 50, 50, 100, 50);
+    anime_t *animation = createFish(renderer, window);
     SDL_RenderPresent(renderer);
     SDL_bool program_on = SDL_TRUE;
     SDL_bool event_utile;
@@ -221,6 +240,7 @@ int main(int argc, char **argv)
         event_utile = SDL_FALSE;
         while (!event_utile && SDL_PollEvent(&event))
         {
+            animeFish(animation, renderer);
             switch (event.type)
             {
             case SDL_QUIT:
@@ -232,16 +252,18 @@ int main(int argc, char **argv)
                 {
                 case SDLK_p:
                 case SDLK_LEFT:
-
+                    moveFish(renderer, animation, 1, fondW, fondH);
+                    event_utile = SDL_TRUE;
                     break;
                 case SDLK_RIGHT:
-
+                    moveFish(renderer, animation, 2, fondW, fondH);
+                    event_utile = SDL_TRUE;
                     break;
                 case SDLK_UP:
-
+                    moveFish(renderer, animation, 3, fondW, fondH);
                     break;
                 case SDLK_DOWN:
-
+                    moveFish(renderer, animation, 4, fondW, fondH);
                     break;
                 case SDLK_ESCAPE:
                 case SDLK_q:
