@@ -13,3 +13,5 @@ typedef struct cell
 int **initMatrice(int nombreDePoint);
 
 void generer(int **matrice, int inf, int sup);
+
+void genererGraphe(int **matrice, float p);

@@ -42,7 +42,7 @@ void generer(int **matrice, int inf, int sup)
     }
 }
 
-void genererGrahe(int **matrice, float p)
+void genererGraphe(int **matrice, float p)
 {
     int taillMatrice = sizeof(matrice);
     for (int i = 0; i <= taillMatrice; i++)
