@@ -8,6 +8,16 @@
 //            Jeu fenetre           //
 //////////////////////////////////////
 
+typedef struct anime
+{
+    SDL_Rect source;
+    SDL_Rect window_dimensions;
+    SDL_Rect destination;
+    SDL_Rect state;
+    int nbImages;
+    SDL_Texture *texture;
+} anime_t;
+
 void end_sdl(char ok,            // fin normale : ok = 0 ; anormale ok = 1
              char const *msg,    // message à afficher
              SDL_Window *window, // fenêtre à fermer
@@ -63,63 +73,6 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
   return my_texture;
 }
 
-void play_with_texture_4(SDL_Texture *my_texture,
-                         SDL_Window *window,
-                         SDL_Renderer *renderer)
-{
-  SDL_Rect
-      source = {0},            // Rectangle définissant la zone totale de la planche
-      window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
-      destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
-      state = {0};             // Rectangle de la vignette en cours dans la planche
-
-  SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
-                    &window_dimensions.w,
-                    &window_dimensions.h);
-  SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
-                   NULL, NULL,
-                   &source.w, &source.h);
-
-  /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
-
-  int nb_images = 6;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
-  float zoom = 1;                      // zoom, car ces images sont un peu petites
-  int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
-      offset_y = source.h ;         // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
-
-  state.x = 0;            // La première vignette est en début de ligne
-  state.y = 0 * offset_y; // On s'intéresse à la 4ème ligne, le bonhomme qui court
-  state.w = offset_x;     // Largeur de la vignette
-  state.h = offset_y;     // Hauteur de la vignette
-
-  destination.w = offset_x * zoom; // Largeur du sprite à l'écran
-  destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
-
-  destination.y = // La course se fait en milieu d'écran (en vertical)
-      (window_dimensions.h - destination.h) / 2;
-
-  int speed = 9;int x = 0;
-
-  while (x < window_dimensions.w - destination.w)
-  {
-    SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
-    SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
-                   &state,
-                   &destination);
-    SDL_RenderPresent(renderer); // Affichage
-    SDL_Delay(25);               // Pause en ms
-    destination.x = x;           // Position en x pour l'affichage du sprite
-    state.x += offset_x;         // On passe à la vignette suivante dans l'image
-    if (state.x >= source.w - offset_x)
-    {
-      state.x = 0;
-    }
-    x += speed;
-  }
-  SDL_RenderClear(renderer); // Effacer la fenêtre avant de rendre la main
-}
-
-
 SDL_Window *initWindow(int x, int y, int w, int h)
 {
     SDL_Window *window = NULL;
@@ -147,7 +100,6 @@ SDL_Window *initWindow(int x, int y, int w, int h)
     return window;
 }
 
-
 SDL_Renderer *initRenderer(SDL_Window *window)
 {
     SDL_Renderer *renderer = NULL;
@@ -160,6 +112,224 @@ SDL_Renderer *initRenderer(SDL_Window *window)
 
     return renderer;
 }
+
+anime_t *createPerso(SDL_Renderer *renderer, SDL_Window *window)
+{
+
+    SDL_Texture *my_texture = load_texture_from_image("img/run.png", window, renderer);
+    anime_t *animation = malloc(sizeof(anime_t));
+    if (animation)
+    {
+
+        SDL_Rect
+            source = {0},            // Rectangle définissant la zone totale de la planche
+            window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+            destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+            state = {0};             // Rectangle de la vignette en cours dans la planche
+
+        SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+                          &window_dimensions.w,
+                          &window_dimensions.h);
+        SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+                         NULL, NULL,
+                         &source.w, &source.h);
+
+        /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
+
+        int nb_images = 6;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
+        float zoom = 1;                      // zoom, car ces images sont un peu petites
+        int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+            offset_y = source.h;             // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+
+        state.x = 0;        // La première vignette est en début de ligne
+        state.y = 0;        // On s'intéresse à la 4ème ligne, le bonhomme qui court
+        state.w = offset_x; // Largeur de la vignette
+        state.h = offset_y; // Hauteur de la vignette
+
+        destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+        destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+        destination.y = // La course se fait en milieu d'écran (en vertical)
+            (window_dimensions.h - destination.h) / 2;
+
+        animation->source = source;
+        animation->window_dimensions = window_dimensions;
+        animation->destination = destination;
+        animation->state = state;
+        animation->nbImages = nb_images;
+        animation->texture = my_texture;
+    }
+    return animation;
+}
+
+void animePerso(anime_t *animation, SDL_Renderer *renderer)//SDL_Texture *my_texture,
+                        /* SDL_Window *window,
+                         SDL_Renderer *renderer)*/
+{
+  animation->state.x += animation->source.w / animation->nbImages; // On passe à la vignette suivante dans l'image
+    
+    if (animation->state.x >= animation->source.w - animation->source.w/animation->nbImages)
+    {
+      animation->state.x = 0;
+     }
+    
+    //animation->state.x %= animation->source.w;                       // La vignette qui suit celle de fin de ligne est                                      // Effacer l'image précédente avant de dessiner la nouvelle
+    SDL_RenderCopy(renderer, animation->texture,                     // Préparation de l'affichage
+                   &animation->state,
+                   &animation->destination);
+    SDL_RenderPresent(renderer); // Affichage
+
+
+  // SDL_Rect
+  //     source = {0},            // Rectangle définissant la zone totale de la planche
+  //     window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+  //     destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+  //     state = {0};             // Rectangle de la vignette en cours dans la planche
+
+  // SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+  //                   &window_dimensions.w,
+  //                   &window_dimensions.h);
+  // SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+  //                  NULL, NULL,
+  //                  &source.w, &source.h);
+
+  // /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
+
+  // int nb_images = 6;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
+  // float zoom = 1;                      // zoom, car ces images sont un peu petites
+  // int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+  //     offset_y = source.h ;         // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+
+  // state.x = 0;            // La première vignette est en début de ligne
+  // state.y = 0 * offset_y; // On s'intéresse à la 4ème ligne, le bonhomme qui court
+  // state.w = offset_x;     // Largeur de la vignette
+  // state.h = offset_y;     // Hauteur de la vignette
+
+  // destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+  // destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+  // destination.y = // La course se fait en milieu d'écran (en vertical)
+  //     (window_dimensions.h - destination.h) / 2;
+
+  // int speed = 9;int x = 0;
+
+  // while (x < window_dimensions.w - destination.w)
+  // {
+  //   SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+  //   SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+  //                  &state,
+  //                  &destination);
+  //   SDL_RenderPresent(renderer); // Affichage
+  //   SDL_Delay(25);               // Pause en ms
+  //   destination.x = x;           // Position en x pour l'affichage du sprite
+  //   state.x += offset_x;         // On passe à la vignette suivante dans l'image
+  //   if (state.x >= source.w - offset_x)
+  //   {
+  //     state.x = 0;
+  //   }
+  //   x += speed;
+  // }
+  // SDL_RenderClear(renderer); // Effacer la fenêtre avant de rendre la main
+}
+
+anime_t *createBack(SDL_Renderer *renderer, SDL_Window *window)
+{
+
+    SDL_Texture *my_texture = load_texture_from_image("img/Background/06_Forest.png", window, renderer);
+    anime_t *animation = malloc(sizeof(anime_t));
+    if (animation)
+    {
+
+        SDL_Rect
+            source = {0},            // Rectangle définissant la zone totale de la planche
+            window_dimensions = {0}, // Rectangle définissant la fenêtre, on n'utilisera que largeur et hauteur
+            destination = {0},       // Rectangle définissant où la zone_source doit être déposée dans le renderer
+            state = {0};             // Rectangle de la vignette en cours dans la planche
+
+        SDL_GetWindowSize(window, // Récupération des dimensions de la fenêtre
+                          &window_dimensions.w,
+                          &window_dimensions.h);
+        SDL_QueryTexture(my_texture, // Récupération des dimensions de l'image
+                         NULL, NULL,
+                         &source.w, &source.h);
+
+        /* Mais pourquoi prendre la totalité de l'image, on peut n'en afficher qu'un morceau, et changer de morceau :-) */
+
+        int nb_images = 250;                   // Il y a 8 vignette dans la ligne de l'image qui nous intéresse
+        float zoom = 1;                      // zoom, car ces images sont un peu petites
+        int offset_x = source.w / nb_images, // La largeur d'une vignette de l'image, marche car la planche est bien réglée
+            offset_y = source.h;             // La hauteur d'une vignette de l'image, marche car la planche est bien réglée
+
+        state.x = 0;        // La première vignette est en début de ligne
+        state.y = 0;        // On s'intéresse à la 4ème ligne, le bonhomme qui court
+        state.w = offset_x; // Largeur de la vignette
+        state.h = offset_y; // Hauteur de la vignette
+
+        destination.w = offset_x * zoom; // Largeur du sprite à l'écran
+        destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
+
+        destination.y = 0;
+
+        animation->source = source;
+        animation->window_dimensions = window_dimensions;
+        animation->destination = destination;
+        animation->state = state;
+        animation->nbImages = nb_images;
+        animation->texture = my_texture;
+    }
+    return animation;
+}
+
+void animeBack(anime_t *animation, SDL_Renderer *renderer, SDL_Rect *tab_fond)
+{
+    animation->state.x += animation->source.w / animation->nbImages; // On passe à la vignette suivante dans l'image
+    animation->state.x %= animation->source.w;                       // La vignette qui suit celle de fin de ligne est
+    int x = animation->state.x;
+    SDL_RenderClear(renderer);
+    int i;
+    for (i = 0; i < 250; i++)
+    {
+        SDL_RenderCopy(renderer, animation->texture, // Préparation de l'affichage
+                       &animation->state,
+                       &tab_fond[i]);
+        animation->state.x += animation->source.w / animation->nbImages;
+        animation->state.x %= animation->source.w;   
+    }
+    animation->state.x = x;
+}
+
+void anime(anime_t *animeSprite, anime_t *animeBackg, SDL_Renderer *renderer, SDL_Rect *tab_fond, int act)
+{
+    if (act == 1)
+    {
+        animeBack(animeBackg, renderer, tab_fond);
+        animeBack(animeBackg, renderer, tab_fond);
+        animeBack(animeBackg, renderer, tab_fond);
+        animePerso(animeSprite, renderer);
+    }
+    else
+    {
+        int x = animeBackg->state.x;
+        SDL_RenderClear(renderer);
+        int i;
+        for (i = 0; i < 250; i++)
+        {
+            SDL_RenderCopy(renderer, animeBackg->texture, // Préparation de l'affichage
+                           &animeBackg->state,
+                           &tab_fond[i]);
+            animeBackg->state.x += animeBackg->source.w / animeBackg->nbImages;
+            animeBackg->state.x %= animeBackg->source.w;   
+        }
+        animeBackg->state.x = x;
+
+        SDL_RenderCopy(renderer, animeSprite->texture, // Préparation de l'affichage
+                       &animeSprite->state,
+                       &animeSprite->destination);
+        SDL_RenderPresent(renderer); // Affichage
+    }
+}
+
+
 
 
 int main(int argc, char **argv)
@@ -405,35 +575,98 @@ int main(int argc, char **argv)
         case SDLK_e:
           window_4 = initWindow(500, 100, 500, 500);
           renderer4 = initRenderer(window_4);
-          
+
+          SDL_Rect fond[250];
+
+          int fondW;
+          int fondH;
+          SDL_GetWindowSize(window_4, &fondW, &fondH);
+          int k;
+          for (k = 0; k < 250; k++)
+          {
+            fond[k].x = k * fondW / 250;
+            fond[k].y = 0;
+            fond[k].h = fondH;
+            fond[k].w = fondW / 250;
+          }
+
           SDL_SetRenderDrawColor(renderer4, 255, 255, 255, 255);
-          SDL_RenderClear(renderer4);
+          
+          //SDL_Texture *texture = load_texture_from_image("./img/run.png", window_4, renderer4);
+          //animePerso(texture, window_4, renderer4);
+          anime_t *animationBack = createBack(renderer4, window_4);
+          anime_t *animeP = createPerso(renderer4, window_4);
           SDL_RenderPresent(renderer4);
-          SDL_Texture *texture = load_texture_from_image("./img/sprite/ecureuil/run/run.png", window_4, renderer4);
-          play_with_texture_4(texture, window_4, renderer4);
 
           
-          SDL_RenderPresent(renderer4);
+  
+          animePerso(animeP, renderer4);
+
+          int speed = 100000;
+    int i = 0;
+    while (program_on)
+    { // La boucle des évènements
+        while (SDL_PollEvent(&event))
+        {
+
+            switch (event.type)
+            {
+            case SDL_QUIT:
+                program_on = SDL_FALSE;
+                break;
+            case SDL_KEYDOWN:
+
+                switch (event.key.keysym.sym)
+                {
+                
+                case SDLK_ESCAPE:
+                case SDLK_q:
+                    program_on = 0;
+                    break;
+                default:
+                    break;
+                }
+                anime(animeP, animationBack, renderer4, fond, 0);
+                break;
+            }
+        }
+
+        if (i == 0)
+        {
+            anime(animeP, animationBack, renderer4, fond, 1);
+        }
+        i = (i + 1) % speed;
+    }
+
+    free(animeP);
+    end_sdl(1, "Normal ending", window_4, renderer4);
+    return EXIT_SUCCESS;
+          
+
+
+
+          
+
+          // SDL_RenderClear(renderer4);
+          // SDL_RenderPresent(renderer4);
 
           break;
 
-        case SDLK_SPACE:    // ou 'SPC'
-          paused = !paused; // basculement pause/unpause
+        case SDLK_SPACE:    
+          break;
+
+        case SDLK_ESCAPE: // 'escape' ou 'q', arret du programme
+        case SDLK_q:      
+          program_on = 0; 
           event_utile = SDL_TRUE;
           break;
 
-        case SDLK_ESCAPE: // 'ESCAPE'
-        case SDLK_q:      // ou 'q'
-          program_on = 0; // 'escape' ou 'q', d'autres façons de quitter le programme
-          event_utile = SDL_TRUE;
-          break;
-
-        default: // Une touche appuyée qu'on ne traite pas
+        default: 
           break;
         }
         break;
 
-      default: // Les évènements qu'on n'a pas envisagé
+      default: 
         break;
       }
     }
