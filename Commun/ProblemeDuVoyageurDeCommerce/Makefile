@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS =-lSDL2 -Wall -Wextra -lSDL2_image
-LDFLAGS =-lSDL2_image -lSDL2 
+LDFLAGS =
 
 #liste des fichiers source
 SRC = $(wildcard *.c) 
@@ -13,7 +13,7 @@ OBJ = $(SRC:%.c=%.o)
 main : $(HEADERS) $(OBJ) 
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 	
-affichage.o :point.c arbre.c affichage.h affichage.c
+affichage.o :point.c arbre.h affichage.h affichage.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 arbre.o :point.c arbre.c arbre.h 

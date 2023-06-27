@@ -41,18 +41,18 @@ void generer(int **matrice, int inf, int sup)
     }
 }
 
-int main()
-{
-    int nb = 10;
-    int** matrice = initMatrice(nb);
-    generer(matrice, 0, nb -1);
+// int main()
+// {
+//     int nb = 10;
+//     int** matrice = initMatrice(nb);
+//     generer(matrice, 0, nb -1);
 
-    for(int i = 0; i<nb; i++)
-    {
-        for(int j = 0; j <nb; j++)
-        {
-            printf("i = %i, j = %i, %i \n", i, j ,matrice[i][j]);
-        }
-    }
+//     for(int i = 0; i<nb; i++)
+//     {
+//         for(int j = 0; j <nb; j++)
+//         {
+//             printf("i = %i, j = %i, %i \n", i, j ,matrice[i][j]);
+//         }
+//     }
     
-}
+// }

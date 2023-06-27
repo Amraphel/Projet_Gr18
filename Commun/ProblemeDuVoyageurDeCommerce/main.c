@@ -1,6 +1,3 @@
-#include "point.h"
-#include "arbre.h"
-
 #include "affichage.h"
 
 int main()
