@@ -107,7 +107,7 @@ void play_with_texture_4(SDL_Texture *my_texture,
                    &state,
                    &destination);
     SDL_RenderPresent(renderer); // Affichage
-    SDL_Delay(10);               // Pause en ms
+    SDL_Delay(25);               // Pause en ms
     destination.x = x;           // Position en x pour l'affichage du sprite
     state.x += offset_x;         // On passe à la vignette suivante dans l'image
     if (state.x >= source.w - offset_x)
@@ -439,7 +439,6 @@ int main(int argc, char **argv)
           SDL_Texture *texture = load_texture_from_image("./img/sprite/ecureuil/run/run.png", window_4, renderer4);
           play_with_texture_4(texture, window_4, renderer4);
 
-
           
           SDL_RenderPresent(renderer4);
 
@@ -472,6 +471,7 @@ int main(int argc, char **argv)
   /* et on referme tout ce qu'on a ouvert en ordre inverse de la création */
   SDL_DestroyWindow(window_2); // la fenêtre 2
   SDL_DestroyWindow(window_3);
+  SDL_DestroyWindow(window_4);
 
   // SDL_DestroyWindow(window_1);               // la fenêtre 1
   TTF_Quit();
