@@ -81,6 +81,16 @@ int main(int argc, char **argv)
                     break;
                 }
                 break;
+            case SDL_MOUSEBUTTONDOWN: // Click souris
+                if (SDL_GetMouseState(NULL, NULL) &
+                         SDL_BUTTON(SDL_BUTTON_LEFT))
+                {                                   // Si c'est un click droit
+                    int clickx = event.motion.x;
+                    int clicky = event.motion.y;
+                    //click();
+                }
+                event_utile = SDL_TRUE;
+                break;
             default: 
                 break;
             }
