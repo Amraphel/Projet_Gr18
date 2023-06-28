@@ -148,12 +148,9 @@ void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float 
     {
         if(clickx < listPoint[i].x + 20 && clickx > listPoint[i].x && clicky < listPoint[i].y + 20 && clicky > listPoint[i].y)
         {
-            printf("A\n");
-            printf("%d\n", tabType[i] );
             if(tabType[i] == 1 || tabType[i] == 3)
             {
                 tabType[*numActuel] = 3;
-                printf("B\n");
                 tabType[i] = 4;
                 resetVisitabe(tabType, nbNoeud);
 

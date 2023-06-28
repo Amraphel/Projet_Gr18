@@ -120,3 +120,24 @@ void updateVisitable(int* tabType, cell_t* graphe,int nbNoeud, int numAct){
 
     }
 }
+
+int fin(int* TabType, int numAct, int nbNoeud)
+{
+    int code = 0;
+    int autre = 1;
+    int i = 0;
+    while(autre == 1 && i < nbNoeud)
+    {
+        if(TabType[i] == 1 || TabType[i] == 0)
+        {
+            autre = 0;
+        }
+        i++;
+    }
+    if(numAct == 0 && autre == 1)
+    {
+        code = 1;
+    }
+
+    return code;
+}
