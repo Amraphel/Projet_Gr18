@@ -33,9 +33,14 @@ int main(int argc, char **argv)
                 SDL_GetError());
         exit(EXIT_FAILURE);
     }
+    
 
     SDL_Window* window = initWindow(200,100,WINDOWW,WINDOWL);
     SDL_Renderer* renderer = initRenderer(window);
+
+    if (TTF_Init() < 0)
+        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
+
     point_t *tabPoint = NULL;
     tabPoint = tabPointAleatoire(NB, window);
     SDL_Rect *tabRect = createPoints(tabPoint, NB);
@@ -107,7 +112,7 @@ int main(int argc, char **argv)
                     fini = fin(tabType, numActuel, NB);
                     if (fini == 1)
                     {
-                        score(poidsParcours, onycroit, )
+                        affichageScore(window, renderer);
                     }
 
                 }
