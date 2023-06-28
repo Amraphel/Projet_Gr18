@@ -107,15 +107,26 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 
     }
 
-    for(j = 0; j < 3*nombreDePoint ; j++)
+    /*for(j = 0; j < 3*nombreDePoint ; j++)
     {
         
         free(grille[j]);
         printf("j : %i\n", j);
-    }
+    }*/
     //free(grille);
 
     return tabPoint;
 
 }
+
+
+int* initTypeNoeud(int taille){
+    int* tabType= malloc(sizeof(int)*taille);
+    tabType[0]=4;
+    for(int i =1; i<taille; i++){
+        tabType[i]=0;
+    }
+    return tabType;
+}
+
 
