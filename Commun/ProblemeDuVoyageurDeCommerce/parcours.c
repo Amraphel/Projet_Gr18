@@ -39,7 +39,7 @@ int sommetTousTrav(int *sommetTraverse, int nbNoeud)
     return res;
 }
 
-parcours_t *parcours(int **poids, double **phero, int nbNoeud)
+parcours_t *parcoursGraphe(int **poids, double **phero, int nbNoeud)
 {
     int numAct = 0;
     int *sommetTraverse = malloc(nbNoeud);
@@ -98,8 +98,30 @@ int longParcours(parcours_t *parcours)
     return longueur;
 }
 
-void updatePhero(double **tabPhero, parcours_t *parcours, double puissancePhero, double coefAtt)
+double ** initPhero(int taille)
 {
+    double **phero = malloc(sizeof(double *) * taille);
+    if (phero)
+    {
+        for (int i = 0; i < taille; i++)
+        {
+            double *ligne = malloc(sizeof(double) * taille);
+            if (ligne)
+            {
+                for (int j = 0; j < taille; j++)
+                {
+                    ligne[j] = 0;
+                }
+            }
+            phero[i] = ligne;
+        }
+    }
+    return phero;
+}
+
+double **updatePhero(int taille, parcours_t *parcours, double puissancePhero, double coefAtt)
+{
+    double **tabPhero = initPhero(taille);
     int longueurMax = longParcours(parcours);
 
     parcours_t **courant = &parcours;
@@ -108,44 +130,96 @@ void updatePhero(double **tabPhero, parcours_t *parcours, double puissancePhero,
     while ((*courant))
     {
         liaison_t lien = (*courant)->act;
-        tabPhero[lien.dep][lien.arr] = tabPhero[lien.dep][lien.arr] * (1 - coefAtt * longueurAct / longueurMax) + (puissancePhero * coefAtt * longueurAct / longueurMax);
+        tabPhero[lien.dep][lien.arr] = (puissancePhero * coefAtt * longueurAct / longueurMax);
         courant = &(*courant)->suiv;
         longueurAct--;
     }
+
+    return tabPhero;
 }
 
-double **initPhero(int taille)
+
+void delPhero(double **phero, int taille)
 {
-    double **phero = malloc(sizeof(double *) * taille);
-    if (phero)
+    for (int i = 0; i < taille; i++)
     {
-        for (int i = 0; i < taille; i++)
-        {
-            double *ligne = malloc(sizeof(double) * taille);
-            if(ligne){
-                for(int j=0; j<taille; j++){
-                    ligne[j]=0;
-                }
-            }
-            phero[i]=ligne;
-        }
-    }
-    return phero;
-}
-
-void delPhero(double** phero, int taille)
-{
-    for(int i =0; i<taille; i++){
         free(phero[i]);
-        phero[i]=NULL;
+        phero[i] = NULL;
     }
     free(phero);
-    phero=NULL;
+    phero = NULL;
 }
 
-void fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
+void delParcours(parcours_t **parcours, int taille)
 {
-    double ** phero = initPhero(nbNoeud);
-    
+    for (int i = 0; i < taille; i++)
+    {
+        free(parcours[i]);
+        parcours[i] = NULL;
+    }
+    free(parcours);
+    parcours = NULL;
+}
+
+void addMatrice(double **source, double **dest, int nbNoeud)
+{
+    for (int i = 0; i < nbNoeud; i++)
+    {
+        for (int j = 0; i < nbNoeud; i++)
+        {
+            dest[i][j] = dest[i][j] + source[i][j];
+        }
+    }
+}
+
+int poidsParcours(parcours_t *parcours, int **tabPoids)
+{
+
+    int poidsTot = 0;
+
+    parcours_t **courant = &parcours;
+
+    while ((*courant))
+    {
+        liaison_t lien = (*courant)->act;
+        poidsTot = poidsTot + tabPoids[lien.dep][lien.arr];
+        courant = &(*courant)->suiv;
+    }
+
+    return poidsTot;
+}
+
+int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
+{
+    double **phero = initPhero(nbNoeud);
+    parcours_t **tabParcours = malloc(sizeof(parcours_t) * 100);
+
+    for (int k = 0; k < 10; k++)
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            parcours_t *parcours = parcoursGraphe(poids, phero, nbNoeud);
+            tabParcours[i] = parcours;
+        }
+
+        for (int i = 0; i < nbNoeud; i++)
+        {
+            for (int j = 0; i < nbNoeud; i++)
+            {
+                phero[i][j] = phero[i][j] * (1 - coefAtt);
+            }
+        }
+
+        for (int i = 0; i < 100; i++)
+        {
+            double **pheroGen = updatePhero(nbNoeud, tabParcours[i], puissance, coefAtt);
+            addMatrice(pheroGen, phero, nbNoeud);
+            delPhero(pheroGen, nbNoeud);
+        }
+    }
+    parcours_t *parcours = parcoursGraphe(poids, phero, nbNoeud);
+    int poidsFinal = poidsParcours(parcours,poids);
     delPhero(phero, nbNoeud);
+
+    return poidsFinal;
 }
