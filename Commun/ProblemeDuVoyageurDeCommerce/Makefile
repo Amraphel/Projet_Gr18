@@ -10,9 +10,17 @@ HEADERS = $(wildcard *.h)
 #liste des fichiers objets
 OBJ = $(SRC:%.c=%.o)
 
-feux_artifice: $(HEADERS) $(OBJ) 
+main : $(HEADERS) $(OBJ) 
 	$(CC) $(OBJ) -o $@ $(LDFLAGS)
 	
+affichage.o :affichage.c 
+	$(CC) $(CFLAGS) -c $< 
+
+graphe.o :graphe.c 
+	$(CC) $(CFLAGS) -c $< 
+
+point.o : point.c 
+	$(CC) $(CFLAGS) -c $< 
 
 
 .PHONY: clean reclean
@@ -21,4 +29,4 @@ clean:
 	rm -f $(OBJ)
 
 reclean:
-	rm -f $(OBJ) feux_artifice
+	rm -f $(OBJ) main

@@ -56,10 +56,10 @@ void moveWin(SDL_Window **window_tab, int iter, int taille)
     int y;
     for (i = 0; i < taille; i++)
     {
-        if (iter < 15)
+        if (iter < 70)
         {
             SDL_GetWindowPosition(window_tab[i], &x, &y);
-            SDL_SetWindowPosition(window_tab[i], x, y - 70);
+            SDL_SetWindowPosition(window_tab[i], x, y - 40);
         }
         else
         {
@@ -67,32 +67,32 @@ void moveWin(SDL_Window **window_tab, int iter, int taille)
             switch (i)
             {
             case 0:
-                x = x + 30;
+                x = x + 20;
                 break;
             case 1:
-                x = x + 30;
-                y = y + 30;
+                x = x + 20;
+                y = y + 20;
                 break;
             case 2:
-                y = y + 30;
+                y = y + 20;
                 break;
             case 3:
-                x = x - 30;
-                y = y + 30;
+                x = x - 20;
+                y = y + 20;
                 break;
             case 4:
-                x = x + 30;
-                y = y - 30;
+                x = x + 20;
+                y = y - 20;
                 break;
             case 5:
-                x = x - 30;
-                y = y - 30;
+                x = x - 20;
+                y = y - 20;
                 break;
             case 6:
-                y = y - 30;
+                y = y - 20;
                 break;
             case 7:
-                x = x - 30;
+                x = x - 10;
                 break;
             default:
                 break;
@@ -139,15 +139,15 @@ int main(int argc, char **argv)
                 }
 
                 SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+                SDL_SetRenderDrawColor(renderer, 255-i*40, 120+i*15, i*10, 255);
                 SDL_RenderClear(renderer);
-
+                SDL_RenderPresent(renderer);
                 window_tab[i] = window;
                 renderer_tab[i] = renderer;
             }
 
             i = 0;
-            while (i < 30)
+            while (i < 100)
             {
                 moveWin(window_tab, i, 8);
                 i++;

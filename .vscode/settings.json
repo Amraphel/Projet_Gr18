@@ -1,6 +1,5 @@
 {
     "files.associations": {
-        "evenementfenetre.h": "c",
-        "arbre.h": "c"
+        "graphe.h": "c"
     }
 }
