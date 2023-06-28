@@ -55,38 +55,28 @@ parcours_t *parcoursGraphe(int **poids, double **phero, int nbNoeud)
 
     parcours_t *parcours = NULL;
     parcours_t **courant = &parcours;
-    int iter = 1;
     while (sommetTousTrav(sommetTraverse, nbNoeud) == 0 || numAct != 0)
     {
-        // fprintf(stderr, "----------------------------------\n");
-        // fprintf(stderr, "iter : %d\n",iter);
-        // fprintf(stderr, "numAct : %d\n",numAct);
-        // fprintf(stderr, "aled : %d\n",sommetTousTrav(sommetTraverse, nbNoeud));
-        iter++;
         int poidTotal = 0;
         for (i = 0; i < listePoid[numAct].nbPoids; i++)
         {
             poidTotal += listePoid[numAct].valeur[i] + 1;
         }
-        // fprintf(stderr, "test : 1\n");
-        float valDest = rand() % poidTotal +1;
-        // fprintf(stderr, "poidTot : %d\n",poidTotal);
-        // fprintf(stderr, "valDest : %f\n",valDest);
+        float valDest = rand() % poidTotal + 1;
         int dest = 0;
-        int k=0;
+        int k = 0;
         while (valDest > 0)
         {
-            valDest = valDest- (listePoid[numAct].valeur[k] + 1);
+            valDest = valDest - (listePoid[numAct].valeur[k] + 1);
             dest++;
             k++;
         }
         dest--;
-        // fprintf(stderr, "dest : %d\n",dest);
         liaison_t lien;
         lien.dep = numAct;
         lien.arr = listePoid[numAct].dest[dest];
         parcours_t *act = malloc(sizeof(parcours_t));
-        act->suiv=NULL;
+        act->suiv = NULL;
         (*courant) = act;
         (*courant)->act = lien;
         courant = &(*courant)->suiv;
@@ -163,14 +153,14 @@ void delParcours(parcours_t **parcours)
 {
     if (*parcours)
     {
-        parcours_t* cursor=*parcours;
-        parcours_t* next = (*parcours)->suiv;
-        while(next)
-            {
-                free(cursor);
-                cursor=next;
-                next=cursor->suiv;
-            }
+        parcours_t *cursor = *parcours;
+        parcours_t *next = (*parcours)->suiv;
+        while (next)
+        {
+            free(cursor);
+            cursor = next;
+            next = cursor->suiv;
+        }
 
         free(parcours);
         parcours = NULL;
@@ -210,7 +200,7 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
     double **phero = initPhero(nbNoeud);
 
     parcours_t **tabParcours = malloc(sizeof(parcours_t) * 100);
-    int poidsFinal =-1;
+    int poidsFinal = -1;
     for (int k = 0; k < 100; k++)
     {
         for (int i = 0; i < 100; i++)
@@ -218,11 +208,11 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
 
             parcours_t *parcours = parcoursGraphe(poids, phero, nbNoeud);
             tabParcours[i] = parcours;
-            int poidsParc= poidsParcours(parcours, poids);
-            if(poidsFinal==-1 || poidsParc < poidsFinal ){
-                poidsFinal=poidsParc;
-            }   
-
+            int poidsParc = poidsParcours(parcours, poids);
+            if (poidsFinal == -1 || poidsParc < poidsFinal)
+            {
+                poidsFinal = poidsParc;
+            }
         }
 
         for (int i = 0; i < nbNoeud; i++)
@@ -232,7 +222,7 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
                 phero[i][j] = phero[i][j] * (1 - coefAtt);
             }
         }
-                 
+
         for (int i = 0; i < 100; i++)
         {
             double **pheroGen = updatePhero(nbNoeud, tabParcours[i], puissance, coefAtt);
