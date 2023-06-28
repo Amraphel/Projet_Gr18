@@ -40,12 +40,7 @@ SDL_Window *initWindow(int x, int y, int w, int h)
 {
     SDL_Window *window = NULL;
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        SDL_Log("Error : SDL initialisation - %s\n",
-                SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
+    
     window = SDL_CreateWindow(
         "Fenêtre",
         x, y,
