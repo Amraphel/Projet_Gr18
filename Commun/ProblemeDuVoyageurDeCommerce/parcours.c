@@ -122,9 +122,15 @@ double **initPhero(int taille)
         for (int i = 0; i < taille; i++)
         {
             double *ligne = malloc(sizeof(double) * taille);
+            if(ligne){
+                for(int j=0; j<taille; j++){
+                    ligne[j]=0;
+                }
+            }
             phero[i]=ligne;
         }
     }
+    return phero;
 }
 
 void delPhero(double** phero, int taille)
@@ -137,9 +143,9 @@ void delPhero(double** phero, int taille)
     phero=NULL;
 }
 
-void fourmis(int **poids, double **phero, int nbNoeud, double puissance, double coefAtt)
+void fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
 {
-    double ** phero = initMatrice(nbNoeud);
+    double ** phero = initPhero(nbNoeud);
     
     delPhero(phero, nbNoeud);
 }
