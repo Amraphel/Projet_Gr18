@@ -249,9 +249,11 @@ void anime(anime_t *animeSprite, anime_t *animeBackg, SDL_Renderer *renderer, SD
 {
   if (act == 1)
   {
-    animeBack(animeBackg, renderer, tab_fond);
-    animeBack(animeBackg, renderer, tab_fond);
-    animeBack(animeBackg, renderer, tab_fond);
+    for(int i = 0; i <= 3; i++)
+    {
+      animeBack(animeBackg, renderer, tab_fond);
+      animeBack(animeBackg, renderer, tab_fond);
+    }
     animePerso(animeSprite, renderer);
   }
   else
@@ -544,7 +546,7 @@ int main(int argc, char **argv)
 
           animePerso(animeP, renderer4);
 
-          int speed = 100000;
+          int speed = 10000;
           int i = 0;
           while (program_on)
           { // La boucle des évènements
