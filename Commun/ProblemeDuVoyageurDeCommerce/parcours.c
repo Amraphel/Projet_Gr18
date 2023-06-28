@@ -220,6 +220,6 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
     parcours_t *parcours = parcoursGraphe(poids, phero, nbNoeud);
     int poidsFinal = poidsParcours(parcours,poids);
     delPhero(phero, nbNoeud);
-
+    
     return poidsFinal;
 }
