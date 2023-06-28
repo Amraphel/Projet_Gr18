@@ -9,7 +9,7 @@ void end_sdl(char ok,
     int l;
 
     if (!ok)
-    { // Affichage de ce qui ne va pas
+    { 
         strncpy(msg_formated, msg, 250);
         l = strlen(msg_formated);
         strcpy(msg_formated + l, " : %s\n");
@@ -50,8 +50,8 @@ SDL_Window *initWindow(int x, int y, int w, int h)
     if (window == NULL)
     {
         SDL_Log("Error : SDL window creation - %s\n",
-                SDL_GetError()); // échec de la création de la fenêtre
-        SDL_Quit();              // On referme la SDL
+                SDL_GetError()); 
+        SDL_Quit();              
         exit(EXIT_FAILURE);
     }
 

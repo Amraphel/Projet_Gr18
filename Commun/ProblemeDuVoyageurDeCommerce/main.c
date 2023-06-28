@@ -53,6 +53,7 @@ int main(int argc, char **argv)
     matToPoids(mat, NB,tabPoint);
    // afficherMat(mat,NB);
     int numActuel = 0;
+    int fini = 0;
 
    updateVisitable(tabType, graphe, NB, numActuel);
 
@@ -63,6 +64,8 @@ int main(int argc, char **argv)
     // int ** matDist= dist(mat, NB);
     // printMat(mat, NB);
     // printMat(matDist, NB);
+
+    int poidsParcours = 0;
 
     drawGraphe(renderer, tabRect, graphe, NB, tabType);
 
@@ -96,12 +99,16 @@ int main(int argc, char **argv)
                     int clickx = event.motion.x;
                     int clicky = event.motion.y;
 
-                    int clickOk;
-                    clickOk = click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
-                    
+                    if (fini == 0)
+                    {
+                        click(tabType, tabPoint, &numActuel, NB, clickx, clicky, &poidsParcours, mat);
+                    }
+
                     updateVisitable(tabType, graphe, NB, numActuel);
                     drawGraphe(renderer, tabRect, graphe, NB, tabType);
-                    
+
+                    fini = fin(tabType, numActuel, NB);
+
                 }
                 event_utile = SDL_TRUE;
                 break;

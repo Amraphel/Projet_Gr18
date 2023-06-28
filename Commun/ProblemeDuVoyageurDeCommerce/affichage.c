@@ -140,38 +140,26 @@ void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nb
     SDL_RenderPresent(renderer);
 }
 
-int click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky)
+void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky, int* poidsParcours, int ** mat)
 {
     int i = 0;
     int estTrouve = 0;
-    while( i < nbNoeud)
+    while( estTrouve ==0 && i < nbNoeud)
     {
         if(clickx < listPoint[i].x + 20 && clickx > listPoint[i].x && clicky < listPoint[i].y + 20 && clicky > listPoint[i].y)
         {
-            printf("A\n");
-            printf("%d\n", tabType[i] );
             if(tabType[i] == 1 || tabType[i] == 3)
             {
                 tabType[*numActuel] = 3;
-                printf("B\n");
                 tabType[i] = 4;
                 resetVisitabe(tabType, nbNoeud);
-
+                *poidsParcours += mat[i][*numActuel];
+                printf("p = %d\n", *poidsParcours);
                 *numActuel = i;
                 estTrouve = 1;
-
-
             }
         }
         i++;
-    }
-    if(estTrouve == 1)
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
     }
 }
 
