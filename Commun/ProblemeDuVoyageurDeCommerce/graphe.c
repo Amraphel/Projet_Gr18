@@ -45,9 +45,9 @@ void generer(int **matrice, int inf, int sup)
 void genererGraphe(int **matrice, float p)
 {
     int taillMatrice = sizeof(matrice);
-    for (int i = 0; i <= taillMatrice; i++)
+    for (int i = 0; i < taillMatrice; i++)
     {
-        for (int j = i + 1; j <= taillMatrice; j++)
+        for (int j = i + 1; j < taillMatrice; j++)
         {
             float k = rand() / (RAND_MAX + 1.0);
             if (k < p)
