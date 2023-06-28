@@ -51,9 +51,9 @@ int main(int argc, char **argv)
    // afficherMat(mat,NB);
 
     int onycroit= fourmis(mat,NB, 2,0.1);
-    int onycroit2= recherchelocal(mat,NB, 0.5);
+    // int onycroit2= recherchelocal(mat,NB, 0.5);
     fprintf(stderr, "poids final : %d\n", onycroit);
-    fprintf(stderr, "poids final : %d\n", onycroit2);
+    // fprintf(stderr, "poids final : %d\n", onycroit2);
     drawGraphe(renderer, tabRect, graphe, NB);
 
     while (program_on)
