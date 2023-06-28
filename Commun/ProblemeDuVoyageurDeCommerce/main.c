@@ -35,7 +35,6 @@ int main(int argc, char **argv)
     }
 
     SDL_Window* window = initWindow(200,100,WINDOWW,WINDOWL);
-    puts("AA");
     SDL_Renderer* renderer = initRenderer(window);
     point_t *tabPoint = NULL;
     tabPoint = tabPointAleatoire(NB, window);

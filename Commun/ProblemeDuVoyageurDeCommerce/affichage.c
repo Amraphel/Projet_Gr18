@@ -78,6 +78,7 @@ SDL_Rect* createPoints(point_t* listPoint, int nombreDePoint){
     int i=0;
     while(i<nombreDePoint){
         SDL_Rect point;
+
         point.x= listPoint[i].x;
         point.y=listPoint[i].y;
         point.w=20;
@@ -90,8 +91,15 @@ SDL_Rect* createPoints(point_t* listPoint, int nombreDePoint){
 
 void drawPoints(SDL_Renderer* renderer, SDL_Rect* tabPoint,int nombreDePoint){
     for(int i=0; i<nombreDePoint; i++){
+        if(i == 0)
+        {
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        }
+        else
+        {
+            SDL_SetRenderDrawColor(renderer, 0,0,0,255);
+        }
         SDL_RenderFillRect(renderer,&tabPoint[i] );
-
     }
 }
 
@@ -111,9 +119,8 @@ void drawLine(SDL_Renderer* renderer, cell_t* graphe, int nbNoeud){
 
 void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nbNoeud){
     SDL_RenderClear(renderer);
-    SDL_SetRenderDrawColor(renderer, 0,0,0,255);
     drawPoints(renderer,tabPoint,nbNoeud);
+    SDL_SetRenderDrawColor(renderer, 0,0,0,255);
     drawLine(renderer,graphe,nbNoeud);
     SDL_RenderPresent(renderer);
-    SDL_SetRenderDrawColor(renderer,255,255,255,255);
 }
