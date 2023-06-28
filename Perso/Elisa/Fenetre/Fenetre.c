@@ -150,7 +150,7 @@ anime_t *createPerso(SDL_Renderer *renderer, SDL_Window *window)
     destination.h = offset_y * zoom; // Hauteur du sprite à l'écran
 
     destination.y = // La course se fait en milieu d'écran (en vertical)
-        (window_dimensions.h - destination.h) / 2;
+        (window_dimensions.h - destination.h) * 5/ 6;
 
     animation->source = source;
     animation->window_dimensions = window_dimensions;
