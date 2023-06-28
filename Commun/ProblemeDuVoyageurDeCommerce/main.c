@@ -57,12 +57,10 @@ int main(int argc, char **argv)
    updateVisitable(tabType, graphe, NB, numActuel);
 
     int poidsFourmis= fourmis(mat,NB, 2,0.1);
-    // int onycroit2= recherchelocal(mat,NB, 0.5);
+    int onycroit2= recherchelocal(mat,NB, 100 ,0.001);
     fprintf(stderr, "poids final : %d\n", poidsFourmis);
-    // fprintf(stderr, "poids final : %d\n", onycroit2);
-    int ** matDist= dist(mat, NB);
-    printMat(mat, NB);
-    printMat(matDist, NB);
+    fprintf(stderr, "poids final2 : %d\n", onycroit2);
+ 
 
     int poidsParcours = 0;
 

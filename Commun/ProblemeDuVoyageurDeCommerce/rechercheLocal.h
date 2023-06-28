@@ -6,4 +6,4 @@ int **dist(int **tabPoids, int nbNoeud);
 void printMat(int** mat, int nbNoeud);
 
 
-int recherchelocal(int **poids, int nbNoeud, double probaRecuit);
+int recherchelocal(int **poids, int nbNoeud, int init ,double objectif);

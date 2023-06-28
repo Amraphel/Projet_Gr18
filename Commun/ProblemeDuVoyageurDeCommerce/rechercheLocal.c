@@ -50,35 +50,80 @@ void printMat(int **mat, int nbNoeud)
     }
 }
 
-int calcDist(int ** tabDist,int *ordreParc, int nbNoeud)
+int calcDist(int **tabDist, int *ordreParc, int nbNoeud)
 {
     int dist = 0;
-    for (int i = 0; i < nbNoeud - 1; i++){
-        dist+= tabDist[ordreParc[i]][ordreParc[i+1]];
+    for (int i = 0; i < nbNoeud - 1; i++)
+    {
+        dist += tabDist[ordreParc[i]][ordreParc[i + 1]];
     }
+    dist += tabDist[ordreParc[nbNoeud - 1]][ordreParc[0]];
     return dist;
 }
 
-int parcours(int **poids, int nbNoeud, double temp)
+int *initOrdre(int nbNoeud)
 {
-
-    return 0;
+    int *ordre = malloc(sizeof(int) * nbNoeud);
+    for (int i = 0; i < nbNoeud; i++)
+    {
+        ordre[i] = i;
+    }
+    return ordre;
 }
 
-int recherchelocal(int **poids, int nbNoeud, double probaRecuit)
+int *inv2Elem(int *ordre, int nbNoeud)
+{
+    int *ordre2 = malloc(sizeof(int) * nbNoeud);
+    for (int i = 0; i < nbNoeud; i++)
+    {
+        ordre2[i] = ordre[i];
+    }
+    int elem1 = rand() % nbNoeud;
+    int elem2 = rand() % nbNoeud;
+    while (elem2 == elem1)
+    {
+        fprintf(stderr, "%d et %d", elem1, elem2);
+        elem2 = rand() % nbNoeud;
+    }
+    int temp = ordre[elem1];
+    ordre2[elem1] = ordre[elem2];
+    ordre2[elem2] = temp;
+    return ordre2;
+}
+
+int recherchelocal(int **poids, int nbNoeud, int init, double objectif)
 {
 
-    double temp = probaRecuit;
-    int poidsTotal = -1;
+    double temp = init;
+    int *ordre = initOrdre(nbNoeud);
+    int *ordre2 = NULL;
+    int **tabDist = dist(poids, nbNoeud);
+    int poidsTotal = calcDist(tabDist, ordre, nbNoeud);
     for (int i = 0; i < 100; i++)
     {
-        int poidsParc = parcours(poids, nbNoeud, temp);
-
-        if (poidsTotal == -1 || poidsParc < poidsTotal)
+        int *ordre2 = inv2Elem(ordre, nbNoeud);
+        int newPoids = calcDist(tabDist, ordre2, nbNoeud);
+        if (newPoids < poidsTotal)
         {
-            poidsTotal = poidsParc;
+            poidsTotal = newPoids;
+            ordre = ordre2;
         }
-        temp = temp * 0.99;
+        else
+        {
+            double prop = (float)rand() / RAND_MAX;
+            if (prop < temp)
+            {
+                poidsTotal = newPoids;
+                ordre = ordre2;
+            }
+        }
+        temp = init * pow(sqrt(objectif / (init * 143)), 100);
     }
+    free(ordre);
+    if (ordre2)
+    {
+        free(ordre2);
+    }
+
     return poidsTotal;
 }

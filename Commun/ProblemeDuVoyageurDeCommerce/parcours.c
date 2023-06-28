@@ -235,10 +235,7 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
             delPhero(pheroGen, nbNoeud);
         }
     }
-    //  fprintf(stderr, "test3\n");
     delPhero(phero, nbNoeud);
-    //  fprintf(stderr, "test2\n");
     delParcours(tabParcours);
-    // fprintf(stderr, "test\n");
     return poidsFinal;
 }
