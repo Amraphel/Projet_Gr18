@@ -21,3 +21,5 @@ cell_t* matToGraphe(int ** matrice, int nbNoeud, point_t* tabPoint);
 void matToPoids(int ** matrice, int nbNoeud, point_t* tabPoint);
 
 void afficherMat(int **matrice, int nbNoeud);
+
+void updateVisitable(int* tabType, cell_t* graphe,int nbNoeud, int numAct);

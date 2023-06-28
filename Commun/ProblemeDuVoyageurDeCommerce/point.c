@@ -119,3 +119,13 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 
 }
 
+
+int* initTypeNoeud(int taille){
+    int* tabType= malloc(sizeof(int)*taille);
+    tabType[0]=4;
+    for(int i =1; i<taille; i++){
+        tabType[i]=0;
+    }
+}
+
+
