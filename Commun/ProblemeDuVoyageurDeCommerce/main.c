@@ -96,8 +96,7 @@ int main(int argc, char **argv)
                     int clickx = event.motion.x;
                     int clicky = event.motion.y;
 
-                    int clickOk;
-                    clickOk = click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
+                    click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
                     
                     updateVisitable(tabType, graphe, NB, numActuel);
                     drawGraphe(renderer, tabRect, graphe, NB, tabType);
