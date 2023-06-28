@@ -112,7 +112,9 @@ int main(int argc, char **argv)
                     fini = fin(tabType, numActuel, NB);
                     if (fini == 1)
                     {
-                        affichageScore(window, renderer);
+                        int scoreAffiche = 0;
+                        score(poidsParcours, poidsParcours, 0, &scoreAffiche);
+                        affichageScore(window, renderer, scoreAffiche);
                     }
 
                 }

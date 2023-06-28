@@ -178,12 +178,19 @@ void resetVisitabe(int* tabType, int nbNoeud)
     }
 }
 
-void score(int poidsParcours, int poidsFourmis, int poidsRecuit)
+void score(int poidsParcours, int poidsFourmis, int poidsRecuit, int* scoreAffiche)
 {
-    
+    if(poidsParcours <= poidsFourmis)
+    {
+        *scoreAffiche = 100;
+    }
+    else
+    {
+        *scoreAffiche = (poidsParcours / poidsFourmis) * 100;
+    }
 }
 
-void affichageScore(SDL_Window* window, SDL_Renderer *renderer)
+void affichageScore(SDL_Window* window, SDL_Renderer *renderer, int scoreAffiche)
 {
     TTF_Font *font = NULL;
 
@@ -194,7 +201,10 @@ void affichageScore(SDL_Window* window, SDL_Renderer *renderer)
     }
     SDL_Color color = {20, 0, 40, 255};
     SDL_Surface *text_surface = NULL;
-    text_surface = TTF_RenderText_Blended(font, "taper p ou f pour aller a la prochaine fenetre", color); // création du texte dans la surface
+    //char text = (char) scoreAffiche;
+    char * text = "bla";
+
+    text_surface = TTF_RenderText_Blended(font, text, color); // création du texte dans la surface
     if (text_surface == NULL)
     {
         end_sdl(0, "Can't create text surface", window, renderer);

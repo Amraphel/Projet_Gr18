@@ -26,5 +26,5 @@ void drawLine(SDL_Renderer* renderer, cell_t* graphe, int nbNoeud);
 void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nbNoeud,int* tabType);
 void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky,int* poidsParcours, int ** mat);
 void resetVisitabe(int* tabType, int nbNoeud);
-void affichageScore(SDL_Window* window, SDL_Renderer *renderer);
-void score(int poidsParcours, int poidsFourmis, int poidsRecuit);
+void affichageScore(SDL_Window* window, SDL_Renderer *renderer, int scoreAffiche);
+void score(int poidsParcours, int poidsFourmis, int poidsRecuit, int* scoreAffiche);
