@@ -27,8 +27,15 @@ int main(int argc, char **argv)
     {
         NB = 5;
     }
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
+        SDL_Log("Error : SDL initialisation - %s\n",
+                SDL_GetError());
+        exit(EXIT_FAILURE);
+    }
 
     SDL_Window* window = initWindow(200,100,WINDOWW,WINDOWL);
+    puts("AA");
     SDL_Renderer* renderer = initRenderer(window);
     point_t *tabPoint = NULL;
     tabPoint = tabPointAleatoire(NB, window);
