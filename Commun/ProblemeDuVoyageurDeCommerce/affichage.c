@@ -154,7 +154,6 @@ void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float 
                 tabType[i] = 4;
                 resetVisitabe(tabType, nbNoeud);
                 *poidsParcours += mat[i][*numActuel];
-                printf("p = %d\n", *poidsParcours);
                 *numActuel = i;
                 estTrouve = 1;
             }
@@ -177,4 +176,9 @@ void resetVisitabe(int* tabType, int nbNoeud)
         }
         
     }
+}
+
+void score(int poidsParcours, int poidsFourmis, int poidsRecuit)
+{
+
 }

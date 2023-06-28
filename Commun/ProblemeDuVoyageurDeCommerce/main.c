@@ -35,7 +35,6 @@ int main(int argc, char **argv)
     }
 
     SDL_Window* window = initWindow(200,100,WINDOWW,WINDOWL);
-    puts("AA");
     SDL_Renderer* renderer = initRenderer(window);
     point_t *tabPoint = NULL;
     tabPoint = tabPointAleatoire(NB, window);
@@ -57,9 +56,9 @@ int main(int argc, char **argv)
 
    updateVisitable(tabType, graphe, NB, numActuel);
 
-    int onycroit= fourmis(mat,NB, 2,0.1);
+    int poidsFourmis= fourmis(mat,NB, 2,0.1);
     // int onycroit2= recherchelocal(mat,NB, 0.5);
-    fprintf(stderr, "poids final : %d\n", onycroit);
+    fprintf(stderr, "poids final : %d\n", poidsFourmis);
     // fprintf(stderr, "poids final : %d\n", onycroit2);
     int ** matDist= dist(mat, NB);
     printMat(mat, NB);
@@ -108,6 +107,10 @@ int main(int argc, char **argv)
                     drawGraphe(renderer, tabRect, graphe, NB, tabType);
 
                     fini = fin(tabType, numActuel, NB);
+                    if (fini == 1)
+                    {
+                        score(poidsParcours, onycroit, )
+                    }
 
                 }
                 event_utile = SDL_TRUE;
