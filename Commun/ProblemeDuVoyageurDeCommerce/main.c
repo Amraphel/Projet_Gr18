@@ -1,7 +1,9 @@
 #include "affichage.h"
 #include <time.h> 
 
-#define P 0.2
+#define P 0.1
+#define WINDOWL 1000
+#define WINDOWW 1000
 
 int main(int argc, char** argv)
 {
@@ -14,7 +16,7 @@ int main(int argc, char** argv)
     time_t t;
     time(&t);
     srand(t);
-    SDL_Window* window = initWindow(200,200,600,600);
+    SDL_Window* window = initWindow(200,200,WINDOWW,WINDOWL);
     SDL_Renderer* renderer = initRenderer(window);
     point_t *tabPoint = NULL;
     tabPoint  = tabPointAleatoire(NB, window);
@@ -23,7 +25,7 @@ int main(int argc, char** argv)
 
     int ** mat= initMatrice(NB);
     generer(mat,0,NB-1);
-   // genererGraphe(mat,P);
+    genererGraphe(mat,P);
     cell_t* graphe = matToGraphe(mat, NB, tabPoint);
     drawGraphe(renderer,tabRect,graphe,NB);
     SDL_Delay(3000);
