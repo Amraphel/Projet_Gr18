@@ -107,7 +107,6 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
     {
         
         free(grille[j]);
-        printf("j : %i\n", j);
     }
     free(grille);
 

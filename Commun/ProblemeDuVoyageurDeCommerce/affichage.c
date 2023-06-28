@@ -98,12 +98,12 @@ void drawPoints(SDL_Renderer* renderer, SDL_Rect* tabPoint,int nombreDePoint, in
             break;
 
         case 1://visite (bleu)
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
             break;
 
         case 2: //visitable (vert)
         case 3: //visite et visitable (vert)
-            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
             break;
 
         case 4: //actuel (rouge)
@@ -143,13 +143,15 @@ void click(int* tabType, point_t* listPoint, cell_t* graphe, int nbNoeud, float 
 {
     int i = 0;
     int estTrouve = 0;
-    //while(estTrouve == 0 && i < nbNoeud)
+    while(estTrouve == 0 && i < nbNoeud)
     {
         if(clickx < listPoint[i].x + 20 && clickx > listPoint[i].x && clicky < listPoint[i].y + 20 && clicky > listPoint[i].y)
         {
-            printf("A\n");
+            if(tabType[i] == 2 || tabType[i] == 1)
+            {
+                printf("visitable\n");
+            }
         }
-
         i++;
     }
 }
