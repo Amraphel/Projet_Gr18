@@ -41,6 +41,9 @@ int main(int argc, char **argv)
     tabPoint = tabPointAleatoire(NB, window);
     SDL_Rect *tabRect = createPoints(tabPoint, NB);
 
+    int* tabType = NULL;
+    tabType = initTypeNoeud(NB);
+
 
     int ** mat= initMatrice(NB);
     generer(mat,0,NB-1);
@@ -49,6 +52,9 @@ int main(int argc, char **argv)
    // afficherMat(mat,NB);
     matToPoids(mat, NB,tabPoint);
    // afficherMat(mat,NB);
+    int numActuel = 0;
+
+   updateVisitable(tabType, graphe, NB, numActuel);
 
     int onycroit= fourmis(mat,NB, 2,0.1);
     // int onycroit2= recherchelocal(mat,NB, 0.5);
@@ -58,7 +64,7 @@ int main(int argc, char **argv)
     printMat(mat, NB);
     printMat(matDist, NB);
 
-    drawGraphe(renderer, tabRect, graphe, NB);
+    drawGraphe(renderer, tabRect, graphe, NB, tabType);
 
     while (program_on)
     { 
@@ -83,6 +89,22 @@ int main(int argc, char **argv)
                     break;
                 }
                 break;
+            case SDL_MOUSEBUTTONDOWN: // Click souris
+                if (SDL_GetMouseState(NULL, NULL) &
+                         SDL_BUTTON(SDL_BUTTON_LEFT))
+                {                                   // Si c'est un click droit
+                    int clickx = event.motion.x;
+                    int clicky = event.motion.y;
+
+                    int clickOk;
+                    clickOk = click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
+                    
+                    updateVisitable(tabType, graphe, NB, numActuel);
+                    drawGraphe(renderer, tabRect, graphe, NB, tabType);
+                    
+                }
+                event_utile = SDL_TRUE;
+                break;
             default: 
                 break;
             }
@@ -91,6 +113,7 @@ int main(int argc, char **argv)
 
     free(tabPoint);
     free(tabRect);
+    free(tabType);
 
     end_sdl(1, "Normal ending", window, renderer);
 }

@@ -6,15 +6,16 @@
    window -> fenetre dans laquelle le graphe sera affiché */
 point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 {
+    int tailleGrille = 3*nombreDePoint;
     point_t* tabPoint=malloc(sizeof(point_t)*nombreDePoint);
-    int** grille = malloc(sizeof(int*)*3*nombreDePoint);
+    int** grille = malloc(sizeof(int*)*tailleGrille);
     int j;
     int k;
-    for(j = 0; j < 3*nombreDePoint ; j++)
+    for(j = 0; j < tailleGrille ; j++)
     {
-        int *mat = malloc(sizeof(int) *3*nombreDePoint);
+        int *mat = malloc(sizeof(int) *tailleGrille);
         grille[j] = mat;
-        for(k = 0; k < 3*nombreDePoint; k++)
+        for(k = 0; k < tailleGrille; k++)
         {
             grille[j][k] = 0;
         }
@@ -31,35 +32,32 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 
         SDL_GetWindowSize(window, &Wx,&Wy);
 
-        int WxCase = Wx / (3 * nombreDePoint);
-        int WyCase = Wy / (3 * nombreDePoint);
+        int WxCase = (Wx -50) / (tailleGrille);
+        int WyCase = (Wy -50) / (tailleGrille);
         int infx, supx;
         int infy, supy;
         int x, y;
-        int tailleGrille = 3*nombreDePoint-1;
-
-        //int x= rand() % (Wx-50) + 1;
-        //int y= rand() % (Wy-50) + 1;
+        
         while(EstPlace == 0)
         {
-            x = rand() % ((3 * nombreDePoint)-1) + 1;
-            y = rand() % ((3 * nombreDePoint)-1) + 1;
+            x = rand() % (tailleGrille);
+            y = rand() % (tailleGrille);
 
             if (grille[x][y] != 1)
             {
                 int yh = y+1;
                 int yb = y-1;
-                if(yh < 0)
-                {
-                    yh = y;
-                }
-                if(yb > tailleGrille)
+                if(yb < 0)
                 {
                     yb = y;
                 }
+                if(yh > tailleGrille-1)
+                {
+                    yh = y;
+                }
                 int xd = x+1;
                 int xg = x-1;
-                if(xd > tailleGrille)
+                if(xd > tailleGrille-1)
                 {
                     xd = x;
                 }
@@ -67,8 +65,6 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
                 {
                     xg = x;
                 }
-
-                printf("B %i %i\n", x, y);
 
 
                 grille[x][y] = 1;
@@ -88,18 +84,18 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 
                 infx = x * WxCase;
                 supx = infx + WxCase;
-                x = rand() % (supx-infx -50) + infx;
+                int posx = rand() % (supx-infx -50) + infx;
 
                 infy = y * WyCase;
                 supy = infy + WyCase;
-                y = rand() % (supy-infy -50) + infy;
+                int posy = rand() % (supy-infy -50) + infy;
+
+                point.x = posx;
+                point.y = posy;
 
                 EstPlace = 1;
             }
         }
-
-        point.x = x;
-        point.y = y;
 
         tabPoint[i]=point;
 
@@ -107,13 +103,12 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 
     }
 
-    /*for(j = 0; j < 3*nombreDePoint ; j++)
+    for(j = 0; j < tailleGrille ; j++)
     {
         
         free(grille[j]);
-        printf("j : %i\n", j);
-    }*/
-    //free(grille);
+    }
+    free(grille);
 
     return tabPoint;
 
@@ -126,6 +121,7 @@ int* initTypeNoeud(int taille){
     for(int i =1; i<taille; i++){
         tabType[i]=0;
     }
+    return tabType;
 }
 
 
