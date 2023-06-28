@@ -87,7 +87,7 @@ int main(int argc, char **argv)
                 {                                   // Si c'est un click droit
                     int clickx = event.motion.x;
                     int clicky = event.motion.y;
-                    //click();
+                    click(tabType, tabPoint, graphe, NB, clickx, clicky);
                 }
                 event_utile = SDL_TRUE;
                 break;

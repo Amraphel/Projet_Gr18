@@ -138,3 +138,18 @@ void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nb
     drawLine(renderer,graphe,nbNoeud);
     SDL_RenderPresent(renderer);
 }
+
+void click(int* tabType, point_t* listPoint, cell_t* graphe, int nbNoeud, float clickx, float clicky)
+{
+    int i = 0;
+    int estTrouve = 0;
+    //while(estTrouve == 0 && i < nbNoeud)
+    {
+        if(clickx < listPoint[i].x + 20 && clickx > listPoint[i].x && clicky < listPoint[i].y + 20 && clicky > listPoint[i].y)
+        {
+            printf("A\n");
+        }
+
+        i++;
+    }
+}
