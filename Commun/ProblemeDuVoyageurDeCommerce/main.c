@@ -65,6 +65,8 @@ int main(int argc, char **argv)
     printMat(mat, NB);
     printMat(matDist, NB);
 
+    int poidsParcours = 0;
+
     drawGraphe(renderer, tabRect, graphe, NB, tabType);
 
     while (program_on)
@@ -99,7 +101,7 @@ int main(int argc, char **argv)
 
                     if (fini == 0)
                     {
-                        click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
+                        click(tabType, tabPoint, &numActuel, NB, clickx, clicky, &poidsParcours, mat);
                     }
 
                     updateVisitable(tabType, graphe, NB, numActuel);

@@ -140,7 +140,7 @@ void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nb
     SDL_RenderPresent(renderer);
 }
 
-void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky)
+void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky, int* poidsParcours, int ** mat)
 {
     int i = 0;
     int estTrouve = 0;
@@ -153,11 +153,10 @@ void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float 
                 tabType[*numActuel] = 3;
                 tabType[i] = 4;
                 resetVisitabe(tabType, nbNoeud);
-
+                *poidsParcours += mat[i][*numActuel];
+                printf("p = %d\n", *poidsParcours);
                 *numActuel = i;
                 estTrouve = 1;
-
-
             }
         }
         i++;
