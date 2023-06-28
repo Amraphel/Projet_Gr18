@@ -51,8 +51,9 @@ int main(int argc, char **argv)
    // afficherMat(mat,NB);
     matToPoids(mat, NB,tabPoint);
    // afficherMat(mat,NB);
+    int numActuel = 0;
 
-   updateVisitable(tabType, graphe, NB, 0);
+   updateVisitable(tabType, graphe, NB, numActuel);
 
     int onycroit= fourmis(mat,NB, 2,0.1);
     fprintf(stderr, "poids final : %d\n", onycroit);
@@ -87,7 +88,13 @@ int main(int argc, char **argv)
                 {                                   // Si c'est un click droit
                     int clickx = event.motion.x;
                     int clicky = event.motion.y;
-                    click(tabType, tabPoint, graphe, NB, clickx, clicky);
+
+                    int clickOk;
+                    clickOk = click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
+                    
+                    updateVisitable(tabType, graphe, NB, numActuel);
+                    drawGraphe(renderer, tabRect, graphe, NB, tabType);
+                    
                 }
                 event_utile = SDL_TRUE;
                 break;

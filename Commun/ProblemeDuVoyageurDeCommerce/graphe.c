@@ -112,9 +112,11 @@ void updateVisitable(int* tabType, cell_t* graphe,int nbNoeud, int numAct){
         if(graphe[numAct].lien[i]>0){
             if(tabType[i]==0){
                 tabType[i]=1;
-            } else{
+            } else if (tabType[i]==2)
+            {
                 tabType[i]=3;
             }
         }
+
     }
 }

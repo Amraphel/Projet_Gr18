@@ -97,13 +97,13 @@ void drawPoints(SDL_Renderer* renderer, SDL_Rect* tabPoint,int nombreDePoint, in
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             break;
 
-        case 1://visite (bleu)
-            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        case 2://visite (bleu)
+            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
             break;
 
-        case 2: //visitable (vert)
+        case 1: //visitable (vert)
         case 3: //visite et visitable (vert)
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+            SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
             break;
 
         case 4: //actuel (rouge)
@@ -132,6 +132,7 @@ void drawLine(SDL_Renderer* renderer, cell_t* graphe, int nbNoeud){
 }
 
 void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nbNoeud, int* tabType){
+    SDL_SetRenderDrawColor(renderer, 255,255,255,255);
     SDL_RenderClear(renderer);
     drawPoints(renderer,tabPoint,nbNoeud,tabType);
     SDL_SetRenderDrawColor(renderer, 0,0,0,255);
@@ -139,19 +140,53 @@ void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nb
     SDL_RenderPresent(renderer);
 }
 
-void click(int* tabType, point_t* listPoint, cell_t* graphe, int nbNoeud, float clickx, float clicky)
+int click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky)
 {
     int i = 0;
     int estTrouve = 0;
-    while(estTrouve == 0 && i < nbNoeud)
+    while( i < nbNoeud)
     {
         if(clickx < listPoint[i].x + 20 && clickx > listPoint[i].x && clicky < listPoint[i].y + 20 && clicky > listPoint[i].y)
         {
-            if(tabType[i] == 2 || tabType[i] == 1)
+            printf("A\n");
+            printf("%d\n", tabType[i] );
+            if(tabType[i] == 1 || tabType[i] == 3)
             {
-                printf("visitable\n");
+                tabType[*numActuel] = 3;
+                printf("B\n");
+                tabType[i] = 4;
+                resetVisitabe(tabType, nbNoeud);
+
+                *numActuel = i;
+                estTrouve = 1;
+
+
             }
         }
         i++;
+    }
+    if(estTrouve == 1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void resetVisitabe(int* tabType, int nbNoeud)
+{
+    for(int i = 0; i < nbNoeud; i++)
+    {
+        if(tabType[i] == 1)
+        {
+            tabType[i] = 0;
+        }
+        else if (tabType[i]== 3)
+        {
+            tabType[i] = 2;
+        }
+        
     }
 }
