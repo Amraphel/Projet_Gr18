@@ -5,7 +5,7 @@
 
 
 typedef struct poids{
-    int* valeur;
+    float* valeur;
     int* dest;
     int nbPoids;
 }poids_t;
@@ -36,7 +36,7 @@ double **updatePhero(int taille, parcours_t *parcours, double puissancePhero, do
 
 void delPhero(double **phero, int taille);
 
-void delParcours(parcours_t **parcours, int taille);
+void delParcours(parcours_t **parcours);
 
 void addMatrice(double **source, double **dest, int nbNoeud);
 
