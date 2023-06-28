@@ -40,12 +40,7 @@ SDL_Window *initWindow(int x, int y, int w, int h)
 {
     SDL_Window *window = NULL;
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        SDL_Log("Error : SDL initialisation - %s\n",
-                SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
+    
     window = SDL_CreateWindow(
         "Fenêtre",
         x, y,
@@ -106,7 +101,7 @@ void drawLine(SDL_Renderer* renderer, cell_t* graphe, int nbNoeud){
     int j;
     for(i=0; i<nbNoeud; i++){
         for(j=0; j<nbNoeud; j++){
-            if(graphe[i].lien[j]=1){
+            if(graphe[i].lien[j]>0){
                 SDL_RenderDrawLine(renderer, graphe[i].point.x+10, graphe[i].point.y+10,
                                                 graphe[j].point.x+10, graphe[j].point.y+10);
             }
