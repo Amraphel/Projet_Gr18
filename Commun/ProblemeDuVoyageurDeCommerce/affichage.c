@@ -97,11 +97,11 @@ void drawPoints(SDL_Renderer* renderer, SDL_Rect* tabPoint,int nombreDePoint, in
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             break;
 
-        case 1://visite (bleu)
+        case 2://visite (bleu)
             SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
             break;
 
-        case 2: //visitable (vert)
+        case 1: //visitable (vert)
         case 3: //visite et visitable (vert)
             SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
             break;
@@ -132,9 +132,50 @@ void drawLine(SDL_Renderer* renderer, cell_t* graphe, int nbNoeud){
 }
 
 void drawGraphe(SDL_Renderer* renderer, SDL_Rect* tabPoint,cell_t* graphe,int nbNoeud, int* tabType){
+    SDL_SetRenderDrawColor(renderer, 255,255,255,255);
     SDL_RenderClear(renderer);
     drawPoints(renderer,tabPoint,nbNoeud,tabType);
     SDL_SetRenderDrawColor(renderer, 0,0,0,255);
     drawLine(renderer,graphe,nbNoeud);
     SDL_RenderPresent(renderer);
+}
+
+void click(int* tabType, point_t* listPoint, int* numActuel, int nbNoeud, float clickx, float clicky)
+{
+    int i = 0;
+    int estTrouve = 0;
+    while( estTrouve ==0 && i < nbNoeud)
+    {
+        if(clickx < listPoint[i].x + 20 && clickx > listPoint[i].x && clicky < listPoint[i].y + 20 && clicky > listPoint[i].y)
+        {
+            if(tabType[i] == 1 || tabType[i] == 3)
+            {
+                tabType[*numActuel] = 3;
+                tabType[i] = 4;
+                resetVisitabe(tabType, nbNoeud);
+
+                *numActuel = i;
+                estTrouve = 1;
+
+
+            }
+        }
+        i++;
+    }
+}
+
+void resetVisitabe(int* tabType, int nbNoeud)
+{
+    for(int i = 0; i < nbNoeud; i++)
+    {
+        if(tabType[i] == 1)
+        {
+            tabType[i] = 0;
+        }
+        else if (tabType[i]== 3)
+        {
+            tabType[i] = 2;
+        }
+        
+    }
 }

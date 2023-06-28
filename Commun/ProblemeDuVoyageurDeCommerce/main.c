@@ -1,5 +1,5 @@
 #include "affichage.h"
-#include "parcours.h"
+#include "rechercheLocal.h"
 #include <time.h>
 
 #define P 0.2
@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
     time_t t;
     time(&t);
-    srand(t);
+    srand(42);
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -35,6 +35,7 @@ int main(int argc, char **argv)
     }
 
     SDL_Window* window = initWindow(200,100,WINDOWW,WINDOWL);
+    puts("AA");
     SDL_Renderer* renderer = initRenderer(window);
     point_t *tabPoint = NULL;
     tabPoint = tabPointAleatoire(NB, window);
@@ -51,11 +52,19 @@ int main(int argc, char **argv)
    // afficherMat(mat,NB);
     matToPoids(mat, NB,tabPoint);
    // afficherMat(mat,NB);
+    int numActuel = 0;
+    int fini = 0;
 
-   updateVisitable(tabType, graphe, NB, 0);
+   updateVisitable(tabType, graphe, NB, numActuel);
 
     int onycroit= fourmis(mat,NB, 2,0.1);
+    // int onycroit2= recherchelocal(mat,NB, 0.5);
     fprintf(stderr, "poids final : %d\n", onycroit);
+    // fprintf(stderr, "poids final : %d\n", onycroit2);
+    int ** matDist= dist(mat, NB);
+    printMat(mat, NB);
+    printMat(matDist, NB);
+
     drawGraphe(renderer, tabRect, graphe, NB, tabType);
 
     while (program_on)
@@ -80,6 +89,26 @@ int main(int argc, char **argv)
                 default: 
                     break;
                 }
+                break;
+            case SDL_MOUSEBUTTONDOWN: // Click souris
+                if (SDL_GetMouseState(NULL, NULL) &
+                         SDL_BUTTON(SDL_BUTTON_LEFT))
+                {                                   // Si c'est un click droit
+                    int clickx = event.motion.x;
+                    int clicky = event.motion.y;
+
+                    if (fini == 0)
+                    {
+                        click(tabType, tabPoint, &numActuel, NB, clickx, clicky);
+                    }
+
+                    updateVisitable(tabType, graphe, NB, numActuel);
+                    drawGraphe(renderer, tabRect, graphe, NB, tabType);
+
+                    fini = fin(tabType, numActuel, NB);
+
+                }
+                event_utile = SDL_TRUE;
                 break;
             default: 
                 break;
