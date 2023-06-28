@@ -16,7 +16,7 @@ main : $(HEADERS) $(OBJ)
 affichage.o :affichage.c 
 	$(CC) $(CFLAGS) -c $< 
 
-arbre.o :arbre.c 
+graphe.o :graphe.c 
 	$(CC) $(CFLAGS) -c $< 
 
 point.o : point.c 

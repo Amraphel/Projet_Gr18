@@ -17,8 +17,8 @@ point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
         int Wy;
 
         SDL_GetWindowSize(window, &Wx,&Wy);
-        int x=  rand() % Wx + 1;
-        int y= rand() % Wy + 1;
+        int x=  rand() % (Wx-50) + 1;
+        int y= rand() % (Wy-50) + 1;
 
         point.x = x;
         point.y = y;

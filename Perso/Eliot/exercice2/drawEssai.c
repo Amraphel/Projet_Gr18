@@ -166,16 +166,16 @@ void moveFish(SDL_Renderer *renderer, SDL_Rect *tab, int taille, int dir, int w,
         switch (dir)
         {
         case 1:
-            tab[i].x =(w+tab[i].x - 30)%w;
+            tab[i].x =(w+tab[i].x - 10)%w;
             break;
         case 2:
-            tab[i].x = (tab[i].x + 30)%w;
+            tab[i].x = (tab[i].x + 10)%w;
             break;
         case 3:
-            tab[i].y = (h+tab[i].y - 30)%h;
+            tab[i].y = (h+tab[i].y - 10)%h;
             break;
         case 4:
-            tab[i].y = (tab[i].y + 30)%h;
+            tab[i].y = (tab[i].y + 10)%h;
             break;
         default:
             break;
@@ -238,9 +238,9 @@ int main(int argc, char **argv)
     SDL_Rect *fish = createFish(renderer, 50, fondH/2, fishW, fishH, size);
     SDL_RenderPresent(renderer);
     int i;
-    for(i=0; i<100; i++){
+    for(i=0; i<200; i++){
         moveFish(renderer, fish, size+1,2,w,h);
-        SDL_Delay(100);
+        SDL_Delay(20);
     }
     free(fish);
     fish=NULL;
