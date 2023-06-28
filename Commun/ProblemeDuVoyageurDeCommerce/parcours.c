@@ -42,7 +42,7 @@ int sommetTousTrav(int *sommetTraverse, int nbNoeud)
 parcours_t *parcoursGraphe(int **poids, double **phero, int nbNoeud)
 {
     int numAct = 0;
-    int *sommetTraverse = malloc(nbNoeud);
+    int *sommetTraverse = malloc(sizeof(int)*nbNoeud);
     int i;
     for (i = 0; i < nbNoeud; i++)
     {
@@ -54,9 +54,11 @@ parcours_t *parcoursGraphe(int **poids, double **phero, int nbNoeud)
 
     parcours_t *parcours = NULL;
     parcours_t **courant = &parcours;
-
+    //int iter=1;
     while (!sommetTousTrav(sommetTraverse, nbNoeud) && numAct != 0)
     {
+        //fprintf(stderr, "iter : %d\n",iter);
+       // iter++;
         int poidTotal = 0;
         for (i = 0; i < listePoid[numAct].nbPoids; i++)
         {
@@ -192,12 +194,15 @@ int poidsParcours(parcours_t *parcours, int **tabPoids)
 int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
 {
     double **phero = initPhero(nbNoeud);
-    parcours_t **tabParcours = malloc(sizeof(parcours_t) * 100);
 
-    for (int k = 0; k < 10; k++)
+    parcours_t **tabParcours = malloc(sizeof(parcours_t) * 1);
+
+
+    for (int k = 0; k < 1; k++)
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1; i++)
         {
+
             parcours_t *parcours = parcoursGraphe(poids, phero, nbNoeud);
             tabParcours[i] = parcours;
         }
@@ -210,7 +215,7 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
             }
         }
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 1; i++)
         {
             double **pheroGen = updatePhero(nbNoeud, tabParcours[i], puissance, coefAtt);
             addMatrice(pheroGen, phero, nbNoeud);
@@ -220,6 +225,6 @@ int fourmis(int **poids, int nbNoeud, double puissance, double coefAtt)
     parcours_t *parcours = parcoursGraphe(poids, phero, nbNoeud);
     int poidsFinal = poidsParcours(parcours,poids);
     delPhero(phero, nbNoeud);
-    
+
     return poidsFinal;
 }

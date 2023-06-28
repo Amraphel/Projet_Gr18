@@ -1,4 +1,5 @@
 #include "affichage.h"
+#include "parcours.h"
 #include <time.h>
 
 #define P 0.2
@@ -7,6 +8,9 @@
 
 int main(int argc, char **argv)
 {
+    time_t t;
+    time(&t);
+    srand(42);
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -23,9 +27,7 @@ int main(int argc, char **argv)
     {
         NB = 5;
     }
-    time_t t;
-    time(&t);
-    srand(t);
+
     SDL_Window* window = initWindow(200,100,WINDOWW,WINDOWL);
     SDL_Renderer* renderer = initRenderer(window);
     point_t *tabPoint = NULL;
@@ -37,6 +39,12 @@ int main(int argc, char **argv)
     generer(mat,0,NB-1);
     genererGraphe(mat,P,NB);
     cell_t* graphe = matToGraphe(mat, NB, tabPoint);
+   // afficherMat(mat,NB);
+    matToPoids(mat, NB,tabPoint);
+   // afficherMat(mat,NB);
+
+    int onycroit= fourmis(mat,NB, 2,0.1);
+    fprintf(stderr, "poids final : %d\n", onycroit);
     drawGraphe(renderer, tabRect, graphe, NB);
 
     while (program_on)

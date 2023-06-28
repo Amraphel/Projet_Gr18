@@ -1,8 +1,6 @@
 #include "graphe.h"
 #include <math.h>
 
-
-
 int **initMatrice(int nombreDePoint)
 {
     int **matrice = malloc(sizeof(int *) * nombreDePoint);
@@ -18,7 +16,6 @@ int **initMatrice(int nombreDePoint)
             for (j = 0; j < nombreDePoint; j++)
             {
                 matrice[i][j] = 0;
-                
             }
         }
     }
@@ -60,33 +57,51 @@ void genererGraphe(int **matrice, float p, int taillMatrice)
     }
 }
 
-
-cell_t* matToGraphe(int ** matrice, int nbNoeud, point_t* tabPoint){
+cell_t *matToGraphe(int **matrice, int nbNoeud, point_t *tabPoint)
+{
     int i;
-    cell_t* graphe = malloc(sizeof(cell_t)*nbNoeud);
-    for(i=0; i<nbNoeud; i++){
+    cell_t *graphe = malloc(sizeof(cell_t) * nbNoeud);
+    for (i = 0; i < nbNoeud; i++)
+    {
         cell_t noeud;
-        noeud.point=tabPoint[i];
-        noeud.lien=matrice[i];
-        graphe[i]=noeud;
+        noeud.point = tabPoint[i];
+        noeud.lien = matrice[i];
+        graphe[i] = noeud;
     }
     return graphe;
 }
 
-
-void matToPoids(int ** matrice, int nbNoeud, point_t* tabPoint){
+void matToPoids(int **matrice, int nbNoeud, point_t *tabPoint)
+{
     int i;
     int j;
-    for(i=0; i<nbNoeud; i++){
-        for(j=0; j<nbNoeud; j++){
-            if(matrice[i][j]==1){
-                int distX= tabPoint[i].x-tabPoint[j].x;
-                int distY= tabPoint[i].y-tabPoint[j].y;
-                int poids = (int) hypot(distX, distY);
-                matrice[i][j]=poids;
-                matrice[j][i]=poids;
-
+    for (i = 0; i < nbNoeud; i++)
+    {
+        for (j = 0; j < nbNoeud; j++)
+        {
+            if (matrice[i][j] == 1)
+            {
+                int distX = tabPoint[i].x - tabPoint[j].x;
+                int distY = tabPoint[i].y - tabPoint[j].y;
+                int poids = (int)hypot(distX, distY);
+                matrice[i][j] = poids;
+                matrice[j][i] = poids;
             }
         }
+    }
+}
+
+void afficherMat(int **matrice, int nbNoeud)
+{
+    int i;
+    int j;
+    for (i = 0; i < nbNoeud; i++)
+    {
+        for (j = 0; j < nbNoeud; j++)
+        {
+
+            fprintf(stderr, "%d ", matrice[i][j]);
+        }
+        fprintf(stderr, "\n");
     }
 }
