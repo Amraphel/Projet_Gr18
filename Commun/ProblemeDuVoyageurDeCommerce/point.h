@@ -11,3 +11,4 @@ typedef struct point
 }point_t;
 
 point_t* tabPointAleatoire(int NombreDePoint, SDL_Window *window);
+int* initTypeNoeud(int taille);
