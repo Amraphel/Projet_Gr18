@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
     time_t t;
     time(&t);
-    srand(t);
+    srand(42);
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -54,6 +54,10 @@ int main(int argc, char **argv)
     // int onycroit2= recherchelocal(mat,NB, 0.5);
     fprintf(stderr, "poids final : %d\n", onycroit);
     // fprintf(stderr, "poids final : %d\n", onycroit2);
+    int ** matDist= dist(mat, NB);
+    printMat(mat, NB);
+    printMat(matDist, NB);
+
     drawGraphe(renderer, tabRect, graphe, NB);
 
     while (program_on)

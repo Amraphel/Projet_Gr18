@@ -2,11 +2,8 @@
 #define PARCOURS
 #include "parcours.h"
 #endif
-
-
-poids_t *creerPoidsL(int **tabPoids, int nbNoeud);
-
-int getOptiDest(poids_t* poids,int numAct);
+int **dist(int **tabPoids, int nbNoeud);
+void printMat(int** mat, int nbNoeud);
 
 
 int recherchelocal(int **poids, int nbNoeud, double probaRecuit);

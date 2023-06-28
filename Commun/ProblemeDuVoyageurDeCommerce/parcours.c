@@ -3,6 +3,7 @@
 #include "parcours.h"
 #endif
 
+//METTRE A JOUR LES DISTANCES AVEC LES POIDS
 
 poids_t *creerPoids(int **tabPoids, double **Phero, int nbNoeud)
 {
