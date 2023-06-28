@@ -14,6 +14,6 @@ int **initMatrice(int nombreDePoint);
 
 void generer(int **matrice, int inf, int sup);
 
-void genererGraphe(int **matrice, float p);
+void genererGraphe(int **matrice, float p, int taillMatrice);
 
 cell_t* matToGraphe(int ** matrice, int nbNoeud, point_t* tabPoint);

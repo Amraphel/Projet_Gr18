@@ -1,7 +1,7 @@
 #include "affichage.h"
 #include <time.h>
 
-#define P 0.1
+#define P 1
 #define WINDOWL 1000
 #define WINDOWW 1000
 
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 
     int ** mat= initMatrice(NB);
     generer(mat,0,NB-1);
-    genererGraphe(mat,P);
+    genererGraphe(mat,P,NB);
     cell_t* graphe = matToGraphe(mat, NB, tabPoint);
     drawGraphe(renderer,tabRect,graphe,NB);
     SDL_Delay(3000);
