@@ -1,6 +1,6 @@
 #include "parcours.h"
 
-poids_t *creerPoids(int **tabPoids, int ** Phero, int nbNoeud)
+poids_t *creerPoids(int **tabPoids, double **Phero, int nbNoeud)
 {
     int i;
     int j;
@@ -39,7 +39,7 @@ int sommetTousTrav(int *sommetTraverse, int nbNoeud)
     return res;
 }
 
-parcours_t* parcours( int **poids,int ** phero, int nbNoeud)
+parcours_t *parcours(int **poids, double **phero, int nbNoeud)
 {
     int numAct = 0;
     int *sommetTraverse = malloc(nbNoeud);
@@ -50,61 +50,96 @@ parcours_t* parcours( int **poids,int ** phero, int nbNoeud)
     }
     sommetTraverse[0] = 1;
 
-    poids_t* listePoid= creerPoids(poids,phero,nbNoeud);
+    poids_t *listePoid = creerPoids(poids, phero, nbNoeud);
 
-    parcours_t * parcours= NULL;
-    parcours_t ** courant = &parcours;
+    parcours_t *parcours = NULL;
+    parcours_t **courant = &parcours;
 
-    while (!sommetTousTrav(sommetTraverse, nbNoeud) && numAct!=0)
+    while (!sommetTousTrav(sommetTraverse, nbNoeud) && numAct != 0)
     {
         int poidTotal = 0;
-        for(i=0; i<listePoid[numAct].nbPoids; i++){
-            poidTotal+= listePoid[numAct].valeur[i]+1;
+        for (i = 0; i < listePoid[numAct].nbPoids; i++)
+        {
+            poidTotal += listePoid[numAct].valeur[i] + 1;
         }
 
-        int valDest= rand() % poidTotal + 1;
-        int dest=0;
-        while(valDest>0){
-            valDest-= listePoid[numAct].valeur[i]+1;
+        float valDest = rand() % poidTotal + 1;
+        int dest = 0;
+        while (valDest > 0)
+        {
+            valDest -= listePoid[numAct].valeur[i] + 1;
             dest++;
         }
         dest--;
 
         liaison_t lien;
-        lien.dep=numAct;
-        lien.arr= dest;
-        (*courant)->act=lien;
-        courant=&(*courant)->suiv;
+        lien.dep = numAct;
+        lien.arr = dest;
+        (*courant)->act = lien;
+        courant = &(*courant)->suiv;
 
-        numAct=dest;
-        sommetTraverse[numAct]=1;
-
+        numAct = dest;
+        sommetTraverse[numAct] = 1;
     }
 
     return parcours;
 }
 
-int longParcours(parcours_t * parcours){
-    parcours_t** courant= &parcours;
+int longParcours(parcours_t *parcours)
+{
+    parcours_t **courant = &parcours;
     int longueur = 0;
 
-    while((*courant)){
+    while ((*courant))
+    {
         longueur++;
-        courant=&(*courant)->suiv;
+        courant = &(*courant)->suiv;
     }
     return longueur;
 }
 
-void updatePhero(int** tabPhero, parcours_t* parcours, double puissancePhero, double coefAtt){
+void updatePhero(double **tabPhero, parcours_t *parcours, double puissancePhero, double coefAtt)
+{
     int longueurMax = longParcours(parcours);
 
-    parcours_t** courant= &parcours;
+    parcours_t **courant = &parcours;
     int longueurAct = longueurMax;
 
-    while((*courant)){
+    while ((*courant))
+    {
         liaison_t lien = (*courant)->act;
-        tabPhero[lien.dep][lien.arr]= tabPhero[lien.dep][lien.arr] * (1-coefAtt*longueurAct/longueurMax) + (puissancePhero*coefAtt*longueurAct/longueurMax);
-        courant=&(*courant)->suiv;
+        tabPhero[lien.dep][lien.arr] = tabPhero[lien.dep][lien.arr] * (1 - coefAtt * longueurAct / longueurMax) + (puissancePhero * coefAtt * longueurAct / longueurMax);
+        courant = &(*courant)->suiv;
         longueurAct--;
     }
+}
+
+double **initPhero(int taille)
+{
+    double **phero = malloc(sizeof(double *) * taille);
+    if (phero)
+    {
+        for (int i = 0; i < taille; i++)
+        {
+            double *ligne = malloc(sizeof(double) * taille);
+            phero[i]=ligne;
+        }
+    }
+}
+
+void delPhero(double** phero, int taille)
+{
+    for(int i =0; i<taille; i++){
+        free(phero[i]);
+        phero[i]=NULL;
+    }
+    free(phero);
+    phero=NULL;
+}
+
+void fourmis(int **poids, double **phero, int nbNoeud, double puissance, double coefAtt)
+{
+    double ** phero = initMatrice(nbNoeud);
+    
+    delPhero(phero, nbNoeud);
 }
