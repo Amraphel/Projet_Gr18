@@ -106,7 +106,7 @@ void drawLine(SDL_Renderer* renderer, cell_t* graphe, int nbNoeud){
     int j;
     for(i=0; i<nbNoeud; i++){
         for(j=0; j<nbNoeud; j++){
-            if(graphe[i].lien[j]==1){
+            if(graphe[i].lien[j]>0){
                 SDL_RenderDrawLine(renderer, graphe[i].point.x+10, graphe[i].point.y+10,
                                                 graphe[j].point.x+10, graphe[j].point.y+10);
             }

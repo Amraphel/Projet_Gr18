@@ -1,5 +1,6 @@
 #include "graphe.h"
-#include <time.h>
+#include <math.h>
+
 
 
 int **initMatrice(int nombreDePoint)
@@ -70,4 +71,22 @@ cell_t* matToGraphe(int ** matrice, int nbNoeud, point_t* tabPoint){
         graphe[i]=noeud;
     }
     return graphe;
+}
+
+
+void matToPoids(int ** matrice, int nbNoeud, point_t* tabPoint){
+    int i;
+    int j;
+    for(i=0; i<nbNoeud; i++){
+        for(j=0; j<nbNoeud; j++){
+            if(matrice[i][j]==1){
+                int distX= tabPoint[i].x-tabPoint[j].x;
+                int distY= tabPoint[i].y-tabPoint[j].y;
+                int poids = (int) hypot(distX, distY);
+                matrice[i][j]=poids;
+                matrice[j][i]=poids;
+
+            }
+        }
+    }
 }
