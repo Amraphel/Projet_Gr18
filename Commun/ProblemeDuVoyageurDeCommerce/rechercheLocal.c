@@ -29,6 +29,19 @@ poids_t *creerPoidsL(int **tabPoids, int nbNoeud)
     return listePoids;
 }
 
+
+int getOptiDest(poids_t* poids,int numAct){
+    int optiDest=0;
+    int optiPoid=-1;
+    for(int i = 0 ; i< poids[numAct].nbPoids; i++){
+        if(optiPoid==-1 || poids[numAct].valeur[i]<optiPoid){
+            optiPoid=poids[numAct].valeur[i];
+            optiDest=poids[numAct].dest[i];
+        }
+    }
+    return optiDest;
+}
+
 int parcours(int **poids, int nbNoeud, double temp){
 
     poids_t* listePoids = creerPoidsL(poids,nbNoeud);
@@ -46,24 +59,15 @@ int parcours(int **poids, int nbNoeud, double temp){
     while (sommetTousTrav(sommetTraverse, nbNoeud) == 0 || numAct != 0)
     {
         
-        int poidTotal = 0;
-        for (i = 0; i < listePoids[numAct].nbPoids; i++)
-        {
-            poidTotal += listePoids[numAct].valeur[i] + 1;
+        int dest=0;
+        int optiDest = getOptiDest(listePoids,numAct);
+        int perturb=(float)rand()/RAND_MAX;  
+        if(perturb<temp && listePoids[numAct].nbPoids!=1){
+            dest = rand() % listePoids[numAct].nbPoids;
+            while(dest==optiDest){
+                dest=listePoids[numAct].nbPoids!=1;
+            }
         }
-        float valDest = rand() % poidTotal +1;
-        int dest = 0;
-        int k=0;
-        while (valDest > 0)
-        {
-            valDest = valDest- (listePoids[numAct].valeur[k] + 1);
-            dest++;
-            k++;
-        }
-        dest--;
-
-
-
 
         liaison_t lien;
         lien.dep = numAct;

@@ -1,4 +1,8 @@
+#ifndef PARCOURS
+#define PARCOURS
 #include "parcours.h"
+#endif
+
 
 poids_t *creerPoids(int **tabPoids, double **Phero, int nbNoeud)
 {
