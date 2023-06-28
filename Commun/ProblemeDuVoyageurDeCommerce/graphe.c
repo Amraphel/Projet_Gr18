@@ -109,7 +109,7 @@ void afficherMat(int **matrice, int nbNoeud)
 
 void updateVisitable(int* tabType, cell_t* graphe,int nbNoeud, int numAct){
     for(int i=0; i<nbNoeud;i++){
-        if(graphe[numAct].lien[i]==1){
+        if(graphe[numAct].lien[i]>0){
             if(tabType[i]==0){
                 tabType[i]=1;
             } else{

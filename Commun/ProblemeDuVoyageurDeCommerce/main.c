@@ -40,6 +40,9 @@ int main(int argc, char **argv)
     tabPoint = tabPointAleatoire(NB, window);
     SDL_Rect *tabRect = createPoints(tabPoint, NB);
 
+    int* tabType = NULL;
+    tabType = initTypeNoeud(NB);
+
 
     int ** mat= initMatrice(NB);
     generer(mat,0,NB-1);
@@ -49,9 +52,11 @@ int main(int argc, char **argv)
     matToPoids(mat, NB,tabPoint);
    // afficherMat(mat,NB);
 
+   updateVisitable(tabType, graphe, NB, 0);
+
     int onycroit= fourmis(mat,NB, 2,0.1);
     fprintf(stderr, "poids final : %d\n", onycroit);
-    drawGraphe(renderer, tabRect, graphe, NB);
+    drawGraphe(renderer, tabRect, graphe, NB, tabType);
 
     while (program_on)
     { 
@@ -84,6 +89,7 @@ int main(int argc, char **argv)
 
     free(tabPoint);
     free(tabRect);
+    free(tabType);
 
     end_sdl(1, "Normal ending", window, renderer);
 }

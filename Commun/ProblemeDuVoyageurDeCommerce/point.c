@@ -126,6 +126,7 @@ int* initTypeNoeud(int taille){
     for(int i =1; i<taille; i++){
         tabType[i]=0;
     }
+    return tabType;
 }
 
 
