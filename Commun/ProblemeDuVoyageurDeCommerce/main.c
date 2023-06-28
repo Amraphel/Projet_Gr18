@@ -2,10 +2,15 @@
 #include <time.h> 
 
 #define P 0.2
-#define NB 4
 
-int main()
+int main(int argc, char** argv)
 {
+    int NB;
+    if(argc==2){
+        sscanf(argv[1], "%d", &NB);
+    } else{
+        NB=5;
+    }
     time_t t;
     time(&t);
     srand(t);
@@ -21,7 +26,7 @@ int main()
    // genererGraphe(mat,P);
     cell_t* graphe = matToGraphe(mat, NB, tabPoint);
     drawGraphe(renderer,tabRect,graphe,NB);
-    SDL_Delay(6000);
+    SDL_Delay(3000);
 
     free(tabPoint);
     free(tabRect);
