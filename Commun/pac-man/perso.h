@@ -18,6 +18,7 @@ typedef struct perso
     int id;
     int posX;
     int posY;
+    int etat;
 }perso_t;
 
 perso_t* initPac_man(int ** plateau, int w, int h);

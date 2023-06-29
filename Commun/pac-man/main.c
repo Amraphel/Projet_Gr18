@@ -30,7 +30,8 @@ int main()
     SDL_Rect** tabRect = createTabRect(window,w,h);
         perso_t * Pac_man =initPac_man(plateau,w,h);
     afficherPlateau(tabRect,plateau,w,h,window,renderer);
-    afficherPerso(Pac_man,window,renderer,tabRect);
+    SDL_Rect rectPac= {Pac_man->posY*WINDOWL/h,Pac_man->posX*WINDOWW/w,WINDOWL/h, WINDOWW/w};
+    afficherPerso(Pac_man,window,renderer,&rectPac);
     //void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
     SDL_RenderPresent(renderer);
