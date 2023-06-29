@@ -72,6 +72,7 @@ int main()
                         {
                             movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
                             rectPac.y = rectPac.y + (WINDOWL / h);
+                            Pac_man->etat=3;
                         }
                     }
                     break;
@@ -82,6 +83,7 @@ int main()
                         {
                             movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
                             rectPac.y = rectPac.y - (WINDOWL / h);
+                            Pac_man->etat=1;
                         }
                     }
                     break;
@@ -92,6 +94,7 @@ int main()
                         {
                             movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
                             rectPac.x = rectPac.x + (WINDOWW / w);
+                            Pac_man->etat=0;
                         }
                     }
                     break;
@@ -102,6 +105,7 @@ int main()
                         {
                             movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
                             rectPac.x = rectPac.x - (WINDOWW / w);
+                            Pac_man->etat=2;
                         }
                     }
                 default:
@@ -119,8 +123,8 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
-                animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac);
-                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin);
+                animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, 0);
+                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;
