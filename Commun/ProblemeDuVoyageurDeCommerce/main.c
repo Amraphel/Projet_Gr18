@@ -62,9 +62,9 @@ int main(int argc, char **argv)
    updateVisitable(tabType, graphe, NB, numActuel);
 
     int poidsFourmis= fourmis(mat,NB, 2,0.1);
-    int onycroit2= recherchelocal(mat,NB, 100 ,0.001);
-    fprintf(stderr, "poids final : %d\n", poidsFourmis);
-    fprintf(stderr, "poids final2 : %d\n", onycroit2);
+    int poidsLocal= recherchelocal(mat,NB, 100 ,0.001);
+    fprintf(stderr, "poids (fourmis) final : %d\n", poidsFourmis);
+    fprintf(stderr, "poids (local) final2 : %d\n", poidsLocal);
  
 
     int poidsParcours = 0;
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
                     if (fini == 1)
                     {
                         int scoreAffiche = 0;
-                        score(poidsParcours, poidsParcours, 0, &scoreAffiche);
+                        score(poidsParcours, poidsParcours, poidsLocal, &scoreAffiche);
                         affichageScore(window, renderer, scoreAffiche);
                     }
 

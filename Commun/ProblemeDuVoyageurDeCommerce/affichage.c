@@ -180,14 +180,24 @@ void resetVisitabe(int* tabType, int nbNoeud)
 
 void score(int poidsParcours, int poidsFourmis, int poidsRecuit, int* scoreAffiche)
 {
-    if(poidsParcours <= poidsFourmis)
+    int poidsAlgo;
+    if(poidsRecuit < poidsFourmis)
+    {
+        poidsAlgo = poidsRecuit;
+    }
+    else
+    {
+        poidsAlgo = poidsFourmis;
+    }
+    if(poidsParcours <= poidsAlgo)
     {
         *scoreAffiche = 100;
     }
     else
     {
-        *scoreAffiche = (poidsParcours / poidsFourmis) * 100;
+        *scoreAffiche = (poidsAlgo * 100) / poidsFourmis;
     }
+
 }
 
 void affichageScore(SDL_Window* window, SDL_Renderer *renderer, int scoreAffiche)
@@ -201,7 +211,6 @@ void affichageScore(SDL_Window* window, SDL_Renderer *renderer, int scoreAffiche
     }
     SDL_Color color = {20, 0, 40, 255};
     SDL_Surface *text_surface = NULL;
-    //char text = (char) scoreAffiche;
 
     char text[255];
     sprintf(text, "Score : %d %%", scoreAffiche);
