@@ -28,8 +28,11 @@ int main()
     SDL_Renderer *renderer = initRenderer(window);
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
+    perso_t *Blinky=initBlinky(plateau,w,h);
     afficherPlateau(tabRect, plateau, w, h, window, renderer);
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
+    SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
+    afficherPerso(Blinky,window,renderer,&rectBlin);
     afficherPerso(Pac_man, window, renderer, &rectPac);
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
@@ -93,6 +96,7 @@ int main()
         {
             afficherPlateau(tabRect, plateau, w, h, window, renderer);
             animePerso(Pac_man, window, renderer, &rectPac, &etatAnim);
+            afficherPerso(Blinky,window,renderer,&rectBlin);
             SDL_RenderPresent(renderer);
         }
         i = (i + 1) % speed;

@@ -65,13 +65,19 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
 void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *RectPac)
 {
     char pathImg[255];
+    int nbw = 0;
+    int nbh=0;
     switch (perso->id)
     {
     case 99:
         sprintf(pathImg, "./source/Pac-man.png");
+        nbw=4;
+        nbh=4;
         break;
     case 200:
         sprintf(pathImg, "./source/Blinky.png");
+        nbw=3;
+        nbh=1;
         break;
 
     default:
@@ -80,12 +86,12 @@ void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, S
     SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
     SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_Rect state = {0, 0, pos.w / 4, pos.h / 4};
+    SDL_Rect state = {0, 0, pos.w / nbw, pos.h / nbh};
 
     SDL_RenderCopy(renderer, my_texture, &state, RectPac);
 }
 
-void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int * etatAnim)
+void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim)
 {
     char pathImg[255];
     switch (perso->id)
@@ -103,11 +109,10 @@ void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_
     SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
     SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_Rect state = {(*etatAnim)*pos.w / 4, 0, pos.w / 4, pos.h / 4};
+    SDL_Rect state = {(*etatAnim) * pos.w / 4, 0, pos.w / 4, pos.h / 4};
 
     SDL_RenderCopy(renderer, my_texture, &state, rectPerso);
 
-    *etatAnim+=1;
-    *etatAnim= (*etatAnim)%4;
-
+    *etatAnim += 1;
+    *etatAnim = (*etatAnim) % 4;
 }
