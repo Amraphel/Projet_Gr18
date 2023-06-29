@@ -64,19 +64,6 @@ int **loadPlateau(char *lvl, int *w, int *h)
     return plateau;
 }
 
-void movePac_manInPlateau(int ** plateau, int* xPerso, int* yPerso, int direction)
-{
-    
-    if( movePossible(plateau, xPerso, yPerso, direction) == 1)
-    {
-        //printf("%d\n")
-        /*plateau[*xPerso][*yPerso] -= 100;
-        plateau[xDeplacement][yDeplacement] = 99;
-        *xPerso = xDeplacement;
-        *yPerso = yDeplacement;*/
-    }
-}
-
 //return 0 -> ne peux pas
 //return 1 -> peux
 int movePossible(int** plateau, int xPerso, int yPerso, int direction)
@@ -119,6 +106,47 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
         break;
     }
     return DeplacementPossible;
+}
+
+void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, int direction)
+{
+
+    int xDeplacement, yDeplacement;   
+    if( movePossible(plateau, *xPerso, *yPerso, direction) == 1)
+    {
+        switch (direction)
+        {
+        case 1: // droite
+            xDeplacement = xPerso + 1;
+            break;
+        case 2: // haut
+            yDeplacement = yPerso - 1;
+            break;
+        case 3: // gauche
+            xDeplacement = xPerso - 1;
+            break;
+        case 4: // bas
+            yDeplacement = yPerso + 1;
+            break;
+        
+        default:
+            break;
+        }
+        
+        if(idPerso == 99)
+        {
+            plateau[*xPerso][*yPerso] -= 100;
+            plateau[xDeplacement][yDeplacement] = 99;
+        }
+        else
+        {
+            plateau[*xPerso][*yPerso] -= idPerso;
+            plateau[xDeplacement][yDeplacement] += idPerso;
+        }
+        
+        *xPerso = xDeplacement;
+        *yPerso = yDeplacement;
+    }
 }
 
 int gom_exist(int ** plateau, int taille)
