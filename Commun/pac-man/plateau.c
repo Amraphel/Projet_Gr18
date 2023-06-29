@@ -64,10 +64,10 @@ int **loadPlateau(char *lvl, int *w, int *h)
     return plateau;
 }
 
-void movePac_manInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlateau, int hMaxPlateau, int direction)
+void movePac_manInPlateau(int ** plateau, int* xPerso, int* yPerso, int direction)
 {
     
-    if( MovePossible(plateau, xPerso, yPerso) == 1)
+    if( movePossible(plateau, xPerso, yPerso, direction) == 1)
     {
         //printf("%d\n")
         /*plateau[*xPerso][*yPerso] -= 100;
