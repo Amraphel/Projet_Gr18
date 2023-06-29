@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #endif
+#include "plateau.h"
 
 void play_with_texture_4(SDL_Texture *my_texture,
                          SDL_Window *window,
