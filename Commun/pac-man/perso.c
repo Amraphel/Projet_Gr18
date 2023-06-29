@@ -8,7 +8,7 @@ perso_t* initPac_man(int ** plateau, int w, int h){
 }
 
 
-void mouv_Pac_man(SDL_Texture *my_texture, SDL_Window *window, SDL_Renderer *renderer, int direction, int *posX, int *posY)
+void mouv_Pac_man(SDL_Texture *my_texture, SDL_Window *window, SDL_Renderer *renderer, int *posX, int *posY)
 {
     SDL_Rect
         source = {0},            
