@@ -1,7 +1,11 @@
 #include "fantome.h"
 
-perso_t* initBlinky(int ** plateau){
-    
+perso_t* initBlinky(int ** plateau, int w, int h){
+    perso_t * blinky = malloc(sizeof(perso_t));
+    blinky->id=200;
+    coordPlat(plateau,w,h,blinky->id, &blinky->posX,&blinky->posY);
+
+    return blinky;
 }
 
 

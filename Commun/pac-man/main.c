@@ -1,7 +1,7 @@
 #include "affichage.h"
-#include "perso.h"
 #include "fantome.h"
 #include "plateau.h"
+
 
 #define WINDOWL 700
 #define WINDOWW 700
@@ -11,6 +11,7 @@ int main()
     int w;
     int h;
     int ** plateau=   loadPlateau("./source/lvl1.txt", &w, &h);
+    printPlateau(plateau,w,h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         SDL_Log("Error : SDL initialisation - %s\n",

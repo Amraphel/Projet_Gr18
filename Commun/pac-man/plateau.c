@@ -63,3 +63,73 @@ int **loadPlateau(char *lvl, int *w, int *h)
     fclose(file);
     return plateau;
 }
+
+void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlateau, int hMaxPlateau, int direction)
+{
+    int xDeplacement, yDeplacement;
+    int estDeplacer = 0;
+    switch (direction)
+    {
+    case 1: // droite
+        int xd = xPerso + 1;
+        if (xd > wMaxPlateau - 1)
+        {
+            xDeplacement = xPerso;
+        }
+        else
+        {
+            xDeplacement = xd;
+            estDeplacer = 1;
+        }
+        break;
+
+    case 2: // haut
+        int yh = yPerso - 1;
+        if (yh > hMaxPlateau - 1)
+        {
+            yDeplacement = yPerso;
+        }
+        else
+        {
+            yDeplacement = yh;
+            estDeplacer = 1;
+        }
+        break;
+
+    case 3: // gauche
+        int xg = xPerso - 1;
+        if (xg < 0)
+        {
+            xDeplacement = xPerso;
+        }
+        else
+        {
+            xDeplacement = xg;
+            estDeplacer = 1;
+        }
+        break;
+
+    case 4: // bas
+        int yb = yPerso + 1;
+        if (yb < 0)
+        {
+            yDeplacement = yPerso;
+        }
+        else
+        {
+            yDeplacement = yb;
+            estDeplacer = 1;
+        }
+        break;
+
+    default:
+        break;
+    }
+    if( estDeplacer == 1)
+    {
+        //plateau[xPerso][yPerso] -= 100;
+        //plateau[xDeplacement][yDeplacement] = 99;
+        //*xPerso = xDeplacement;
+        //*yPerso = yDeplacement;
+    }
+}
