@@ -37,7 +37,9 @@ int main()
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
     int speed = 100000;
+    int speedMove = 200000;
     int i = 0;
+    int move=0;
     int etatAnimPac = 0;
     int etatAnimBlin =0;
     SDL_RenderPresent(renderer);
@@ -93,6 +95,11 @@ int main()
                 }
             }
         }
+        if (move == 0)
+        {
+           moveBlinky(window,plateau,w,h,Blinky,Pac_man,&rectBlin); 
+        }
+        move = (move + 1) % speedMove;
         if (i == 0)
         {
             afficherPlateau(tabRect, plateau, w, h, window, renderer);
@@ -102,45 +109,6 @@ int main()
         }
         i = (i + 1) % speed;
     }
-    // while ((plateau[&Pac_man->posx][&Pac_man->posy]<200) && (!gom_exist(plateau, w,h)))
-    // {
-
-    //     SDL_WaitEvent(&event);
-    //     switch(event.type)
-    //     {
-    //         case SDL_KEYDOWN:
-    //         switch(event.key.keysym.sym)
-    //         {
-    //             case SDLK_DOWN:
-    //             {
-    //                 movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 3);
-    //             }
-    //             break;
-    //             case SDLK_DOWN:
-    //             if(movePossible(plateau, &Pac_man->posX,&Pac_man->posY, 1))
-    //             {
-    //                 movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 1);
-    //             }
-    //             break;
-    //             case SDLK_RIGHT:
-    //             if(movePossible(plateau, &Pac_man->posX,&Pac_man->posY, 4))
-    //             {
-    //                 movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 4);
-    //             }
-    //             break;
-    //             case SDLK_LEFT:
-    //             if(movePossible(plateau, &Pac_man->posX,&Pac_man->posY, 2))
-    //             {
-    //                 movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 2);
-    //             }
-    //             break;
-    //             afficherPlateau(tabRect,plateau,w,h,window,renderer);
-    //             // mouv_Pac_man(SDL_Texture* my_texture, SDL_Window* window, SDL_Renderer * renderer, &Pac_man->posX, &Pac_man->posY);
-    //             SDL_RenderPresent(renderer);
-    //         }
-    //         break;
-    //     }
-    // }
 
     end_sdl(1, "Normal ending", window, renderer);
 
