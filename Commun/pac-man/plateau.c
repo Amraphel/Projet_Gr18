@@ -47,14 +47,14 @@ int **loadPlateau(char *lvl, int *w, int *h)
     FILE *file = fopen(lvl, "r");
     if (file)
     {
-        fscanf(file, "%d %d\n", w, h);
+        fscanf(file, "%d %d\n", h, w);
 
         plateau = create_plateau(*w, *h);
         for (int i = 0; i < *w; i++)
         {
             for (int j = 0; j < *h; j++)
             {
-                fscanf(file, "%d ", &plateau[i][j]);
+                fscanf(file, "%d ", &plateau[j][i]);
             }
             fscanf(file, "\n");
         }

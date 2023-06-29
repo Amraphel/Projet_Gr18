@@ -1,6 +1,7 @@
 #include "affichage.h"
 #include "fantome.h"
 #include "plateau.h"
+#include "SDLBasic.h"
 
 #define WINDOWL 700
 #define WINDOWW 700
