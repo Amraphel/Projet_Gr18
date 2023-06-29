@@ -30,36 +30,67 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     SDL_RenderClear(renderer);
     int fondW, fondH;
     SDL_Texture *my_texture = load_texture_from_image("./source/Murs.png", window, renderer);
+    SDL_Texture *gom = load_texture_from_image("./source/Pac-gomme.png", window, renderer);
     SDL_GetWindowSize(window, &fondW, &fondH);
     for (int i = 0; i < w; i++)
     {
         for (int j = 0; j < h; j++)
         {
-            if (plateau[j][i] != 0 && plateau[j][i] != 99)
+            if (plateau[j][i] != -1 && plateau[j][i] < 99)
             {
-                SDL_Rect
-                    source = {0},
-                    state = {0};
+                int nb_images = 0;
+                if (plateau[j][i] != 0)
+                {
+                    nb_images = 15;
+                    SDL_Rect
+                        source = {0},
+                        state = {0};
 
-                SDL_QueryTexture(my_texture,
-                                 NULL, NULL,
-                                 &source.w, &source.h);
+                    SDL_QueryTexture(my_texture,
+                                     NULL, NULL,
+                                     &source.w, &source.h);
 
-                int nb_images = 15;
-                int offset_x = source.w / nb_images,
-                    offset_y = source.h;
+                    int offset_x = source.w / nb_images,
+                        offset_y = source.h;
 
-                state.x = (plateau[j][i] - 1) * offset_x;
-                state.y = 0;
-                state.w = offset_x;
-                state.h = offset_y;
+                    state.x = (plateau[j][i] - 1) * offset_x;
+                    state.y = 0;
+                    state.w = offset_x;
+                    state.h = offset_y;
 
-                SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
-                               &state,
-                               &tabRect[i][j]);
+                    SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+                                   &state,
+                                   &tabRect[i][j]);
+                }
+                else
+                {
+                    nb_images = 1;
+                    SDL_Rect
+                        source = {0},
+                        state = {0};
+
+                    SDL_QueryTexture(gom,
+                                     NULL, NULL,
+                                     &source.w, &source.h);
+
+                    int offset_x = source.w / nb_images,
+                        offset_y = source.h;
+
+                    state.x = 0;
+                    state.y = 0;
+                    state.w = offset_x;
+                    state.h = offset_y;
+
+                    SDL_RenderCopy(renderer,gom, // Préparation de l'affichage
+                                   &state,
+                                   &tabRect[i][j]);
+                }
+
             }
         }
     }
+    // free(my_texture);
+   // free(gom);
 }
 
 void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *RectPac)
@@ -91,7 +122,7 @@ void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, S
     SDL_RenderCopy(renderer, my_texture, &state, RectPac);
 }
 
-void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int * etatAnim, int dir)
+void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
 {
     char pathImg[255];
     int nbw = 0;
@@ -117,7 +148,7 @@ void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_
     SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
     SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_Rect state = {(*etatAnim) * pos.w / nbw, dir*pos.h / nbh, pos.w / nbw, pos.h / nbh};
+    SDL_Rect state = {(*etatAnim) * pos.w / nbw, dir * pos.h / nbh, pos.w / nbw, pos.h / nbh};
 
     SDL_RenderCopy(renderer, my_texture, &state, rectPerso);
 
@@ -125,7 +156,7 @@ void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_
     *etatAnim = (*etatAnim) % nbw;
 }
 
-void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font)
+void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
 {
     SDL_Color color = {219, 0, 0, 255};
     SDL_Surface *text_surface = NULL;
