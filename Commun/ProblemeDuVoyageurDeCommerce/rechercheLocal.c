@@ -1,42 +1,6 @@
 #include "rechercheLocal.h"
 
-int **dist(int **tabPoids, int nbNoeud)
-{
-    int **dist = initMatrice(nbNoeud);
-    for (int i = 0; i < nbNoeud; i++)
-    {
-        for (int j = 0; j < nbNoeud; j++)
-        {
-            if (i != j && tabPoids[i][j] == 0)
-            {
-                dist[i][j] = -1;
-            }
-            else
-            {
-                dist[i][j] = tabPoids[i][j];
-            }
-        }
-    }
-    for (int i = 0; i < nbNoeud; i++)
-    {
-        for (int j = 0; j < nbNoeud; j++)
-        {
-            if (dist[i][j] == -1)
-            {
-                dist[i][j] = 9999999;
-            }
-            for (int k = 0; k < nbNoeud; k++)
-            {
-                if (dist[i][k] != -1 && dist[k][j] != -1 && dist[i][j] > dist[i][k] + dist[k][j])
-                {
-                    dist[i][j] = dist[i][k] + dist[k][j];
-                }
-            }
-        }
-    }
 
-    return dist;
-}
 
 void printMat(int **mat, int nbNoeud)
 {
@@ -50,26 +14,7 @@ void printMat(int **mat, int nbNoeud)
     }
 }
 
-int calcDist(int **tabDist, int *ordreParc, int nbNoeud)
-{
-    int dist = 0;
-    for (int i = 0; i < nbNoeud - 1; i++)
-    {
-        dist += tabDist[ordreParc[i]][ordreParc[i + 1]];
-    }
-    dist += tabDist[ordreParc[nbNoeud - 1]][ordreParc[0]];
-    return dist;
-}
 
-int *initOrdre(int nbNoeud)
-{
-    int *ordre = malloc(sizeof(int) * nbNoeud);
-    for (int i = 0; i < nbNoeud; i++)
-    {
-        ordre[i] = i;
-    }
-    return ordre;
-}
 
 int *inv2Elem(int *ordre, int nbNoeud)
 {
@@ -94,7 +39,7 @@ int recherchelocal(int **poids, int nbNoeud, int init, double objectif)
 {
 
     double temp = init;
-    int *ordre = initOrdre(nbNoeud);
+    int *ordre = initOrdre(nbNoeud,1);
     int *ordre2 = NULL;
     int **tabDist = dist(poids, nbNoeud);
     int poidsTotal = calcDist(tabDist, ordre, nbNoeud);
