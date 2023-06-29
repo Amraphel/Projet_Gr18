@@ -19,4 +19,4 @@ typedef struct perso
     int id;
     int posX;
     int posY;
-};
+}perso_t;
