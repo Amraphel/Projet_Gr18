@@ -1,3 +1,4 @@
+perso_t* initBlinky(int ** plateau, int w, int h)
 #ifndef BASE
 #define BASE
 #include <stdlib.h>
