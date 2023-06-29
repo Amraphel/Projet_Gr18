@@ -1,28 +1,53 @@
 #include "plateau.h"
 
-int ** create_plateau(int taille)
+int **create_plateau(int width, int height)
 {
-    int ** plateau=malloc(sizeof(int*)*taille);
-    for (int i=0; i<taille; i++)
+    int **plateau = malloc(sizeof(int *) * width);
+    for (int i = 0; i < width; i++)
     {
-        int * ligne=malloc(sizeof(int)*taille);
-        for (int j=0; j<taille; j++)
+        int *ligne = malloc(sizeof(int) * height);
+        plateau[i]=ligne;
+        for (int j = 0; j < height; j++)
         {
-            plateau[i][j]=0;
+            plateau[i][j] = 0;
         }
     }
     return plateau;
 }
 
-int ** init_murs(int ** plateau, int taille)
+void printPlateau(int **mat, int w, int h)
 {
-    int nb_images=10;
-    int offset_x = source.w / nb_images;
-    for (int i=0; i<taille; i++)
+    for (int i = 0; i < w; i++)
     {
-        for(int j=0; j<taille; j++)
+        for (int j = 0; j < h; j++)
         {
-            state.x=plateau[i][j]*offset_x;
+            fprintf(stderr, "%d ", mat[i][j]);
         }
+        fprintf(stderr, "\n");
     }
 }
+
+int **loadPlateau(char *lvl, int* w, int* h)
+{
+    int ** plateau = NULL;
+    FILE *file = fopen(lvl, "r");
+    if (file)
+    {
+        fscanf(file, "%d %d\n",w, h);
+        
+        plateau = create_plateau(*w,*h);
+        for (int i = 0; i < *w; i++)
+        {
+            for (int j = 0; j < *h; j++)
+            {
+                fscanf(file, "%d ", &plateau[i][j]);
+            }
+            fscanf(file, "\n");
+        }
+        // printPlateau(plateau, *w, *h);
+    }
+    fclose(file);
+    return plateau;
+}
+
+

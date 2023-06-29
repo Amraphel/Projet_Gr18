@@ -82,7 +82,6 @@ int *inv2Elem(int *ordre, int nbNoeud)
     int elem2 = rand() % nbNoeud;
     while (elem2 == elem1)
     {
-        fprintf(stderr, "%d et %d", elem1, elem2);
         elem2 = rand() % nbNoeud;
     }
     int temp = ordre[elem1];
