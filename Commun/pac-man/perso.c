@@ -1,6 +1,13 @@
 #include "perso.h"
+perso_t* initPac_man(int ** plateau){
+    perso_t* Pac_man = malloc(sizeof(perso_t));
+    Pac_man->id=99;
+    coordPlat(plateau, w, h, Pac_man->id, &Pac_man->posx, &Pac_man->posy);
 
-void play_with_texture_4(SDL_Texture *my_texture,
+}
+
+
+void mouv_Pac_man(SDL_Texture *my_texture,
                          SDL_Window *window,
                          SDL_Renderer *renderer)
 {
@@ -35,8 +42,9 @@ void play_with_texture_4(SDL_Texture *my_texture,
     destination.y = 
         (window_dimensions.h - destination.h) / 2;
     int speed=1;
-    while (destination.x<window_dimensions.w-destination.w) //à modifier: tant que pac-man est vivant et qu'il reste des pac-gommes
+    while () //à modifier: tant que pac-man est vivant et qu'il reste des pac-gommes
     {
+        
         SDL_WaitEvent(&event);
         switch(event.type)
         {
@@ -45,7 +53,7 @@ void play_with_texture_4(SDL_Texture *my_texture,
             {
                 case SDLK_UP:
                 SDL_RenderClear(renderer);     
-                //si la case est accessible      
+                if()    
                 destination.y=destination.y-speed;
                 state.x += offset_x; 
                 state.x %= source.w; 
@@ -77,9 +85,5 @@ void play_with_texture_4(SDL_Texture *my_texture,
             }
             break;
         }
-    }
-    
-   
-   
-    SDL_RenderClear(renderer); 
+    } 
 }
