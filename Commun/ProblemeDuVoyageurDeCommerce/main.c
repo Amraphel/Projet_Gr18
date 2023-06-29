@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
     time_t t;
     time(&t);
-    srand(42);
+    srand(t);
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -53,9 +53,7 @@ int main(int argc, char **argv)
     generer(mat,0,NB-1);
     genererGraphe(mat,P,NB);
     cell_t* graphe = matToGraphe(mat, NB, tabPoint);
-   // afficherMat(mat,NB);
     matToPoids(mat, NB,tabPoint);
-   // afficherMat(mat,NB);
     int numActuel = 0;
     int fini = 0;
 
@@ -63,8 +61,7 @@ int main(int argc, char **argv)
 
     int poidsFourmis= fourmis(mat,NB, 2,0.1);
     int poidsLocal= recherchelocal(mat,NB, 100 ,0.001);
-    fprintf(stderr, "poids (fourmis) final : %d\n", poidsFourmis);
-    fprintf(stderr, "poids (local) final2 : %d\n", poidsLocal);
+
  
 
     int poidsParcours = 0;
@@ -113,7 +110,7 @@ int main(int argc, char **argv)
                     if (fini == 1)
                     {
                         int scoreAffiche = 0;
-                        score(poidsParcours, poidsParcours, poidsLocal, &scoreAffiche);
+                        score(poidsParcours, poidsFourmis, poidsLocal, &scoreAffiche);
                         affichageScore(window, renderer, scoreAffiche);
                     }
 
