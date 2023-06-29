@@ -17,6 +17,7 @@ int main()
                 SDL_GetError());
         exit(EXIT_FAILURE);
     }
+    
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -35,6 +36,18 @@ int main()
     afficherPerso(Blinky,window,renderer,&rectBlin);
     afficherPerso(Pac_man, window, renderer, &rectPac);
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
+
+    if (TTF_Init() < 0)
+        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
+
+    TTF_Font *font = NULL;
+
+    font = TTF_OpenFont("./Front/BadComic-Regular.ttf", 30);
+    if (font == NULL)
+    {
+        end_sdl(0, "Can't load font", window, renderer);
+    }
+
 
     int speed = 100000;
     int speedMove = 200000;
@@ -124,6 +137,11 @@ int main()
             }
             i = (i + 1) % speed;
         }
+        if(mort == 1)
+        {
+            afficherGameOver(window, renderer, font);
+        }
+        
     }
 
     end_sdl(1, "Normal ending", window, renderer);

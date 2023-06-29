@@ -122,3 +122,31 @@ void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_
     *etatAnim += 1;
     *etatAnim = (*etatAnim) % nbw;
 }
+
+void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font)
+{
+    SDL_Color color = {219, 0, 0, 255};
+    SDL_Surface *text_surface = NULL;
+
+    text_surface = TTF_RenderText_Blended(font, "GAME OVER", color); // création du texte dans la surface
+    if (text_surface == NULL)
+    {
+        end_sdl(0, "Can't create text surface", window, renderer);
+    }
+
+    // Création de la texture du text
+    SDL_Texture *text_texture = NULL;                                    // la texture qui contient le texte
+    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); // transfert de la surface à la texture
+    if (text_texture == NULL)
+    {
+        end_sdl(0, "Can't create texture from surface", window, renderer);
+    }
+
+    SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
+
+    SDL_Rect pos = {10, 0, 0, 0};                               // rectangle où le texte va être prositionné
+    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
+    SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
+    SDL_DestroyTexture(text_texture);
+    SDL_RenderPresent(renderer);
+}

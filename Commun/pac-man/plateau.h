@@ -7,6 +7,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <SDL2/SDL_ttf.h>
 #endif
 
 
