@@ -9,7 +9,7 @@ int main()
 {
     int w;
     int h;
-    int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl2.txt", &w, &h);
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -17,7 +17,7 @@ int main()
                 SDL_GetError());
         exit(EXIT_FAILURE);
     }
-    
+
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -29,11 +29,11 @@ int main()
     SDL_Renderer *renderer = initRenderer(window);
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
-    perso_t *Blinky=initBlinky(plateau,w,h);
+    perso_t *Blinky = initBlinky(plateau, w, h);
     afficherPlateau(tabRect, plateau, w, h, window, renderer);
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
-    afficherPerso(Blinky,window,renderer,&rectBlin);
+    afficherPerso(Blinky, window, renderer, &rectBlin);
     afficherPerso(Pac_man, window, renderer, &rectPac);
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
@@ -48,15 +48,16 @@ int main()
         end_sdl(0, "Can't load font", window, renderer);
     }
 
-
     int speed = 100000;
     int speedMove = 200000;
     int i = 0;
-    int move=0;
+    int move = 0;
     int mort = 0;
     int etatAnimPac = 0;
-    int etatAnimBlin =0;
-    Pac_man->etat=0;
+    int etatAnimBlin = 0;
+    int keyPressed = 0;
+    int direction = 0;
+    Pac_man->etat = 0;
     SDL_RenderPresent(renderer);
     while (program_on)
     {
@@ -81,44 +82,36 @@ int main()
                 case SDLK_DOWN:
                     if (mort != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
-                            rectPac.y = rectPac.y + (WINDOWL / h);
-                            Pac_man->etat=3;
+                            direction = 1;
                         }
                     }
                     break;
                 case SDLK_UP:
                     if (mort != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
-                            rectPac.y = rectPac.y - (WINDOWL / h);
-                            Pac_man->etat=1;
+                            direction = 3;
                         }
                     }
                     break;
                 case SDLK_RIGHT:
                     if (mort != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
-                            rectPac.x = rectPac.x + (WINDOWW / w);
-                            Pac_man->etat=0;
+                            direction = 4;
                         }
                     }
                     break;
                 case SDLK_LEFT:
                     if (mort != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
-                            rectPac.x = rectPac.x - (WINDOWW / w);
-                            Pac_man->etat=2;
+                            direction = 2;
                         }
                     }
                 default:
@@ -130,6 +123,33 @@ int main()
         {
             if (move == 0)
             {
+                if(movePossible(plateau, Pac_man->posX, Pac_man->posY, direction)){
+                    switch (direction)
+                    {
+                    case 1:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
+                        rectPac.y = rectPac.y + (WINDOWL / h);
+                        Pac_man->etat = 3;
+                        break;
+                    case 3:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
+                        rectPac.y = rectPac.y - (WINDOWL / h);
+                        Pac_man->etat = 1;
+                        break;
+                    case 4:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
+                        rectPac.x = rectPac.x + (WINDOWW / w);
+                        Pac_man->etat = 0;
+                        break;
+                    case 2:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
+                        rectPac.x = rectPac.x - (WINDOWW / w);
+                        Pac_man->etat = 2;
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
             }
             move = (move + 1) % speedMove;
@@ -137,16 +157,15 @@ int main()
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
                 animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, Pac_man->etat);
-                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin,0);
+                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;
         }
-        if(mort == 1)
+        if (mort == 1)
         {
             afficherGameOver(window, renderer, font);
         }
-        
     }
 
     end_sdl(1, "Normal ending", window, renderer);
