@@ -9,7 +9,7 @@ int main()
 {
     int w;
     int h;
-    int **plateau = loadPlateau("./source/lvl2.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -30,7 +30,7 @@ int main()
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
     perso_t *Blinky = initBlinky(plateau, w, h);
-    afficherPlateau(tabRect, plateau, w, h, window, renderer);
+    // afficherPlateau(tabRect, plateau, w, h, window, renderer);
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     afficherPerso(Blinky, window, renderer, &rectBlin);
