@@ -9,7 +9,7 @@
 #endif
 #include "plateau.h"
 
-void mouv_Pac_Man(SDL_Texture *my_texture, SDL_Window *window, SDL_Renderer *renderer, int direction int *posX, int *posY);
+void mouv_Pac_Man(SDL_Texture *my_texture, SDL_Window *window, SDL_Renderer *renderer, int direction ,int *posX, int *posY);
 
 
 
@@ -18,6 +18,7 @@ typedef struct perso
     int id;
     int posX;
     int posY;
+    int etat;
 }perso_t;
 
-perso_t* initPac_man(int ** plateau);
+perso_t* initPac_man(int ** plateau, int w, int h);

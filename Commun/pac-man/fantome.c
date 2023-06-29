@@ -14,23 +14,23 @@ int heuriBasique(int x, int y, int pacX, int pacY)
     return abs(pacX - x + pacY - y);
 }
 
-int getNextMove(int **plateau, int fantX, int fantY, int pacX, int pacY)
-{
-    int dir = 0;
-    int heuri = -1;
-    for (int i = 1; i < 5; i++)
-    {
-        if (mouvPossible(fantX, fantY, i))
-        {
-            int newHeuri = heuriBasique(fantX, fantY, pacX, pacY);
-            if (heuri == -1 || heuri > newHeuri)
-            {
-                heuri = newHeuri;
-                dir = i;
-            }
-        }
-    }
-}
+// int getNextMove(int **plateau, int fantX, int fantY, int pacX, int pacY)
+// {
+//     int dir = 0;
+//     int heuri = -1;
+//     for (int i = 1; i < 5; i++)
+//     {
+//         if (movePossible(plateau,fantX, fantY, i))
+//         {
+//             int newHeuri = heuriBasique(fantX, fantY, pacX, pacY);
+//             if (heuri == -1 || heuri > newHeuri)
+//             {
+//                 heuri = newHeuri;
+//                 dir = i;
+//             }
+//         }
+//     }
+// }
 
 // void moveBlinky(SDL_Texture *my_texture, // fonction blinky : plus court chemin vers pac-man
 //                 SDL_Window *window,
