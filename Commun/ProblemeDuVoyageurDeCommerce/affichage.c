@@ -202,7 +202,10 @@ void affichageScore(SDL_Window* window, SDL_Renderer *renderer, int scoreAffiche
     SDL_Color color = {20, 0, 40, 255};
     SDL_Surface *text_surface = NULL;
     //char text = (char) scoreAffiche;
-    char * text = "bla";
+
+    char text[255];
+    sprintf(text, "Score : %d %%", scoreAffiche);
+
 
     text_surface = TTF_RenderText_Blended(font, text, color); // création du texte dans la surface
     if (text_surface == NULL)
