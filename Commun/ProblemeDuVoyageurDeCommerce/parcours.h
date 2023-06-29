@@ -26,13 +26,17 @@ poids_t *creerPoids(int **tabPoids, double **Phero, int nbNoeud);
 
 int sommetTousTrav(int *sommetTraverse, int nbNoeud);
 
-parcours_t *parcoursGraphe(int **poids, double **phero, int nbNoeud);
+int *parcoursGraphe(double **phero, int nbNoeud);
 
 int longParcours(parcours_t *parcours);
 
 double ** initPhero(int taille);
 
-double **updatePhero(int taille, parcours_t *parcours, double puissancePhero, double coefAtt);
+int **dist(int **tabPoids, int nbNoeud);
+int *initOrdre(int nbNoeud, int croiss);
+int calcDist(int **tabDist, int *ordreParc, int nbNoeud);
+
+double **updatePhero(int ** dist,int nbNoeud, int *parcours, double puissancePhero, double coefAtt);
 
 void delPhero(double **phero, int taille);
 

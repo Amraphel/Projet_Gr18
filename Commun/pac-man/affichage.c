@@ -65,3 +65,24 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     }
     SDL_RenderPresent(renderer);
 }
+
+void afficherPerso(perso_t perso, SDL_Window *window, SDL_Renderer *renderer)
+{
+    char pathImg[255];
+    switch (perso.id)
+    {
+    case 99:
+        sprintf(pathImg, "./source/pacman.png");
+        break;
+    case 200:
+        sprintf(pathImg, "./source/Blinky.png");
+        break;
+
+    default:
+        break;
+    }
+    SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
+    SDL_Rect pos = {perso.posX, perso.posY, 0, 0};                              // rectangle où le texte va être prositionné
+    SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
+    SDL_RenderCopy(renderer, my_texture, NULL, &pos);
+}

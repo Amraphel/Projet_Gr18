@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
     int poidsFourmis= fourmis(mat,NB, 2,0.1);
     int poidsLocal= recherchelocal(mat,NB, 100 ,0.001);
-
+    fprintf(stderr, "%d et %d\n", poidsFourmis, poidsLocal);
  
 
     int poidsParcours = 0;

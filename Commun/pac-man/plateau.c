@@ -132,7 +132,7 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
         default:
             break;
         }
-        
+
         if(idPerso == 99)
         {
             plateau[*xPerso][*yPerso] -= 100;
@@ -149,12 +149,12 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
     }
 }
 
-int gom_exist(int ** plateau, int taille)
+int gom_exist(int ** plateau, int w, int h)
 {
     int rep=1;
-    for (int i=0; i<taille; i++)
+    for (int i=0; i<w; i++)
     {
-        for (int j=0; j<taille; j++)
+        for (int j=0; j<h; j++)
         {
             rep=rep*plateau[i][j];
         }
