@@ -40,8 +40,10 @@ int main()
     int speedMove = 200000;
     int i = 0;
     int move=0;
+    int mort = 0;
     int etatAnimPac = 0;
     int etatAnimBlin =0;
+    Pac_man->etat=0;
     SDL_RenderPresent(renderer);
     while (program_on)
     {
@@ -64,7 +66,7 @@ int main()
 
                     break;
                 case SDLK_DOWN:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1))
+                    if (mort != 1)
                     {
                         movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 1);
                         rectPac.y = rectPac.y + (WINDOWL / h);  
@@ -72,7 +74,7 @@ int main()
                     }   
                     break;
                 case SDLK_UP:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3))
+                    if (mort != 1)
                     {
                         movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 3);
                         rectPac.y = rectPac.y - (WINDOWL / h);
@@ -80,7 +82,7 @@ int main()
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4))
+                    if (mort != 1)
                     {
                         movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 4);
                         rectPac.x = rectPac.x + (WINDOWW / w);
@@ -88,7 +90,7 @@ int main()
                     }
                     break;
                 case SDLK_LEFT:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2))
+                    if (mort != 1)
                     {
                         movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 2);
                         rectPac.x = rectPac.x - (WINDOWW / w);
@@ -99,19 +101,22 @@ int main()
                 }
             }
         }
-        if (move == 0)
+        if (mort != 1)
         {
-           moveBlinky(window,plateau,w,h,Blinky,Pac_man,&rectBlin); 
+            if (move == 0)
+            {
+                moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+            }
+            move = (move + 1) % speedMove;
+            if (i == 0)
+            {
+                afficherPlateau(tabRect, plateau, w, h, window, renderer);
+                animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, Pac_man->etat);
+                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin,0);
+                SDL_RenderPresent(renderer);
+            }
+            i = (i + 1) % speed;
         }
-        move = (move + 1) % speedMove;
-        if (i == 0)
-        {
-            afficherPlateau(tabRect, plateau, w, h, window, renderer);
-            animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, Pac_man->etat);
-            animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin,0);
-            SDL_RenderPresent(renderer);
-        }
-        i = (i + 1) % speed;
     }
 
     end_sdl(1, "Normal ending", window, renderer);

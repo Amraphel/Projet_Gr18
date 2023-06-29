@@ -135,13 +135,13 @@ void play_with_texture_4(SDL_Texture *my_texture,
         SDL_Delay(80);               // Pause en ms
     }
     */
-   SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
-        SDL_Texture *my_background = load_texture_from_image("background_ocean.png", window, renderer);
-        play_with_texture_1(my_background, window, renderer);
-        SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
+    SDL_RenderClear(renderer);           // Effacer l'image précédente avant de dessiner la nouvelle
+    SDL_Texture *my_background = load_texture_from_image("background_ocean.png", window, renderer);
+    play_with_texture_1(my_background, window, renderer);
+    SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
                        &state,
                        &destination);
-        SDL_RenderPresent(renderer); // Affichage
+    SDL_RenderPresent(renderer); // Affichage
     while (destination.x<window_dimensions.w-destination.w)
     {
         SDL_WaitEvent(&event);

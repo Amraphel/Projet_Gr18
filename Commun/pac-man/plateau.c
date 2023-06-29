@@ -108,7 +108,7 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
     return DeplacementPossible;
 }
 
-void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, int direction)
+void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, int direction, int* mort)
 {
 
     int xDeplacement =*xPerso;
@@ -142,6 +142,10 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
         }
         else
         {
+            if(plateau[xDeplacement][yDeplacement] == 99)
+            {
+                *mort = 1;
+            }
             plateau[*xPerso][*yPerso] -= idPerso;
             plateau[xDeplacement][yDeplacement] += idPerso;
         }
