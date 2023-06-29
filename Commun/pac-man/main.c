@@ -25,8 +25,48 @@ int main()
     afficherPlateau(tabRect,plateau,w,h,window,renderer);
 
     //void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
-
+    mouv_Pac_man(SDL_Texture* my_texture, SDL_Window* window, SDL_Renderer * renderer, 0);
+    SDL_RenderPresent(renderer);
+    while ((plateau[&Pac_man->posx][&Pac_man->posy]<200) && (!gom_exist(plateau, taille))) 
+    {
+        
+        SDL_WaitEvent(&event);
+        switch(event.type)
+        {
+            case SDL_KEYDOWN:
+            switch(event.key.keysym.sym)
+            {
+                {   
+                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 3)
+                }    
+                break;
+                case SDLK_DOWN:
+                if(movePossible(plateau, &Pac_man->posX,&Pac_man->posY, 1))
+                {   
+                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 1)
+                }    
+                break;        
+                case SDLK_RIGHT:
+                if(movePossible(plateau, &Pac_man->posX,&Pac_man->posY, 4))
+                {  
+                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 4)
+                }    
+                break;        
+                case SDLK_LEFT:
+                if(movePossible(plateau, &Pac_man->posX,&Pac_man->posY, 2))
+                {  
+                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 2)
+                }    
+                break;
+                afficherPlateau(tabRect,plateau,w,h,window,renderer);
+                mouv_Pac_man(SDL_Texture* my_texture, SDL_Window* window, SDL_Renderer * renderer, &Pac_man->posX, &Pac_man->posY);
+                SDL_RenderPresent(renderer);        
+            }
+            break;
+        }
+    } 
     SDL_Delay(6000);
     end_sdl(1, "Normal ending", window, renderer);
+
     return 0;
 }
