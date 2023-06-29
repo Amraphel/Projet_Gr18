@@ -91,7 +91,7 @@ void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, S
     SDL_RenderCopy(renderer, my_texture, &state, RectPac);
 }
 
-void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim)
+void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int * etatAnim, int dir)
 {
     char pathImg[255];
     int nbw = 0;
@@ -115,7 +115,7 @@ void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_
     SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
     SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_Rect state = {(*etatAnim) * pos.w / nbw, 0, pos.w / nbw, pos.h / nbh};
+    SDL_Rect state = {(*etatAnim) * pos.w / nbw, dir*pos.h / nbh, pos.w / nbw, pos.h / nbh};
 
     SDL_RenderCopy(renderer, my_texture, &state, rectPerso);
 

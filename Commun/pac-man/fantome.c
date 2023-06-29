@@ -60,9 +60,7 @@ int ** heuristique(int** plateau,int pacX,int pacY,int w,int h){
             heuri[i][j]=-1;
         }
     }
-    fprintf(stderr, "aled\n");
     creerHeuri(heuri, plateau, pacX, pacY, 0);
-    fprintf(stderr, "aled\n");
     return heuri;
 }
 
@@ -74,7 +72,6 @@ int getNextMove(int **plateau,int** heuristique, int fantX, int fantY)
     {
         if (movePossible(plateau, fantX, fantY, i))
         {
-            fprintf(stderr, "aled\n");
             int newHeuri = 0;
             switch (i)
             {
@@ -118,7 +115,6 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
                       &window_dimensions.h);
 
     int move = getNextMove(plateau,heuri, Blinky->posX, Blinky->posY);
-    fprintf(stderr, "%d et %d \n", Blinky->posX, Blinky->posY);
     switch ((move))
     {
     case 1:
@@ -126,7 +122,6 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
         rectBlin->y += window_dimensions.h / h;
         break;
     case 2:
-        fprintf(stderr, "%d \n", move);
         movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2);
         rectBlin->x -= window_dimensions.w / w;
         break;
