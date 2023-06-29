@@ -55,13 +55,38 @@ int main()
                 case SDLK_q:
                     program_on = 0;
                     event_utile = SDL_TRUE;
+
                     break;
+                case SDLK_DOWN:
+                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1))
+                    {
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 1);
+                        rectPac.y = rectPac.y + (WINDOWL / h);
+                    }
+                    break;
+                case SDLK_UP:
+                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3))
+                    {
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 3);
+                        rectPac.y = rectPac.y - (WINDOWL / h);
+                    }
+                    break;
+                case SDLK_RIGHT:
+                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4))
+                    {
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 4);
+                        rectPac.x = rectPac.x + (WINDOWW / w);
+                    }
+                    break;
+                case SDLK_LEFT:
+                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2))
+                    {
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 2);
+                        rectPac.x = rectPac.x - (WINDOWW / w);
+                    }
                 default:
                     break;
                 }
-                break;
-            default:
-                break;
             }
         }
         if (i == 0)
