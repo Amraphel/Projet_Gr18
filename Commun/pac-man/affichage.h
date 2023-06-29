@@ -1,5 +1,8 @@
 #include "plateau.h"
+#ifndef PERSO
+#define PERSO
 #include "perso.h"
+#endif 
 #include "fantome.h"
 
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h);
