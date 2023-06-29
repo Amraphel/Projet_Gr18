@@ -80,7 +80,7 @@ int main()
 
                     break;
                 case SDLK_DOWN:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
                         {
@@ -89,7 +89,7 @@ int main()
                     }
                     break;
                 case SDLK_UP:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
                         {
@@ -98,7 +98,7 @@ int main()
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
                         {
@@ -107,7 +107,7 @@ int main()
                     }
                     break;
                 case SDLK_LEFT:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
                         {
@@ -119,7 +119,7 @@ int main()
                 }
             }
         }
-        if (mort != 1)
+        if (mort != 1 && gom_exist(plateau, w, h) == 0)
         {
             if (move == 0)
             {
@@ -162,7 +162,7 @@ int main()
             }
             i = (i + 1) % speed;
         }
-        if (mort == 1)
+        if (mort == 1 || gom_exist(plateau, w, h) != 0)
         {
             afficherGameOver(window, renderer, font);
         }

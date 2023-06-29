@@ -160,12 +160,16 @@ int gom_exist(int ** plateau, int w, int h)
     int i=0;
     int j=0;
 
-    while(i<w || rep!=0)
+    while(i<w && rep!=0)
     {
-        while(j<h || rep!=0)
+        while(j<h && rep!=0)
         {
             rep=plateau[i][j];
+            j++;
         }
+        i++;
+        j=0;
     }
+    
     return rep;
 }
