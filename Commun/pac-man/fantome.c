@@ -106,13 +106,13 @@ int getNextMove(int **plateau,int** heuristique, int fantX, int fantY)
 
 void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     SDL_Window *window,
-    int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin)
+    int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin, int* mort)
 {
     SDL_Rect
         window_dimensions = {0};
 
     int ** heuri= heuristique(plateau,Pac_man->posX, Pac_man->posY, w,h);
-
+    
     SDL_GetWindowSize(window,
                       &window_dimensions.w,
                       &window_dimensions.h);
@@ -122,21 +122,21 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     switch ((move))
     {
     case 1:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 1);
+        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 1, mort);
         rectBlin->y += window_dimensions.h / h;
         break;
     case 2:
         fprintf(stderr, "%d \n", move);
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2);
+        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2, mort);
         rectBlin->x -= window_dimensions.w / w;
         break;
 
     case 3:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 3);
+        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 3, mort);
         rectBlin->y -= window_dimensions.h / h;
         break;
     case 4:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 4);
+        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 4, mort);
         rectBlin->x += window_dimensions.w / w;
         break;
 

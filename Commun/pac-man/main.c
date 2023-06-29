@@ -40,6 +40,7 @@ int main()
     int speedMove = 200000;
     int i = 0;
     int move=0;
+    int mort = 0;
     int etatAnimPac = 0;
     int etatAnimBlin =0;
     SDL_RenderPresent(renderer);
@@ -64,50 +65,65 @@ int main()
 
                     break;
                 case SDLK_DOWN:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1))
+                    if (mort != 1)
                     {
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 1);
-                        rectPac.y = rectPac.y + (WINDOWL / h);
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1))
+                        {
+                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
+                            rectPac.y = rectPac.y + (WINDOWL / h);
+                        }
                     }
                     break;
                 case SDLK_UP:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3))
+                    if (mort != 1)
                     {
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 3);
-                        rectPac.y = rectPac.y - (WINDOWL / h);
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3))
+                        {
+                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
+                            rectPac.y = rectPac.y - (WINDOWL / h);
+                        }
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4))
+                    if (mort != 1)
                     {
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 4);
-                        rectPac.x = rectPac.x + (WINDOWW / w);
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4))
+                        {
+                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
+                            rectPac.x = rectPac.x + (WINDOWW / w);
+                        }
                     }
                     break;
                 case SDLK_LEFT:
-                    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2))
+                    if (mort != 1)
                     {
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 2);
-                        rectPac.x = rectPac.x - (WINDOWW / w);
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2))
+                        {
+                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
+                            rectPac.x = rectPac.x - (WINDOWW / w);
+                        }
                     }
                 default:
                     break;
                 }
             }
         }
-        if (move == 0)
+        if (mort != 1)
         {
-           moveBlinky(window,plateau,w,h,Blinky,Pac_man,&rectBlin); 
+            if (move == 0)
+            {
+                moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+            }
+            move = (move + 1) % speedMove;
+            if (i == 0)
+            {
+                afficherPlateau(tabRect, plateau, w, h, window, renderer);
+                animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac);
+                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin);
+                SDL_RenderPresent(renderer);
+            }
+            i = (i + 1) % speed;
         }
-        move = (move + 1) % speedMove;
-        if (i == 0)
-        {
-            afficherPlateau(tabRect, plateau, w, h, window, renderer);
-            animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac);
-            animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin);
-            SDL_RenderPresent(renderer);
-        }
-        i = (i + 1) % speed;
     }
 
     end_sdl(1, "Normal ending", window, renderer);
