@@ -94,14 +94,14 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
         {
             DeplacementPossible = 1;
         }
-        
+        break;
     case 4: // bas
         int yb = yPerso + 1;
         if(plateau[xPerso][yb] == 0 || plateau[xPerso][yb] == -1 || plateau[xPerso][yb] >= 200)
         {
             DeplacementPossible = 1;
         }
-
+        break;
     default:
         break;
     }
@@ -117,16 +117,16 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
         switch (direction)
         {
         case 1: // droite
-            xDeplacement = xPerso + 1;
+            xDeplacement = *xPerso + 1;
             break;
         case 2: // haut
-            yDeplacement = yPerso - 1;
+            yDeplacement = *yPerso - 1;
             break;
         case 3: // gauche
-            xDeplacement = xPerso - 1;
+            xDeplacement = *xPerso - 1;
             break;
         case 4: // bas
-            yDeplacement = yPerso + 1;
+            yDeplacement = *yPerso + 1;
             break;
         
         default:

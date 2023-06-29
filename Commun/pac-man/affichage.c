@@ -1,27 +1,25 @@
 #include "affichage.h"
 
-
-
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
 {
-    SDL_Rect ** tabRect = malloc(sizeof(SDL_Rect *)*w);
+    SDL_Rect **tabRect = malloc(sizeof(SDL_Rect *) * w);
     int fondW, fondH;
     SDL_GetWindowSize(window, &fondW, &fondH);
-    int larg = fondW/w;
-    int haut= fondH/h;
-        for (int i = 0; i < w; i++)
+    int larg = fondW / w;
+    int haut = fondH / h;
+    for (int i = 0; i < w; i++)
     {
 
-         SDL_Rect * ligneRect = malloc(sizeof(SDL_Rect )*w);
-         tabRect[i]=ligneRect;
+        SDL_Rect *ligneRect = malloc(sizeof(SDL_Rect) * w);
+        tabRect[i] = ligneRect;
         for (int j = 0; j < h; j++)
         {
             SDL_Rect rect;
-            rect.x = i*larg;
-            rect.y= j* haut;
-            rect.w=larg;
-            rect.h=haut;
-            tabRect[i][j]=rect;
+            rect.x = i * larg;
+            rect.y = j * haut;
+            rect.w = larg;
+            rect.h = haut;
+            tabRect[i][j] = rect;
         }
     }
     return tabRect;
@@ -37,7 +35,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     {
         for (int j = 0; j < h; j++)
         {
-            if (plateau[j][i] != 0)
+            if (plateau[j][i] != 0 && plateau[j][i] != 99)
             {
                 SDL_Rect
                     source = {0},
@@ -51,11 +49,10 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
                 int offset_x = source.w / nb_images,
                     offset_y = source.h;
 
-                state.x = (plateau[j][i]-1) * offset_x;
+                state.x = (plateau[j][i] - 1) * offset_x;
                 state.y = 0;
                 state.w = offset_x;
                 state.h = offset_y;
-
 
                 SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
                                &state,
@@ -63,16 +60,15 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
             }
         }
     }
-    SDL_RenderPresent(renderer);
 }
 
-void afficherPerso(perso_t perso, SDL_Window *window, SDL_Renderer *renderer)
+void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect **tabRect)
 {
     char pathImg[255];
-    switch (perso.id)
+    switch (perso->id)
     {
     case 99:
-        sprintf(pathImg, "./source/pacman.png");
+        sprintf(pathImg, "./source/Pac-man.png");
         break;
     case 200:
         sprintf(pathImg, "./source/Blinky.png");
@@ -82,7 +78,9 @@ void afficherPerso(perso_t perso, SDL_Window *window, SDL_Renderer *renderer)
         break;
     }
     SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
-    SDL_Rect pos = {perso.posX, perso.posY, 0, 0};                              // rectangle où le texte va être prositionné
+    SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_RenderCopy(renderer, my_texture, NULL, &pos);
+    SDL_Rect state = {0, 0, pos.w / 4, pos.h/4};
+
+    SDL_RenderCopy(renderer, my_texture, &state, &tabRect[perso->posY][perso->posX]);
 }

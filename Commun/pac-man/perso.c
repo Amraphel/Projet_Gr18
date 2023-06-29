@@ -1,9 +1,9 @@
 #include "perso.h"
-perso_t* initPac_man(int ** plateau){
+perso_t* initPac_man(int ** plateau, int w, int h){
     perso_t* Pac_man = malloc(sizeof(perso_t));
     Pac_man->id=99;
-    coordPlat(plateau, w, h, Pac_man->id, &Pac_man->posx, &Pac_man->posy);
-
+    coordPlat(plateau, w, h, Pac_man->id, &Pac_man->posX, &Pac_man->posY);
+    return Pac_man;
 }
 
 
@@ -40,6 +40,6 @@ void mouv_Pac_man(SDL_Texture *my_texture, SDL_Window *window, SDL_Renderer *ren
     destination.x = *posX;
     destination.y = *posY;
 
-    movePersoInPlateau(int ** plateau, int* posX, int* posY, 99, direction)         
+    // movePersoInPlateau(plateau, posX, posY, 99, direction);         
     SDL_RenderCopy(renderer, my_texture, &state, &destination); 
 }

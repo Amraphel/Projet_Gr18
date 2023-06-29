@@ -20,7 +20,7 @@ int getNextMove(int **plateau, int fantX, int fantY, int pacX, int pacY)
     int heuri = -1;
     for (int i = 1; i < 5; i++)
     {
-        if (mouvPossible(fantX, fantY, i))
+        if (movePossible(plateau,fantX, fantY, i))
         {
             int newHeuri = heuriBasique(fantX, fantY, pacX, pacY);
             if (heuri == -1 || heuri > newHeuri)
