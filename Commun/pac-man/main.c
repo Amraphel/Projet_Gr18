@@ -9,7 +9,7 @@ int main()
 {
     int w;
     int h;
-    int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl2.txt", &w, &h);
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -162,9 +162,13 @@ int main()
             }
             i = (i + 1) % speed;
         }
-        if (mort == 1 || gom_exist(plateau, w, h) != 0)
+        if (mort == 1)
         {
             afficherGameOver(window, renderer, font);
+        }
+        if (gom_exist(plateau, w, h) != 0)
+        {
+            afficherBravo(window, renderer, font);
         }
     }
 
