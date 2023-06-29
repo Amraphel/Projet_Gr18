@@ -136,6 +136,9 @@ void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font
         end_sdl(0, "Can't create text surface", window, renderer);
     }
 
+    int W, H;
+    SDL_GetWindowSize(window, &W, &H);
+
     // Création de la texture du text
     SDL_Texture *text_texture = NULL;                                    // la texture qui contient le texte
     text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); // transfert de la surface à la texture
@@ -146,7 +149,7 @@ void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font
 
     SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
 
-    SDL_Rect pos = {10, 0, 0, 0};                               // rectangle où le texte va être prositionné
+    SDL_Rect pos = {W/8 , H/2 - 62, 0, 0};                               // rectangle où le texte va être prositionné
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
     SDL_DestroyTexture(text_texture);
