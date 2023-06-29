@@ -4,6 +4,7 @@
 #include "perso.h"
 #endif 
 #include "fantome.h"
+#include "SDLBasic.h"
 
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h);
 void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window *window, SDL_Renderer *renderer);

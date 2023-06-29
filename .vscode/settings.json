@@ -8,6 +8,7 @@
         "sdl_image.h": "c",
         "stdio.h": "c",
         "sdl.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "affichage.h": "c"
     }
 }
