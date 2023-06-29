@@ -79,11 +79,21 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlatea
         else
         {
             xDeplacement = xd;
+            estDeplacer = 1;
         }
         break;
 
-    case 2: //haut
+    case 2: // haut
         int yh = yPerso - 1;
+        if (yh > hMaxPlateau - 1)
+        {
+            yDeplacement = yPerso;
+        }
+        else
+        {
+            yDeplacement = yh;
+            estDeplacer = 1;
+        }
         break;
 
     case 3: // gauche
@@ -95,18 +105,31 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlatea
         else
         {
             xDeplacement = xg;
+            estDeplacer = 1;
         }
         break;
 
-    case 4: //bas
+    case 4: // bas
         int yb = yPerso + 1;
+        if (yb < 0)
+        {
+            yDeplacement = yPerso;
+        }
+        else
+        {
+            yDeplacement = yb;
+            estDeplacer = 1;
+        }
         break;
-    
+
     default:
         break;
     }
     if( estDeplacer == 1)
     {
-       //**plateau[xPerso][yPerso] -= 100;
+        //plateau[xPerso][yPerso] -= 100;
+        //plateau[xDeplacement][yDeplacement] = 99;
+        //*xPerso = xDeplacement;
+        //*yPerso = yDeplacement;
     }
 }
