@@ -66,24 +66,40 @@ int **loadPlateau(char *lvl, int *w, int *h)
 
 void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlateau, int hMaxPlateau, int direction)
 {
-    int xg, xd, yh, hb;
+    int xDeplacement, yDeplacement;
     int estDeplacer = 0;
     switch (direction)
     {
-    case 1: //droite
-         
+    case 1: // droite
+        int xd = xPerso + 1;
+        if (xd > wMaxPlateau - 1)
+        {
+            xDeplacement = xPerso;
+        }
+        else
+        {
+            xDeplacement = xd;
+        }
         break;
-    
+
     case 2: //haut
-        /* code */
+        int yh = yPerso - 1;
         break;
-    
-    case 3: //gauche
-        /* code */
+
+    case 3: // gauche
+        int xg = xPerso - 1;
+        if (xg < 0)
+        {
+            xDeplacement = xPerso;
+        }
+        else
+        {
+            xDeplacement = xg;
+        }
         break;
-    
+
     case 4: //bas
-        /* code */
+        int yb = yPerso + 1;
         break;
     
     default:
@@ -91,6 +107,6 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlatea
     }
     if( estDeplacer == 1)
     {
-       // *plateau[xPerso][yPerso] -= 100;
+       //**plateau[xPerso][yPerso] -= 100;
     }
 }
