@@ -16,7 +16,7 @@ void coordPlat(int **plateau,int w, int h, int val, int *x, int *y);
 
 int movePossible(int** plateau, int xPerso, int yPerso, int direction);
 
-void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso,int direction);
+void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso,int direction, int* mort);
 
 void printPlateau(int **mat, int w, int h);
 
