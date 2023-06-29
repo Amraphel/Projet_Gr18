@@ -122,7 +122,7 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
         rectBlin->y += window_dimensions.h / h;
         break;
     case 2:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2);
+        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2, mort);
         rectBlin->x -= window_dimensions.w / w;
         break;
 
