@@ -17,3 +17,5 @@ void coordPlat(int **plateau,int w, int h, int val, int *x, int *y);
 void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlateau, int hMaxPlateau, int direction);
 
 void printPlateau(int **mat, int w, int h);
+
+int gom_exist(int ** plateau, int taille);

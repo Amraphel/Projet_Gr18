@@ -133,3 +133,16 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int wMaxPlatea
         *yPerso = yDeplacement;
     }
 }
+
+int gom_exist(int ** plateau, int taille)
+{
+    int rep=1;
+    for (int i=0; i<taille; i++)
+    {
+        for (int j=0; j<taille; j++)
+        {
+            rep=rep*plateau[i][j];
+        }
+    }
+    return rep;
+}

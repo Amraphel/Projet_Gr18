@@ -1,6 +1,13 @@
 #include "perso.h"
+perso_t* initPac_man(int ** plateau){
+    perso_t* Pac_man = malloc(sizeof(perso_t));
+    Pac_man->id=99;
+    coordPlat(plateau, w, h, Pac_man->id, &Pac_man->posx, &Pac_man->posy);
 
-void play_with_texture_4(SDL_Texture *my_texture,
+}
+
+
+void mouv_Pac_man(SDL_Texture *my_texture,
                          SDL_Window *window,
                          SDL_Renderer *renderer)
 {
@@ -34,52 +41,57 @@ void play_with_texture_4(SDL_Texture *my_texture,
 
     destination.y = 
         (window_dimensions.h - destination.h) / 2;
-    int speed=1;
-    while (destination.x<window_dimensions.w-destination.w) //à modifier: tant que pac-man est vivant et qu'il reste des pac-gommes
+    
+    while (plateau[&Pac_man->posx][]) //à modifier: tant que pac-man est vivant et qu'il reste des pac-gommes
     {
+        
         SDL_WaitEvent(&event);
         switch(event.type)
         {
             case SDL_KEYDOWN:
             switch(event.key.keysym.sym)
             {
-                case SDLK_UP:
-                SDL_RenderClear(renderer);     
-                //si la case est accessible      
-                destination.y=destination.y-speed;
-                state.x += offset_x; 
-                state.x %= source.w; 
-                SDL_RenderPresent(renderer); 
+                case SDLK_UP:     
+                if(plateau[&Pac_man->posx-1][&Pac_man->posy]==0 || plateau[&Pac_man->posx-1][&Pac_man->posy]==-1 || plateau[&Pac_man->posx-1][&Pac_man->posy]>=200)
+                {
+                    SDL_RenderClear(renderer);  
+                    destination.x=destination.x-speed;
+                    state.x += offset_x; 
+                    state.x %= source.w; 
+                    SDL_RenderPresent(renderer);
+                }    
                 break;
                 case SDLK_DOWN:
-                SDL_RenderClear(renderer);
-                //si la case est accessible          
-                destination.y=destination.y+speed;
-                state.x += offset_x; 
-                state.x %= source.w; 
-                SDL_RenderPresent(renderer); 
+                if(plateau[&Pac_man->posx+1][&Pac_man->posy]==0 || plateau[&Pac_man->posx+1][&Pac_man->posy]==-1 || plateau[&Pac_man->posx+1][&Pac_man->posy]>=200)
+                {
+                    SDL_RenderClear(renderer);  
+                    destination.x=destination.x+speed;
+                    state.x += offset_x; 
+                    state.x %= source.w; 
+                    SDL_RenderPresent(renderer);
+                }    
+                break;        
                 case SDLK_RIGHT:
-                SDL_RenderClear(renderer);  
-                //si l acase est accessible         
-                destination.x=destination.x+speed;
-                state.x += offset_x; 
-                state.x %= source.w; 
-                SDL_RenderPresent(renderer); 
-                break;
+                if(plateau[&Pac_man->posx][&Pac_man->posy-1]==0 || plateau[&Pac_man->posx][&Pac_man->posy-1]==-1 || plateau[&Pac_man->posx][&Pac_man->posy-1]>=200)
+                {
+                    SDL_RenderClear(renderer);  
+                    destination.y=destination.y+speed;
+                    state.x += offset_x; 
+                    state.x %= source.w; 
+                    SDL_RenderPresent(renderer);
+                }    
+                break;        
                 case SDLK_LEFT:
-                SDL_RenderClear(renderer); 
-                //si la case est accessible         
-                destination.x=destination.x-speed;
-                state.x += offset_x; 
-                state.x %= source.w; 
-                SDL_RenderPresent(renderer); 
-                break;
+                if(plateau[&Pac_man->posx][&Pac_man->posy+1]==0 || plateau[&Pac_man->posx][&Pac_man->posy+1]==-1 || plateau[&Pac_man->posx][&Pac_man->posy+1]>=200)
+                {
+                    SDL_RenderClear(renderer);  
+                    state.x += offset_x; 
+                    state.x %= source.w; 
+                    SDL_RenderPresent(renderer);
+                }    
+                break;        
             }
             break;
         }
-    }
-    
-   
-   
-    SDL_RenderClear(renderer); 
+    } 
 }
