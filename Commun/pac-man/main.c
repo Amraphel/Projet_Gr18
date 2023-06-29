@@ -24,6 +24,8 @@ int main()
     SDL_Rect** tabRect = createTabRect(window,w,h);
     afficherPlateau(tabRect,plateau,w,h,window,renderer);
 
+    //void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
+
     SDL_Delay(6000);
     end_sdl(1, "Normal ending", window, renderer);
     return 0;
