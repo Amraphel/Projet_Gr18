@@ -38,7 +38,8 @@ int main()
 
     int speed = 100000;
     int i = 0;
-    int etatAnim = 0;
+    int etatAnimPac = 0;
+    int etatAnimBlin =0;
     SDL_RenderPresent(renderer);
     while (program_on)
     {
@@ -95,8 +96,8 @@ int main()
         if (i == 0)
         {
             afficherPlateau(tabRect, plateau, w, h, window, renderer);
-            animePerso(Pac_man, window, renderer, &rectPac, &etatAnim);
-            afficherPerso(Blinky,window,renderer,&rectBlin);
+            animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac);
+            animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin);
             SDL_RenderPresent(renderer);
         }
         i = (i + 1) % speed;
