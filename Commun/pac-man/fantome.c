@@ -1,6 +1,6 @@
 #include "fantome.h"
 
-void play_with_texture_Blinky(SDL_Texture *my_texture,     //fonction blinky : plus court chemin vers pac-man
+void moveBlinky(SDL_Texture *my_texture,     //fonction blinky : plus court chemin vers pac-man
                          SDL_Window *window,
                          SDL_Renderer *renderer)
 {

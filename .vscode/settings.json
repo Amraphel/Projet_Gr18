@@ -2,6 +2,11 @@
     "files.associations": {
         "graphe.h": "c",
         "parcours.h": "c",
-        "plateau.h": "c"
+        "plateau.h": "c",
+        "perso.h": "c",
+        "fantome.h": "c",
+        "sdl_image.h": "c",
+        "stdio.h": "c",
+        "sdl.h": "c"
     }
 }
