@@ -1,9 +1,6 @@
 #include "point.h"
 
 
-/* Creation d'une liste de point avec des coordonnees aleatoire 
-   nombreDePoint -> nombre de point maximun
-   window -> fenetre dans laquelle le graphe sera affiché */
 point_t* tabPointAleatoire(int nombreDePoint, SDL_Window *window)
 {
     int tailleGrille = 3*nombreDePoint;
