@@ -66,7 +66,7 @@ SDL_Renderer *initRenderer(SDL_Window *window)
     {
         end_sdl(0, "ERROR RENDERER CREATION", window, renderer);
     }
-    SDL_SetRenderDrawColor(renderer, 65, 105, 225, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
     return renderer;

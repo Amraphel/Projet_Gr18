@@ -17,7 +17,7 @@ int main()
                 SDL_GetError());
         exit(EXIT_FAILURE);
     }
-    
+
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;
@@ -29,12 +29,22 @@ int main()
     SDL_Renderer *renderer = initRenderer(window);
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
-    perso_t *Blinky=initBlinky(plateau,w,h);
-    afficherPlateau(tabRect, plateau, w, h, window, renderer);
+    perso_t *Blinky = initBlinky(plateau, w, h);
+    perso_t *Clyde = initClyde(plateau, w, h);
+    // afficherPlateau(tabRect, plateau, w, h, window, renderer);
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
-    afficherPerso(Blinky,window,renderer,&rectBlin);
+    SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
+    if (Blinky->posX != 0)
+    {
+        afficherPerso(Blinky, window, renderer, &rectBlin);
+    }
+
     afficherPerso(Pac_man, window, renderer, &rectPac);
+    if (Clyde->posX != 0)
+    {
+        afficherPerso(Clyde, window, renderer, &rectCly);
+    }
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
     if (TTF_Init() < 0)
@@ -42,22 +52,24 @@ int main()
 
     TTF_Font *font = NULL;
 
-    font = TTF_OpenFont("./Front/BadComic-Regular.ttf", 30);
+    font = TTF_OpenFont("./Front/BadComic-Regular.ttf", 90);
     if (font == NULL)
     {
         end_sdl(0, "Can't load font", window, renderer);
     }
 
-
     int speed = 100000;
     int speedMove = 200000;
     int i = 0;
-    int move=0;
+    int move = 0;
     int mort = 0;
     int etatAnimPac = 0;
-    int etatAnimBlin =0;
-    Pac_man->etat=0;
+    int etatAnimBlin = 0;
+    int keyPressed = 0;
+    int direction = 0;
+    Pac_man->etat = 0;
     SDL_RenderPresent(renderer);
+
     while (program_on)
     {
         event_utile = SDL_FALSE;
@@ -79,85 +91,112 @@ int main()
 
                     break;
                 case SDLK_DOWN:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
-                            rectPac.y = rectPac.y + (WINDOWL / h);
-                            Pac_man->etat=3;
+                            direction = 1;
                         }
                     }
                     break;
                 case SDLK_UP:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
-                            rectPac.y = rectPac.y - (WINDOWL / h);
-                            Pac_man->etat=1;
+                            direction = 3;
                         }
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
-                            rectPac.x = rectPac.x + (WINDOWW / w);
-                            Pac_man->etat=0;
+                            direction = 4;
                         }
                     }
                     break;
                 case SDLK_LEFT:
-                    if (mort != 1)
+                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
                     {
-<<<<<<< HEAD
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2))
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
                         {
-                            movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
-                            rectPac.x = rectPac.x - (WINDOWW / w);
-                            Pac_man->etat=2;
+                            direction = 2;
                         }
-=======
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, 99, 2);
-                        rectPac.x = rectPac.x - (WINDOWW / w);
-                        Pac_man->etat=2;
->>>>>>> dc78fee1175c3ee39d65a4905b30491843afc95c
                     }
                 default:
                     break;
                 }
             }
         }
-        if (mort != 1)
+        if (mort != 1 && gom_exist(plateau, w, h) == 0)
         {
             if (move == 0)
             {
-                moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+                if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction))
+                {
+                    switch (direction)
+                    {
+                    case 1:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
+                        rectPac.y = rectPac.y + (WINDOWL / h);
+                        Pac_man->etat = 3;
+                        break;
+                    case 3:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
+                        rectPac.y = rectPac.y - (WINDOWL / h);
+                        Pac_man->etat = 1;
+                        break;
+                    case 4:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
+                        rectPac.x = rectPac.x + (WINDOWW / w);
+                        Pac_man->etat = 0;
+                        break;
+                    case 2:
+                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
+                        rectPac.x = rectPac.x - (WINDOWW / w);
+                        Pac_man->etat = 2;
+                        break;
+                    default:
+                        break;
+                    }
+                }
+                if (Blinky->posX != 0)
+                {
+                    moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+                }
+                if (Clyde->posX != 0)
+                {
+                    moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort);
+                }
             }
             move = (move + 1) % speedMove;
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
-<<<<<<< HEAD
-                animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, 0);
-                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
-=======
                 animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, Pac_man->etat);
-                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin,0);
->>>>>>> dc78fee1175c3ee39d65a4905b30491843afc95c
+                if (Blinky->posX != 0)
+                {
+                    animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
+                }
+
+                if (Clyde->posX != 0)
+                {
+                    animePerso(Clyde, window, renderer, &rectCly, &etatAnimBlin, 0);
+                }
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;
         }
-        if(mort == 1)
+        if (mort == 1)
         {
             afficherGameOver(window, renderer, font);
         }
-        
+        if (gom_exist(plateau, w, h) != 0)
+        {
+            afficherBravo(window, renderer, font);
+        }
     }
 
     end_sdl(1, "Normal ending", window, renderer);

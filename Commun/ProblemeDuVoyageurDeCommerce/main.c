@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 {
     time_t t;
     time(&t);
-    srand(t);
+    srand(42);
     SDL_bool
         program_on = SDL_TRUE,
         event_utile = SDL_FALSE;

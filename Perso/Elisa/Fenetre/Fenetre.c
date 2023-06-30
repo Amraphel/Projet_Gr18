@@ -77,12 +77,7 @@ SDL_Window *initWindow(int x, int y, int w, int h)
 {
   SDL_Window *window = NULL;
 
-  if (SDL_Init(SDL_INIT_VIDEO) != 0)
-  {
-    SDL_Log("Error : SDL initialisation - %s\n",
-            SDL_GetError());
-    exit(EXIT_FAILURE);
-  }
+  
   window = SDL_CreateWindow(
       "Fenêtre",
       x, y,
@@ -322,6 +317,13 @@ int main(int argc, char **argv)
     exit(EXIT_FAILURE);
   }
 
+  if (SDL_Init(SDL_INIT_VIDEO) != 0)
+  {
+    SDL_Log("Error : SDL initialisation - %s\n",
+            SDL_GetError());
+    exit(EXIT_FAILURE);
+  }
+
   // Création de la première fenetre et son renderer
   window_1 = initWindow(0, 0, 425, 50);
   renderer = initRenderer(window_1);
@@ -463,7 +465,7 @@ int main(int argc, char **argv)
             SDL_RenderClear(renderer3);
             SDL_RenderPresent(renderer3);
 
-            SDL_Delay(500);
+            SDL_Delay(2500);
             int h = 500, w = 500;
             int r = 255, g = 112, b = 0;
 
@@ -523,6 +525,7 @@ int main(int argc, char **argv)
           renderer4 = initRenderer(window_4);
 
           SDL_Rect fond[250];
+          
 
           int fondW;
           int fondH;
@@ -546,7 +549,7 @@ int main(int argc, char **argv)
 
           animePerso(animeP, renderer4);
 
-          int speed = 10000;
+          int speed = 15000;
           int i = 0;
           while (program_on)
           { // La boucle des évènements

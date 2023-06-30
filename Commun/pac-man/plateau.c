@@ -2,6 +2,8 @@
 
 void coordPlat(int **plateau,int w, int h, int val, int *x, int *y)
 {
+    *x=0;
+    *y=0;
     for (int i = 0; i < w; i++)
     {
         for (int j = 0; j < h; j++)
@@ -157,12 +159,19 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
 int gom_exist(int ** plateau, int w, int h)
 {
     int rep=1;
-    for (int i=0; i<w; i++)
+    int i=0;
+    int j=0;
+
+    while(i<w && rep!=0)
     {
-        for (int j=0; j<h; j++)
+        while(j<h && rep!=0)
         {
-            rep=rep*plateau[i][j];
+            rep=plateau[i][j];
+            j++;
         }
+        i++;
+        j=0;
     }
+    
     return rep;
 }

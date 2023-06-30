@@ -195,7 +195,7 @@ void score(int poidsParcours, int poidsFourmis, int poidsRecuit, int* scoreAffic
     }
     else
     {
-        *scoreAffiche = (poidsAlgo * 100) / poidsFourmis;
+        *scoreAffiche = (poidsAlgo * 100) / poidsParcours;
     }
 
 }
