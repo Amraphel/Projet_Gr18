@@ -10,3 +10,4 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
                 int** plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect* rectBlin, int* mort);
                 
 perso_t *initClyde(int **plateau, int w, int h);
+void moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, SDL_Rect *rectClyde, int *mort);

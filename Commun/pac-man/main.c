@@ -35,9 +35,16 @@ int main()
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
-    afficherPerso(Blinky, window, renderer, &rectBlin);
+    if (Blinky->posX != 0)
+    {
+        afficherPerso(Blinky, window, renderer, &rectBlin);
+    }
+
     afficherPerso(Pac_man, window, renderer, &rectPac);
-    afficherPerso(Clyde, window, renderer, &rectCly);
+    if (Clyde->posX != 0)
+    {
+        afficherPerso(Clyde, window, renderer, &rectCly);
+    }
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
     if (TTF_Init() < 0)
@@ -62,7 +69,7 @@ int main()
     int direction = 0;
     Pac_man->etat = 0;
     SDL_RenderPresent(renderer);
-    
+
     while (program_on)
     {
         event_utile = SDL_FALSE;
@@ -127,7 +134,8 @@ int main()
         {
             if (move == 0)
             {
-                if(movePossible(plateau, Pac_man->posX, Pac_man->posY, direction)){
+                if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction))
+                {
                     switch (direction)
                     {
                     case 1:
@@ -154,14 +162,29 @@ int main()
                         break;
                     }
                 }
-                moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+                if (Blinky->posX != 0)
+                {
+                    moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+                }
+                if (Clyde->posX != 0)
+                {
+                    moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort);
+                }
             }
             move = (move + 1) % speedMove;
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
                 animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, Pac_man->etat);
-                animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
+                if (Blinky->posX != 0)
+                {
+                    animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
+                }
+
+                if (Clyde->posX != 0)
+                {
+                    animePerso(Clyde, window, renderer, &rectCly, &etatAnimBlin, 0);
+                }
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;

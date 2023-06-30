@@ -112,10 +112,14 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY)
     return dir;
 }
 
-void moveRandom(int **plateau, int w, int h, perso_t *Clyde, int *mort)
+void moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde, int *mort, SDL_Rect* rectCly)
 {
     int i = rand() % 4 + 1;
-
+        SDL_Rect
+        window_dimensions = {0};
+    SDL_GetWindowSize(window,
+                      &window_dimensions.w,
+                      &window_dimensions.h);
     while (!movePossible(plateau, Clyde->posX, Clyde->posY, i)){
         i = rand() % 4 + 1;
     }
@@ -125,15 +129,19 @@ void moveRandom(int **plateau, int w, int h, perso_t *Clyde, int *mort)
         {
         case 1:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 1, mort);
+            rectCly->y += window_dimensions.h / h;
             break;
         case 2:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 2, mort);
+            rectCly->x -= window_dimensions.w / w;
             break;
         case 3:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 3, mort);
+            rectCly->y -= window_dimensions.h / h;
             break;
         case 4:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 4, mort);
+            rectCly->x += window_dimensions.w / w;
             break;
 
         default:
@@ -185,7 +193,7 @@ void moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, 
 {
     int i=rand()%100 +1;
     if(i<25){
-        moveRandom(plateau,w,h,Clyde,mort);
+        moveRandom(plateau,window,w,h,Clyde,mort, rectClyde);
     } else{
         moveBlinky(window,plateau,w,h,Clyde, Pac_man,rectClyde,mort);
     }

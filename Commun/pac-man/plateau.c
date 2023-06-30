@@ -2,6 +2,8 @@
 
 void coordPlat(int **plateau,int w, int h, int val, int *x, int *y)
 {
+    *x=0;
+    *y=0;
     for (int i = 0; i < w; i++)
     {
         for (int j = 0; j < h; j++)
