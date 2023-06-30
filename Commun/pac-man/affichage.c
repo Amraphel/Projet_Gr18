@@ -110,6 +110,11 @@ void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, S
         nbw = 3;
         nbh = 1;
         break;
+    case 210:
+        sprintf(pathImg, "./source/Clyde.png");
+        nbw = 3;
+        nbh = 1;
+        break;
 
     default:
         break;
@@ -137,6 +142,13 @@ void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_
         break;
     case 200:
         sprintf(pathImg, "./source/Blinky.png");
+        nbw = 3;
+        nbh = 1;
+
+        break;
+
+    case 210:
+        sprintf(pathImg, "./source/Clyde.png");
         nbw = 3;
         nbh = 1;
 
