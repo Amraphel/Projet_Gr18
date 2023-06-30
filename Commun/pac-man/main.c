@@ -9,7 +9,7 @@ int main()
 {
     int w;
     int h;
-    int **plateau = loadPlateau("./source/lvl2.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
