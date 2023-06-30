@@ -1,17 +1,15 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
-/************************************/
-/*  exemple de création de fenêtres */
-/************************************/
+
 
 SDL_Rect draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
     SDL_Rect rectangle;
 
     SDL_SetRenderDrawColor(renderer,
-                           255, 255, 255, // mode Red, Green, Blue (tous dans 0..255)
-                           255);          // 0 = transparent ; 255 = opaque
+                           255, 255, 255, 
+                           255);          
     rectangle.x = x;                      // x haut gauche du rectangle
     rectangle.y = y;                      // y haut gauche du rectangle
     rectangle.w = w;                      // sa largeur (w = width)
@@ -57,11 +55,11 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);
     }
     getMaxSize(&w, &h);
-    /* Création de la fenêtre de gauche */
+    
     window_1 = SDL_CreateWindow(
         "",    // codage en utf8, donc accents possibles
         0, 0,                  // coin haut gauche en haut gauche de l'écran
-        w, h,              // largeur = 400, hauteur = 300
+        w, h,              
         SDL_WINDOW_RESIZABLE); // redimensionnable
 
     if (window_1 == NULL)
