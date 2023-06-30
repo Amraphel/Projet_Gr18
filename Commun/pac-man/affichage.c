@@ -95,7 +95,6 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
 
 void afficherPerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
 {
-    char pathImg[255];
     int nbw = 4;
     int nbh = 4;
 

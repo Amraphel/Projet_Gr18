@@ -9,6 +9,9 @@ int main()
 {
     int w;
     int h;
+    time_t t;
+    time(&t);
+    srand(t);
     int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
 
     printPlateau(plateau, w, h);
