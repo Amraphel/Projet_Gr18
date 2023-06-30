@@ -130,18 +130,22 @@ void moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde,
         case 1:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 1, mort);
             rectCly->y += window_dimensions.h / h;
+            Clyde->etat=3;
             break;
         case 2:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 2, mort);
             rectCly->x -= window_dimensions.w / w;
+            Clyde->etat=2;
             break;
         case 3:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 3, mort);
             rectCly->y -= window_dimensions.h / h;
+            Clyde->etat=1;
             break;
         case 4:
             movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 4, mort);
             rectCly->x += window_dimensions.w / w;
+            Clyde->etat=0;
             break;
 
         default:
@@ -169,19 +173,23 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     case 1:
         movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 1, mort);
         rectBlin->y += window_dimensions.h / h;
+        Blinky->etat=3;
         break;
     case 2:
         movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2, mort);
         rectBlin->x -= window_dimensions.w / w;
+        Blinky->etat=2;
         break;
 
     case 3:
         movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 3, mort);
         rectBlin->y -= window_dimensions.h / h;
+        Blinky->etat=1;
         break;
     case 4:
         movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 4, mort);
         rectBlin->x += window_dimensions.w / w;
+        Blinky->etat=0;
         break;
 
     default:

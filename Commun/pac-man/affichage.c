@@ -93,33 +93,12 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
    // free(gom);
 }
 
-void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *RectPac)
+void afficherPerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
 {
     char pathImg[255];
-    int nbw = 0;
-    int nbh = 0;
-    switch (perso->id)
-    {
-    case 99:
-        sprintf(pathImg, "./source/Pac-man.png");
-        nbw = 4;
-        nbh = 4;
-        break;
-    case 200:
-        sprintf(pathImg, "./source/Blinky.png");
-        nbw = 3;
-        nbh = 1;
-        break;
-    case 210:
-        sprintf(pathImg, "./source/Clyde.png");
-        nbw = 3;
-        nbh = 1;
-        break;
+    int nbw = 4;
+    int nbh = 4;
 
-    default:
-        break;
-    }
-    SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
     SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_Rect state = {0, 0, pos.w / nbw, pos.h / nbh};
@@ -127,37 +106,12 @@ void afficherPerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, S
     SDL_RenderCopy(renderer, my_texture, &state, RectPac);
 }
 
-void animePerso(perso_t *perso, SDL_Window *window, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
+void animePerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
 {
     char pathImg[255];
-    int nbw = 0;
-    int nbh = 0;
-    switch (perso->id)
-    {
-    case 99:
-        sprintf(pathImg, "./source/Pac-man.png");
-        nbw = 4;
-        nbh = 4;
+    int nbw = 4;
+    int nbh = 4;
 
-        break;
-    case 200:
-        sprintf(pathImg, "./source/Blinky.png");
-        nbw = 3;
-        nbh = 1;
-
-        break;
-
-    case 210:
-        sprintf(pathImg, "./source/Clyde.png");
-        nbw = 3;
-        nbh = 1;
-
-        break;
-
-    default:
-        break;
-    }
-    SDL_Texture *my_texture = load_texture_from_image(pathImg, window, renderer);
     SDL_Rect pos = {0, 0, 0, 0};
     SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_Rect state = {(*etatAnim) * pos.w / nbw, dir * pos.h / nbh, pos.w / nbw, pos.h / nbh};

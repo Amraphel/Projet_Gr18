@@ -10,6 +10,7 @@
         "sdl.h": "c",
         "stdlib.h": "c",
         "affichage.h": "c",
-        "recherchelocal.h": "c"
+        "recherchelocal.h": "c",
+        "sdlbasic.h": "c"
     }
 }
