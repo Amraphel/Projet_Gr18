@@ -30,11 +30,14 @@ int main()
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
     perso_t *Blinky = initBlinky(plateau, w, h);
+    perso_t *Clyde = initClyde(plateau, w, h);
     // afficherPlateau(tabRect, plateau, w, h, window, renderer);
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
+    SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     afficherPerso(Blinky, window, renderer, &rectBlin);
     afficherPerso(Pac_man, window, renderer, &rectPac);
+    afficherPerso(Clyde, window, renderer, &rectCly);
     // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
     if (TTF_Init() < 0)
@@ -59,6 +62,7 @@ int main()
     int direction = 0;
     Pac_man->etat = 0;
     SDL_RenderPresent(renderer);
+    
     while (program_on)
     {
         event_utile = SDL_FALSE;
