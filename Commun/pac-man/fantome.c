@@ -9,6 +9,15 @@ perso_t *initBlinky(int **plateau, int w, int h)
     return blinky;
 }
 
+perso_t *initClyde(int **plateau, int w, int h)
+{
+    perso_t *clyde = malloc(sizeof(perso_t));
+    clyde->id = 210;
+    coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
+
+    return clyde;
+}
+
 int heuriBasique(int x, int y, int pacX, int pacY)
 {
     return pow(pacX - x, 2) + pow(pacY - y, 2);
