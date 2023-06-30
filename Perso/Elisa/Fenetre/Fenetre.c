@@ -546,7 +546,7 @@ int main(int argc, char **argv)
 
           animePerso(animeP, renderer4);
 
-          int speed = 10000;
+          int speed = 15000;
           int i = 0;
           while (program_on)
           { // La boucle des évènements
