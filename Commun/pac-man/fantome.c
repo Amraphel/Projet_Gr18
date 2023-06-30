@@ -23,57 +23,59 @@ int heuriBasique(int x, int y, int pacX, int pacY)
     return pow(pacX - x, 2) + pow(pacY - y, 2);
 }
 
-
-void creerHeuri(int ** heuri, int** plateau, int  x,int y,int val){
-    heuri[x][y]=val;
+void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
+{
+    heuri[x][y] = val;
     for (int i = 1; i < 5; i++)
     {
-        int newX=x;
-        int newY=y;
+        int newX = x;
+        int newY = y;
         if (movePossible(plateau, x, y, i))
         {
             switch (i)
             {
             case 1:
-                newX+=1;
-                
+                newX += 1;
+
                 break;
             case 2:
-                newY-=1;
+                newY -= 1;
                 break;
             case 3:
-                newX-=1;
+                newX -= 1;
                 break;
             case 4:
-                newY+=1;
+                newY += 1;
                 break;
 
             default:
                 break;
             }
-            if(heuri[newX][newY]==-1 || heuri[newX][newY]>val+1){
-                    creerHeuri(heuri, plateau,newX, newY,val+1);
+            if (heuri[newX][newY] == -1 || heuri[newX][newY] > val + 1)
+            {
+                creerHeuri(heuri, plateau, newX, newY, val + 1);
             }
         }
     }
-
 }
 
-
-int ** heuristique(int** plateau,int pacX,int pacY,int w,int h){
-    int ** heuri=malloc(sizeof(int*)*w);
-    for(int i =0; i<w; i++){
-        int * ligne= malloc(sizeof(int)*h);
-        heuri[i]=ligne;
-        for(int j=0; j<h; j++){
-            heuri[i][j]=-1;
+int **heuristique(int **plateau, int pacX, int pacY, int w, int h)
+{
+    int **heuri = malloc(sizeof(int *) * w);
+    for (int i = 0; i < w; i++)
+    {
+        int *ligne = malloc(sizeof(int) * h);
+        heuri[i] = ligne;
+        for (int j = 0; j < h; j++)
+        {
+            heuri[i][j] = -1;
         }
     }
     creerHeuri(heuri, plateau, pacX, pacY, 0);
     return heuri;
 }
 
-int getNextMove(int **plateau,int** heuristique, int fantX, int fantY)
+int getNextMove(int **plateau, int **heuristique, int fantX, int fantY)
 {
     int dir = 0;
     int heuri = -1;
@@ -85,16 +87,16 @@ int getNextMove(int **plateau,int** heuristique, int fantX, int fantY)
             switch (i)
             {
             case 1:
-                newHeuri = heuristique[fantX+1][fantY];
+                newHeuri = heuristique[fantX + 1][fantY];
                 break;
             case 2:
-                newHeuri =heuristique[fantX][fantY-1];
+                newHeuri = heuristique[fantX][fantY - 1];
                 break;
             case 3:
-                newHeuri =heuristique[fantX-1][fantY]; 
+                newHeuri = heuristique[fantX - 1][fantY];
                 break;
             case 4:
-                newHeuri =heuristique[fantX][fantY+1];
+                newHeuri = heuristique[fantX][fantY + 1];
                 break;
 
             default:
@@ -110,24 +112,50 @@ int getNextMove(int **plateau,int** heuristique, int fantX, int fantY)
     return dir;
 }
 
-void moveRandom(int **plateau, int w, int h, perso_t *Blinky){
-    
+void moveRandom(int **plateau, int w, int h, perso_t *Clyde, int *mort)
+{
+    int i = rand() % 4 + 1;
+
+    while (!movePossible(plateau, Clyde->posX, Clyde->posY, i)){
+        i = rand() % 4 + 1;
+    }
+
+    {
+        switch (i)
+        {
+        case 1:
+            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 1, mort);
+            break;
+        case 2:
+            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 2, mort);
+            break;
+        case 3:
+            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 3, mort);
+            break;
+        case 4:
+            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 4, mort);
+            break;
+
+        default:
+            break;
+        }
+    }
 }
 
 void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     SDL_Window *window,
-    int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin, int* mort)
+    int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin, int *mort)
 {
     SDL_Rect
         window_dimensions = {0};
 
-    int ** heuri= heuristique(plateau,Pac_man->posX, Pac_man->posY, w,h);
-    
+    int **heuri = heuristique(plateau, Pac_man->posX, Pac_man->posY, w, h);
+
     SDL_GetWindowSize(window,
                       &window_dimensions.w,
                       &window_dimensions.h);
 
-    int move = getNextMove(plateau,heuri, Blinky->posX, Blinky->posY);
+    int move = getNextMove(plateau, heuri, Blinky->posX, Blinky->posY);
     switch ((move))
     {
     case 1:
@@ -153,6 +181,13 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     }
 }
 
-void moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin, int* mort){
+void moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, SDL_Rect *rectClyde, int *mort)
+{
+    int i=rand()%100 +1;
+    if(i<25){
+        moveRandom(plateau,w,h,Clyde,mort);
+    } else{
+        moveBlinky(window,plateau,w,h,Clyde, Pac_man,rectClyde,mort);
+    }
 
 }
