@@ -139,7 +139,7 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
         if(idPerso == 99)
         {
                     
-            plateau[*xPerso][*yPerso] -= 100;
+            plateau[*xPerso][*yPerso] = -1;
             plateau[xDeplacement][yDeplacement] = 99;
         }
         else

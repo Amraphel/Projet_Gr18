@@ -9,7 +9,11 @@ int main()
 {
     int w;
     int h;
+    time_t t;
+    time(&t);
+    srand(t);
     int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
+
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -31,21 +35,24 @@ int main()
     perso_t *Pac_man = initPac_man(plateau, w, h);
     perso_t *Blinky = initBlinky(plateau, w, h);
     perso_t *Clyde = initClyde(plateau, w, h);
-    // afficherPlateau(tabRect, plateau, w, h, window, renderer);
+
+    int super = 0;
+    SDL_Texture *textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
+    SDL_Texture *textBlin = load_texture_from_image("./source/Blinky.png", window, renderer);
+    SDL_Texture *textCly = load_texture_from_image("./source/Clyde.png", window, renderer);
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     if (Blinky->posX != 0)
     {
-        afficherPerso(Blinky, window, renderer, &rectBlin);
+        afficherPerso(Blinky, window, textBlin, renderer, &rectBlin);
     }
 
-    afficherPerso(Pac_man, window, renderer, &rectPac);
+    afficherPerso(Pac_man, window, textPac, renderer, &rectPac);
     if (Clyde->posX != 0)
     {
-        afficherPerso(Clyde, window, renderer, &rectCly);
+        afficherPerso(Clyde, window, textCly, renderer, &rectCly);
     }
-    // void movePersoInPlateau(plateau, perso.posX, perso.posY, w, h, 1);
 
     if (TTF_Init() < 0)
         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
@@ -63,8 +70,7 @@ int main()
     int i = 0;
     int move = 0;
     int mort = 0;
-    int etatAnimPac = 0;
-    int etatAnimBlin = 0;
+    int etatAnim = 0;
     int keyPressed = 0;
     int direction = 0;
     Pac_man->etat = 0;
@@ -125,6 +131,19 @@ int main()
                             direction = 2;
                         }
                     }
+                    break;
+                case SDLK_SPACE:
+                    if (super == 0)
+                    {
+                        textPac = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
+                        super = 1;
+                    }
+                    else
+                    {
+                        textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
+                        super = 0;
+                    }
+                    break;
                 default:
                     break;
                 }
@@ -175,15 +194,15 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
-                animePerso(Pac_man, window, renderer, &rectPac, &etatAnimPac, Pac_man->etat);
+                animePerso(Pac_man, window, textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {
-                    animePerso(Blinky, window, renderer, &rectBlin, &etatAnimBlin, 0);
+                    animePerso(Blinky, window, textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
                 }
 
                 if (Clyde->posX != 0)
                 {
-                    animePerso(Clyde, window, renderer, &rectCly, &etatAnimBlin, 0);
+                    animePerso(Clyde, window, textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                 }
                 SDL_RenderPresent(renderer);
             }
