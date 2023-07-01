@@ -43,6 +43,12 @@ int main()
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
+
+    int nbFan = 2;
+    SDL_Rect tabRectFan[nbFan];
+    tabRectFan[0] = rectBlin;
+    tabRectFan[1] = rectCly;
+
     if (Blinky->posX != 0)
     {
         afficherPerso(Blinky, window, textBlin, renderer, &rectBlin);

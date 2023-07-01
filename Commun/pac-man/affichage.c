@@ -182,3 +182,56 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     SDL_DestroyTexture(text_texture);
     SDL_RenderPresent(renderer);
 }
+
+void collision(SDL_Rect rectPac, SDL_Rect* rectFan, int nbFan)
+{
+    int col = 0;
+    int i = 0;
+
+    int ptHautGauchePac = rectPac.x;
+    int ptHautDroitPac = rectPac.x + rectPac.w;
+    int ptBasGauchePac = rectPac.x + rectPac.h;
+    int ptYPac = rectPac.y;
+
+    int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
+    int ptYFan;
+    
+
+    while(i<nbFan)
+    {
+        ptHautDroitFan = rectFan[i].x + rectFan[i].w; 
+        ptHautGaucheFan = rectFan[i].x;
+        ptBasGaucheFan = rectFan[i].x + rectFan[i].h;
+        ptYFan = rectFan[i].y;
+        //printf("Collision\n");
+        printf("-------------------\n");
+        printf("fan x = %d, y %d\n", ptHautGaucheFan, ptYFan);
+        printf("pac x = %d, y %d\n", ptHautGauchePac, ptYPac);
+        printf("-------------------\n");
+
+        if(ptYFan == ptYPac)
+        {   
+            printf("A\n");
+            if((ptHautDroitFan < ptHautDroitPac && ptHautDroitFan > ptHautGauchePac) ||
+                (ptHautGaucheFan > ptHautGauchePac && ptHautGaucheFan < ptHautDroitPac))  
+            {
+                printf("AA\n");
+                //col = 1;
+            }
+        }
+        else if (ptHautGaucheFan == ptHautGauchePac)
+        {
+            printf("B\n");
+            if((ptHautGaucheFan > ptHautGauchePac && ptHautGaucheFan < ptBasGauchePac) ||
+                (ptBasGaucheFan < ptBasGauchePac && ptBasGaucheFan > ptHautGauchePac))  
+            {
+                printf("C\n");
+               //col = 1;
+            }
+        }
+        
+        i++;
+    }
+
+    //return col;
+}

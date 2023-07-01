@@ -12,3 +12,4 @@ void afficherPerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, S
 void animePerso(perso_t *perso, SDL_Window *window,SDL_Texture* skin, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir);
 void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font);
 void afficherBravo(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font);
+void collision(SDL_Rect rectPac, SDL_Rect* rectFan, int nbFan);
