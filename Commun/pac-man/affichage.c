@@ -89,8 +89,8 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
             }
         }
     }
-    // free(my_texture);
-   // free(gom);
+    SDL_DestroyTexture(my_texture);
+    SDL_DestroyTexture(gom);
 }
 
 void afficherPerso(SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
@@ -147,8 +147,9 @@ void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     SDL_Rect pos = {W/8 , H/2 - 62, 0, 0};                               // rectangle où le texte va être prositionné
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
+
     SDL_DestroyTexture(text_texture);
-    SDL_RenderPresent(renderer);
+    // SDL_RenderPresent(renderer);
 }
 
 void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
@@ -178,8 +179,9 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     SDL_Rect pos = {W/3.5 , H/2 - 62, 0, 0};                               // rectangle où le texte va être prositionné
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
+   
     SDL_DestroyTexture(text_texture);
-    SDL_RenderPresent(renderer);
+    // SDL_RenderPresent(renderer);
 }
 
 int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan)

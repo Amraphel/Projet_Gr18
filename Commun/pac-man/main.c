@@ -50,7 +50,7 @@ int main()
     // fprintf(stderr, "%d et %d ET %d et %d\n", rectBlin.x, rectBlin.w, rectBlin.y, rectBlin.h);
     // fprintf(stderr, "%d et %d ET %d et %d\n", rectCly.x, rectCly.w, rectCly.y, rectCly.h);
     int nbFan = 2;
-    SDL_Rect **tabRectFan = malloc(sizeof(SDL_Rect *) * 3);
+    SDL_Rect **tabRectFan = malloc(sizeof(SDL_Rect *) * 2);
     tabRectFan[0] = &rectBlin;
     tabRectFan[1] = &rectCly;
 
@@ -169,7 +169,7 @@ int main()
                     }
                     break;
                 case SDLK_s:
-                    savePlateau(plateau,w,h);
+                    savePlateau(plateau, w, h);
                     break;
                 default:
                     break;
@@ -191,6 +191,7 @@ int main()
                 }
             }
             move = (move + 1) % speedMove;
+
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
@@ -204,20 +205,36 @@ int main()
                 {
                     animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                 }
+                if (collision(rectPac, tabRectFan, nbFan) == 1)
+                {
+                    afficherGameOver(window, renderer, font);
+                }
+                if (gom_exist(plateau, w, h) != 0)
+                {
+                    afficherBravo(window, renderer, font);
+                }
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;
         }
-        if (collision(rectPac, tabRectFan, nbFan) == 1)
-        {
-            afficherGameOver(window, renderer, font);
-        }
-        if (gom_exist(plateau, w, h) != 0)
-        {
-            afficherBravo(window, renderer, font);
-        }
     }
 
+    free(Pac_man);
+    free(Blinky);
+    free(Clyde);
+    freePlateau(plateau, w);
+
+    for (int i = 0; i < w; i++)
+    {
+        free(tabRect[i]);
+        tabRect[i] = NULL;
+    }
+    free(tabRect);
+
+    free(tabRectFan);
+    SDL_DestroyTexture(textCly);
+    SDL_DestroyTexture(textPac);
+    SDL_DestroyTexture(textBlin);
     end_sdl(1, "Normal ending", window, renderer);
 
     return 0;

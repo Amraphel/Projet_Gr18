@@ -25,3 +25,5 @@ void printPlateau(int **mat, int w, int h);
 int gom_exist(int ** plateau, int w, int h);
 
 void savePlateau(int ** plateau, int w, int h);
+
+void freePlateau(int **plateau, int w);

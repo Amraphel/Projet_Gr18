@@ -1,16 +1,17 @@
 #include "plateau.h"
 
-void coordPlat(int **plateau,int w, int h, int val, int *x, int *y)
+void coordPlat(int **plateau, int w, int h, int val, int *x, int *y)
 {
-    *x=0;
-    *y=0;
+    *x = 0;
+    *y = 0;
     for (int i = 0; i < w; i++)
     {
         for (int j = 0; j < h; j++)
         {
-            if(plateau[i][j] == val){
-                *x=i;
-                *y=j;
+            if (plateau[i][j] == val)
+            {
+                *x = i;
+                *y = j;
             }
         }
     }
@@ -66,9 +67,9 @@ int **loadPlateau(char *lvl, int *w, int *h)
     return plateau;
 }
 
-//return 0 -> ne peux pas
-//return 1 -> peux
-int movePossible(int** plateau, int xPerso, int yPerso, int direction)
+// return 0 -> ne peux pas
+// return 1 -> peux
+int movePossible(int **plateau, int xPerso, int yPerso, int direction)
 {
     int DeplacementPossible = 0;
 
@@ -76,7 +77,7 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
     {
     case 1: // droite
         int xd = xPerso + 1;
-        if(plateau[xd][yPerso] == 0 || plateau[xd][yPerso] == -1 || plateau[xd][yPerso] >= 200 || plateau[xd][yPerso] == 99)
+        if (plateau[xd][yPerso] == 0 || plateau[xd][yPerso] == -1 || plateau[xd][yPerso] >= 200 || plateau[xd][yPerso] == 99)
         {
             DeplacementPossible = 1;
         }
@@ -84,7 +85,7 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
 
     case 2: // haut
         int yh = yPerso - 1;
-        if(plateau[xPerso][yh] == 0 || plateau[xPerso][yh] == -1 || plateau[xPerso][yh] >= 200 || plateau[xPerso][yh] == 99)
+        if (plateau[xPerso][yh] == 0 || plateau[xPerso][yh] == -1 || plateau[xPerso][yh] >= 200 || plateau[xPerso][yh] == 99)
         {
             DeplacementPossible = 1;
         }
@@ -92,14 +93,14 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
 
     case 3: // gauche
         int xg = xPerso - 1;
-        if(plateau[xg][yPerso] == 0 || plateau[xg][yPerso] == -1 || plateau[xg][yPerso] >= 200 || plateau[xg][yPerso] == 99)
+        if (plateau[xg][yPerso] == 0 || plateau[xg][yPerso] == -1 || plateau[xg][yPerso] >= 200 || plateau[xg][yPerso] == 99)
         {
             DeplacementPossible = 1;
         }
         break;
     case 4: // bas
         int yb = yPerso + 1;
-        if(plateau[xPerso][yb] == 0 || plateau[xPerso][yb] == -1 || plateau[xPerso][yb] >= 200 || plateau[xPerso][yb] == 99)
+        if (plateau[xPerso][yb] == 0 || plateau[xPerso][yb] == -1 || plateau[xPerso][yb] >= 200 || plateau[xPerso][yb] == 99)
         {
             DeplacementPossible = 1;
         }
@@ -110,12 +111,12 @@ int movePossible(int** plateau, int xPerso, int yPerso, int direction)
     return DeplacementPossible;
 }
 
-void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, int direction, int* mort)
+void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, int direction, int *mort)
 {
 
-    int xDeplacement =*xPerso;
-    int yDeplacement=*yPerso ;   
-    if( movePossible(plateau, *xPerso, *yPerso, direction) == 1)
+    int xDeplacement = *xPerso;
+    int yDeplacement = *yPerso;
+    if (movePossible(plateau, *xPerso, *yPerso, direction) == 1)
     {
 
         switch (direction)
@@ -132,19 +133,19 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
         case 4: // bas
             yDeplacement = *yPerso + 1;
             break;
-        
+
         default:
             break;
         }
-        if(idPerso == 99)
+        if (idPerso == 99)
         {
-                    
+
             plateau[*xPerso][*yPerso] = -1;
             plateau[xDeplacement][yDeplacement] = 99;
         }
         else
         {
-            if(plateau[xDeplacement][yDeplacement] == 99)
+            if (plateau[xDeplacement][yDeplacement] == 99)
             {
                 *mort = 1;
             }
@@ -156,34 +157,47 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso, i
     }
 }
 
-int gom_exist(int ** plateau, int w, int h)
+int gom_exist(int **plateau, int w, int h)
 {
-    int rep=1;
-    int i=0;
-    int j=0;
+    int rep = 1;
+    int i = 0;
+    int j = 0;
 
-    while(i<w && rep!=0)
+    while (i < w && rep != 0)
     {
-        while(j<h && rep!=0)
+        while (j < h && rep != 0)
         {
-            rep=plateau[i][j];
+            rep = plateau[i][j];
             j++;
         }
         i++;
-        j=0;
+        j = 0;
     }
-    
+
     return rep;
 }
 
-void savePlateau(int ** plateau, int w, int h){
-    FILE * file = fopen("./source/save.txt", "w");
+void savePlateau(int **plateau, int w, int h)
+{
+    FILE *file = fopen("./source/save.txt", "w");
     fprintf(file, "%d %d\n", w, h);
-    for(int i=0; i<w; i++){
-        for (int j =0; j<h; j++){
+    for (int i = 0; i < w; i++)
+    {
+        for (int j = 0; j < h; j++)
+        {
             fprintf(file, "%d ", plateau[i][j]);
         }
         fprintf(file, "\n");
     }
     fclose(file);
+}
+
+void freePlateau(int **plateau, int w)
+{
+    for (int i = 0; i < w; i++)
+    {
+        free(plateau[i]);
+        plateau[i] = NULL;
+    }
+    free(plateau);
 }
