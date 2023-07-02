@@ -189,7 +189,7 @@ int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan)
 
     int ptHautGauchePac = rectPac.x;
     int ptHautDroitPac = rectPac.x + rectPac.w;
-    int ptBasGauchePac = rectPac.x + rectPac.h;
+    int ptBasGauchePac = rectPac.y + rectPac.h;
     int ptYPac = rectPac.y;
 
     int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
