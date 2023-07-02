@@ -13,7 +13,7 @@ int main()
     time(&t);
 
     srand(t);
-    int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
     printPlateau(plateau, w, h);
@@ -169,7 +169,7 @@ int main()
                     }
                     break;
                 case SDLK_s:
-                    
+                    savePlateau(plateau,w,h);
                     break;
                 default:
                     break;

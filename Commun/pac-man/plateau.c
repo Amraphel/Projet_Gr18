@@ -175,3 +175,15 @@ int gom_exist(int ** plateau, int w, int h)
     
     return rep;
 }
+
+void savePlateau(int ** plateau, int w, int h){
+    FILE * file = fopen("./source/save.txt", "w");
+    fprintf(file, "%d %d\n", w, h);
+    for(int i=0; i<w; i++){
+        for (int j =0; j<h; j++){
+            fprintf(file, "%d ", plateau[i][j]);
+        }
+        fprintf(file, "\n");
+    }
+    fclose(file);
+}

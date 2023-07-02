@@ -23,3 +23,5 @@ void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso,in
 void printPlateau(int **mat, int w, int h);
 
 int gom_exist(int ** plateau, int w, int h);
+
+void savePlateau(int ** plateau, int w, int h);
