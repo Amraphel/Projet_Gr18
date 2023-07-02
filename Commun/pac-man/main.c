@@ -37,6 +37,15 @@ int main()
     perso_t *Pac_man = initPac_man(plateau, w, h);
     perso_t *Blinky = initBlinky(plateau, w, h);
     perso_t *Clyde = initClyde(plateau, w, h);
+    perso_t ** tabPerso= malloc(sizeof(perso_t*)*3);
+    tabPerso[0] = Pac_man;
+    tabPerso[1] = Blinky;
+    tabPerso[2] = Clyde;
+
+    int * dir = malloc(sizeof(int)*3);
+    dir[0]=0;
+    dir[1]=0;
+    dir[2]=0;
 
     int super = 0;
     SDL_Texture *textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
@@ -46,13 +55,11 @@ int main()
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
 
-    // fprintf(stderr, "%d et %d ET %d et %d\n", rectPac.x, rectPac.w, rectPac.y, rectPac.h);
-    // fprintf(stderr, "%d et %d ET %d et %d\n", rectBlin.x, rectBlin.w, rectBlin.y, rectBlin.h);
-    // fprintf(stderr, "%d et %d ET %d et %d\n", rectCly.x, rectCly.w, rectCly.y, rectCly.h);
     int nbFan = 2;
-    SDL_Rect** tabRectFan= malloc(sizeof(SDL_Rect*)*3);
-    tabRectFan[0] = &rectBlin;
-    tabRectFan[1] = &rectCly;
+    SDL_Rect** tabRectPerso= malloc(sizeof(SDL_Rect*)*3);
+    tabRectPerso[0]=&rectPac;
+    tabRectPerso[1] = &rectBlin;
+    tabRectPerso[2] = &rectCly;
 
     if (Blinky->posX != 0)
     {
@@ -76,10 +83,14 @@ int main()
         end_sdl(0, "Can't load font", window, renderer);
     }
 
-    int speed = 100000;
-    int speedMove = 200000;
+    
+    int speedMove = 150000;
+    int speed = speedMove/10;
+    int speedDep= speedMove/10;
+    int test=1;
     int i = 0;
     int move = 0;
+    int animeF=0;
     int mort = 0;
     int etatAnim = 0;
     int keyPressed = 0;
@@ -109,16 +120,16 @@ int main()
                     break;
                 case SDLK_DOWN:
                     
-                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
                         {
-                            direction = 1;
+                            direction= 1;
                         }
                     }
                     break;
                 case SDLK_UP:
-                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectPerso, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
                         {
@@ -127,16 +138,16 @@ int main()
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectPerso, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
                         {
-                            direction = 4;
+                           direction = 4;
                         }
                     }
                     break;
                 case SDLK_LEFT:
-                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectPerso, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
                         {
@@ -165,17 +176,28 @@ int main()
         {
             if (move == 0)
             {
-                movePacman(plateau, Pac_man,&mort,direction,&rectPac);
+                
+                dir[0] =movePacman(plateau, Pac_man,&mort,direction,&rectPac);
                 if (Blinky->posX != 0)
                 {
-                    moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
+                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
                 }
                 if (Clyde->posX != 0)
                 {
-                    moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort);
+                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort);
                 }
+                for(int j=0; j<3; j++){
+                    movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort);
+                }
+                direction=0;
             }
             move = (move + 1) % speedMove;
+            if(animeF==0){
+                afficherPlateau(tabRect, plateau, w, h, window, renderer);
+                animeFluide(tabRectPerso,3, dir, plateau, tabPerso);
+                //  SDL_RenderPresent(renderer);
+            }
+            animeF= (animeF+1) % speedDep;
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
@@ -193,7 +215,7 @@ int main()
             }
             i = (i + 1) % speed;
         }
-        if (collision(rectPac, tabRectFan, nbFan) == 1)
+        if (collision(rectPac, tabRectPerso, nbFan) == 1)
         {
             afficherGameOver(window, renderer, font);
         }
@@ -203,7 +225,14 @@ int main()
         }
     }
 
+
     end_sdl(1, "Normal ending", window, renderer);
+    for(int i =0; i<3; i++){
+        free(tabPerso[i]);
+        free(tabRect[i]);
+    }
+    free(tabPerso);
+    free(tabRect);
 
     return 0;
 }
