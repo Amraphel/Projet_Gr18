@@ -14,8 +14,8 @@ int main()
 
     srand(t);
     int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
-    int WINDOWW= w*(700/w);
-    int WINDOWL = h*(700/h);
+    int WINDOWW = w * (700 / w);
+    int WINDOWL = h * (700 / h);
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -50,7 +50,7 @@ int main()
     // fprintf(stderr, "%d et %d ET %d et %d\n", rectBlin.x, rectBlin.w, rectBlin.y, rectBlin.h);
     // fprintf(stderr, "%d et %d ET %d et %d\n", rectCly.x, rectCly.w, rectCly.y, rectCly.h);
     int nbFan = 2;
-    SDL_Rect** tabRectFan= malloc(sizeof(SDL_Rect*)*3);
+    SDL_Rect **tabRectFan = malloc(sizeof(SDL_Rect *) * 3);
     tabRectFan[0] = &rectBlin;
     tabRectFan[1] = &rectCly;
 
@@ -85,6 +85,8 @@ int main()
     int keyPressed = 0;
     int direction = 0;
     Pac_man->etat = 0;
+
+    int pause = 0;
     SDL_RenderPresent(renderer);
 
     while (program_on)
@@ -108,8 +110,8 @@ int main()
 
                     break;
                 case SDLK_DOWN:
-                    
-                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0)
+
+                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
                         {
@@ -118,7 +120,7 @@ int main()
                     }
                     break;
                 case SDLK_UP:
-                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
                         {
@@ -127,7 +129,7 @@ int main()
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
                         {
@@ -136,7 +138,7 @@ int main()
                     }
                     break;
                 case SDLK_LEFT:
-                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
                         {
@@ -155,17 +157,30 @@ int main()
                         textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
                         super = 0;
                     }
-                    break; 
+                    break;
+                case SDLK_p:
+                    if (pause == 1)
+                    {
+                        pause = 2;
+                    }
+                    else
+                    {
+                        pause = 1;
+                    }
+                    break;
+                case SDLK_s:
+                    
+                    break;
                 default:
                     break;
                 }
             }
         }
-        if (mort != 1 && gom_exist(plateau, w, h) == 0)
+        if (mort != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
         {
             if (move == 0)
             {
-                movePacman(plateau, Pac_man,&mort,direction,&rectPac);
+                movePacman(plateau, Pac_man, &mort, direction, &rectPac);
                 if (Blinky->posX != 0)
                 {
                     moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
