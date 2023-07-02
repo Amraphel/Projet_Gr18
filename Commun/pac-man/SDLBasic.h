@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <SDL2/SDL_ttf.h>
+#include <time.h>
 #endif
 
 
@@ -19,3 +20,5 @@ SDL_Window * initWindow(int x, int y, int w, int h);
 SDL_Renderer *initRenderer(SDL_Window *window);
 
 SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, SDL_Renderer *renderer);
+
+int getMaxSize(int *w, int *h);

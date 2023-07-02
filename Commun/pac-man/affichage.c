@@ -93,7 +93,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
    // free(gom);
 }
 
-void afficherPerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
+void afficherPerso(SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
 {
     int nbw = 4;
     int nbh = 4;
@@ -105,9 +105,8 @@ void afficherPerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, S
     SDL_RenderCopy(renderer, my_texture, &state, RectPac);
 }
 
-void animePerso(perso_t *perso, SDL_Window *window,SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
+void animePerso(SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
 {
-    char pathImg[255];
     int nbw = 4;
     int nbh = 4;
 
@@ -183,7 +182,7 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     SDL_RenderPresent(renderer);
 }
 
-void collision(SDL_Rect rectPac, SDL_Rect* rectFan, int nbFan)
+int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan)
 {
     int col = 0;
     int i = 0;
@@ -199,39 +198,39 @@ void collision(SDL_Rect rectPac, SDL_Rect* rectFan, int nbFan)
 
     while(i<nbFan)
     {
-        ptHautDroitFan = rectFan[i].x + rectFan[i].w; 
-        ptHautGaucheFan = rectFan[i].x;
-        ptBasGaucheFan = rectFan[i].x + rectFan[i].h;
-        ptYFan = rectFan[i].y;
-        //printf("Collision\n");
-        printf("-------------------\n");
-        printf("fan x = %d, y %d\n", ptHautGaucheFan, ptYFan);
-        printf("pac x = %d, y %d\n", ptHautGauchePac, ptYPac);
-        printf("-------------------\n");
+        ptHautDroitFan = rectFan[i]->x + rectFan[i]->w; 
+        ptHautGaucheFan = rectFan[i]->x;
+        ptBasGaucheFan = rectFan[i]->y + rectFan[i]->h;
+        ptYFan = rectFan[i]->y;
+        // fprintf(stderr,"Collision fant %d\n",i);
+        // fprintf(stderr,"-------------------\n");
+        // fprintf(stderr,"fan x = %d, y %d\n", ptHautGaucheFan, ptYFan);
+        // fprintf(stderr,"pac x = %d, y %d\n", ptHautGauchePac, ptYPac);
+        // fprintf(stderr,"-------------------\n");
 
         if(ptYFan == ptYPac)
         {   
-            printf("A\n");
-            if((ptHautDroitFan < ptHautDroitPac && ptHautDroitFan > ptHautGauchePac) ||
-                (ptHautGaucheFan > ptHautGauchePac && ptHautGaucheFan < ptHautDroitPac))  
+            //  printf("A\n");
+            if((ptHautDroitFan <= ptHautDroitPac && ptHautDroitFan > ptHautGauchePac) ||
+                (ptHautGaucheFan >= ptHautGauchePac && ptHautGaucheFan < ptHautDroitPac))  
             {
-                printf("AA\n");
-                //col = 1;
+                // printf("AA\n");
+                col = 1;
             }
         }
         else if (ptHautGaucheFan == ptHautGauchePac)
         {
-            printf("B\n");
-            if((ptHautGaucheFan > ptHautGauchePac && ptHautGaucheFan < ptBasGauchePac) ||
-                (ptBasGaucheFan < ptBasGauchePac && ptBasGaucheFan > ptHautGauchePac))  
+            //  printf("B\n");
+            if((ptYFan >= ptYPac && ptYFan < ptBasGauchePac) ||
+                (ptBasGaucheFan <= ptBasGauchePac && ptBasGaucheFan > ptYPac))  
             {
-                printf("C\n");
-               //col = 1;
+                // printf("C\n");
+               col = 1;
             }
         }
         
         i++;
     }
 
-    //return col;
+    return col;
 }

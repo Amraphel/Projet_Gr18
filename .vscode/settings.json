@@ -11,6 +11,7 @@
         "stdlib.h": "c",
         "affichage.h": "c",
         "recherchelocal.h": "c",
-        "sdlbasic.h": "c"
+        "sdlbasic.h": "c",
+        "stdbool.h": "c"
     }
 }

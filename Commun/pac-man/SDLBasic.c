@@ -88,3 +88,19 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
 
     return my_texture;
 }
+
+
+int getMaxSize(int *w, int *h)
+{
+    SDL_DisplayMode dm;
+
+    if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
+    {
+        SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
+        return 1;
+    }
+    *w = dm.w;
+    *h = dm.h;
+
+    return 0;
+}

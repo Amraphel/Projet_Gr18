@@ -2,8 +2,8 @@
 #include "fantome.h"
 #include "plateau.h"
 
-#define WINDOWL 700
-#define WINDOWW 700
+// #define WINDOWL 700
+// #define WINDOWW 700
 
 int main()
 {
@@ -11,9 +11,11 @@ int main()
     int h;
     time_t t;
     time(&t);
+
     srand(t);
     int **plateau = loadPlateau("./source/lvl1.txt", &w, &h);
-
+    int WINDOWW= w*(700/w);
+    int WINDOWL = h*(700/h);
     printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
@@ -44,20 +46,23 @@ int main()
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
 
+    // fprintf(stderr, "%d et %d ET %d et %d\n", rectPac.x, rectPac.w, rectPac.y, rectPac.h);
+    // fprintf(stderr, "%d et %d ET %d et %d\n", rectBlin.x, rectBlin.w, rectBlin.y, rectBlin.h);
+    // fprintf(stderr, "%d et %d ET %d et %d\n", rectCly.x, rectCly.w, rectCly.y, rectCly.h);
     int nbFan = 2;
-    SDL_Rect tabRectFan[nbFan];
-    tabRectFan[0] = rectBlin;
-    tabRectFan[1] = rectCly;
+    SDL_Rect** tabRectFan= malloc(sizeof(SDL_Rect*)*3);
+    tabRectFan[0] = &rectBlin;
+    tabRectFan[1] = &rectCly;
 
     if (Blinky->posX != 0)
     {
-        afficherPerso(Blinky, window, textBlin, renderer, &rectBlin);
+        afficherPerso(textBlin, renderer, &rectBlin);
     }
 
-    afficherPerso(Pac_man, window, textPac, renderer, &rectPac);
+    afficherPerso(textPac, renderer, &rectPac);
     if (Clyde->posX != 0)
     {
-        afficherPerso(Clyde, window, textCly, renderer, &rectCly);
+        afficherPerso(textCly, renderer, &rectCly);
     }
 
     if (TTF_Init() < 0)
@@ -103,7 +108,8 @@ int main()
 
                     break;
                 case SDLK_DOWN:
-                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
+                    
+                    if (collision(rectPac, tabRectFan, nbFan) != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
                         {
@@ -112,7 +118,7 @@ int main()
                     }
                     break;
                 case SDLK_UP:
-                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
                         {
@@ -121,7 +127,7 @@ int main()
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
                         {
@@ -130,7 +136,7 @@ int main()
                     }
                     break;
                 case SDLK_LEFT:
-                    if (mort != 1 && gom_exist(plateau, w, h) == 0)
+                    if (collision(rectPac, tabRectFan, nbFan)  != 1 && gom_exist(plateau, w, h) == 0)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
                         {
@@ -149,7 +155,7 @@ int main()
                         textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
                         super = 0;
                     }
-                    break;
+                    break; 
                 default:
                     break;
                 }
@@ -159,34 +165,7 @@ int main()
         {
             if (move == 0)
             {
-                if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction))
-                {
-                    switch (direction)
-                    {
-                    case 1:
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, &mort);
-                        rectPac.y = rectPac.y + (WINDOWL / h);
-                        Pac_man->etat = 3;
-                        break;
-                    case 3:
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, &mort);
-                        rectPac.y = rectPac.y - (WINDOWL / h);
-                        Pac_man->etat = 1;
-                        break;
-                    case 4:
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, &mort);
-                        rectPac.x = rectPac.x + (WINDOWW / w);
-                        Pac_man->etat = 0;
-                        break;
-                    case 2:
-                        movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, &mort);
-                        rectPac.x = rectPac.x - (WINDOWW / w);
-                        Pac_man->etat = 2;
-                        break;
-                    default:
-                        break;
-                    }
-                }
+                movePacman(plateau, Pac_man,&mort,direction,&rectPac);
                 if (Blinky->posX != 0)
                 {
                     moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
@@ -200,21 +179,21 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer);
-                animePerso(Pac_man, window, textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
+                animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {
-                    animePerso(Blinky, window, textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
+                    animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
                 }
 
                 if (Clyde->posX != 0)
                 {
-                    animePerso(Clyde, window, textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
+                    animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                 }
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;
         }
-        if (mort == 1)
+        if (collision(rectPac, tabRectFan, nbFan) == 1)
         {
             afficherGameOver(window, renderer, font);
         }
