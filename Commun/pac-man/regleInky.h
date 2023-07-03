@@ -57,4 +57,5 @@ typedef struct
     action_t action;                  // quelle action doit être prise
 }regles_t;
 
-void modifRegle(int **tabRegle);
+void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte);
+void initCervau(int nbRegle, int nbContrainte);
