@@ -187,7 +187,7 @@ int main()
                 }
             }
         }
-        if (mort != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
+        if (collision(rectPac, tabRectPerso, nbFan)  != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
         {
             if (move == 0)
             {
