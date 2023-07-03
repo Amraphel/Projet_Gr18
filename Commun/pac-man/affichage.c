@@ -191,7 +191,6 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
     int ptHautGauchePac = rectPac.x;
     int ptHautDroitPac = rectPac.x + rectPac.w;
     int ptBasGauchePac = rectPac.y + rectPac.h;
-    int ptBasGauchePac = rectPac.y + rectPac.h;
     int ptYPac = rectPac.y;
 
     int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
@@ -215,8 +214,8 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
         else if (ptHautGaucheFan == ptHautGauchePac)
         {
 
-            if ((ptYFan >= ptYPac && ptYFan < ptBasGauchePac) ||
-                (ptBasGaucheFan <= ptBasGauchePac && ptBasGaucheFan > ptYPac))
+            if ((ptYFan > ptYPac && ptYFan < ptBasGauchePac) ||
+                (ptBasGaucheFan < ptBasGauchePac && ptBasGaucheFan > ptYPac))
             {
 
                 col = 1;

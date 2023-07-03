@@ -240,19 +240,12 @@ int main()
         }
     }
 
-    free(Pac_man);
-    free(Blinky);
-    free(Clyde);
+
     freePlateau(plateau, w);
 
-    for (int i = 0; i < w; i++)
-    {
-        free(tabRect[i]);
-        tabRect[i] = NULL;
-    }
-    free(tabRect);
 
-    free(tabRectFan);
+
+    free(tabRectPerso);
     SDL_DestroyTexture(textCly);
     SDL_DestroyTexture(textPac);
     SDL_DestroyTexture(textBlin);
