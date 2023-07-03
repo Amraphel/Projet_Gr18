@@ -57,7 +57,45 @@ void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
     }
 }
 
-//void initCervau(int nbRegle, int nbContrainte)
-//{
+regles_t* initCervau(int nbRegle, int nbContrainte)
+{
+    regles_t* tabRegle = malloc(sizeof(regles_t)*nbRegle);
+    int i = 0;
+    for(i = 0; i < 4; i++)
+    {
+        tabRegle[i]->droite = -1;
+        tabRegle[i]->haut = -1;
+        tabRegle[i]->gauche = -1;
+        tabRegle[i]->bas = -1;
+        tabRegle[i]->distance_fantome = -1;
+        tabRegle[i]->distance_pacman = -1;
+        tabRegle[i]->cadran_fantome = -1;
+        tabRegle[i]->cadran_pacman = -1;
+        tabRegle[i]->priorite = 0;
+        tabRegle[i]->action = i;
+    }
+    for(i; i < nbRegle; i++)
+    {
+        tabRegle[i]->droite = rand() % 5 - 1;
+        tabRegle[i]->haut = rand() % 5 - 1;
+        tabRegle[i]->gauche = rand() % 5 - 1;
+        tabRegle[i]->bas = rand() % 5 - 1;
+        tabRegle[i]->distance_fantome = rand() % 5;
+        tabRegle[i]->distance_pacman = rand() % 5;
+        tabRegle[i]->cadran_fantome = rand() % 4;
+        tabRegle[i]->cadran_pacman = rand() % 4;
+        tabRegle[i]->priorite = rand() % 6;
+        tabRegle[i]->action = rand() % 4;
+    }
+    return tabRegle;
+}
 
-//}
+void freeCerveau(regles_t* tabRegle, int nbRegle)
+{
+    int i = 0;
+    for(i; i<nbRegle; i++)
+    {
+        free(tabRegle[i]);
+    }
+    free(tabRegle);
+}
