@@ -9,7 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <time.h>
 #endif
-#include "regleIncly.h"
+
 
 typedef enum
 {
