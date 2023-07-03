@@ -57,9 +57,9 @@ void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
     }
 }
 
-regles_t* initCervau(int nbRegle, int nbContrainte)
+regles_t** initCervau(int nbRegle, int nbContrainte)
 {
-    regles_t* tabRegle = malloc(sizeof(regles_t)*nbRegle);
+    regles_t** tabRegle = malloc(sizeof(regles_t)*nbRegle);
     int i = 0;
     for(i = 0; i < 4; i++)
     {
@@ -90,7 +90,7 @@ regles_t* initCervau(int nbRegle, int nbContrainte)
     return tabRegle;
 }
 
-void freeCerveau(regles_t* tabRegle, int nbRegle)
+void freeCerveau(regles_t** tabRegle, int nbRegle)
 {
     int i = 0;
     for(i; i<nbRegle; i++)
