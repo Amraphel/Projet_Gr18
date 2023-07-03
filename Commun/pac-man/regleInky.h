@@ -9,7 +9,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <time.h>
 #endif
-#include "regleIncly.h"
+
 
 typedef enum
 {
@@ -58,4 +58,5 @@ typedef struct
 }regles_t;
 
 void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte);
-void initCervau(int nbRegle, int nbContrainte);
+regles_t* initCervau(int nbRegle, int nbContrainte);
+void freeCerveau(regles_t* tabRegle, int nbRegle);
