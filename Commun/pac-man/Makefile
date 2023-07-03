@@ -25,6 +25,9 @@ fantome.o : fantome.c
 perso.o : perso.c 
 	$(CC) $(CFLAGS) -c $< 
 
+regleIncky.o : regleIncky.c
+	$(CC) $(CFLAGS) -c $<
+
 
 .PHONY: clean reclean
 
