@@ -31,6 +31,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     int fondW, fondH;
     SDL_Texture *my_texture = load_texture_from_image("./source/Murs.png", window, renderer);
     SDL_Texture *gom = load_texture_from_image("./source/Pac-gomme.png", window, renderer);
+    SDL_Texture *supergom = load_texture_from_image("./source/SuperPacGomme.png", window, renderer);
     SDL_GetWindowSize(window, &fondW, &fondH);
     for (int i = 0; i < w; i++)
     {
@@ -39,7 +40,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
             if (plateau[j][i] != -1 && plateau[j][i] < 99)
             {
                 int nb_images = 0;
-                if (plateau[j][i] != 0)
+                if (plateau[j][i] != 0 && plateau[j][i] < 20)
                 {
                     nb_images = 15;
                     SDL_Rect
@@ -62,7 +63,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
                                    &state,
                                    &tabRect[i][j]);
                 }
-                else
+                if (plateau[j][i]==0)
                 {
                     nb_images = 1;
                     SDL_Rect
@@ -84,6 +85,22 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
                     SDL_RenderCopy(renderer, gom, // Préparation de l'affichage
                                    &state,
                                    &tabRect[i][j]);
+                }
+                else
+                {
+                    nb_images = 4;
+                    SDL_Rect source = {0}, state = {0};
+                    int *etatAnim=0;
+                    SDL_QueryTexture(supergom, NULL, NULL, &source.w, &source.h);
+                    state.x = (*etatAnim) * source.w / nb_images;
+                    state.y = source.h;
+                    state.w = source.w / nb_images;
+                    state.h = source.h;
+                    //state = {(*etatAnim) * source.w / nb_images, source.h, source.w / nb_images, source.h};
+                    SDL_RenderCopy(renderer, supergom, &state, &tabRect[i][j]);
+
+                    *etatAnim += 1;
+                    *etatAnim = (*etatAnim) % nb_images;
                 }
             }
         }
