@@ -213,7 +213,7 @@ int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, p
 {
     int dir;
     int i=rand()%100 +1;
-    if(i<25){
+    if(i<50){
         dir=moveRandom(plateau,window,w,h,Clyde,mort, rectClyde);
     } else{
         dir=moveBlinky(window,plateau,w,h,Clyde, Pac_man,rectClyde,mort);

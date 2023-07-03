@@ -15,19 +15,15 @@ int movePacman(int **plateau, perso_t *Pac_man, int *mort, int direction, SDL_Re
         switch (direction)
         {
         case 1:
-            // movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 1, mort);
             Pac_man->etat = 3;
             break;
         case 3:
-            // movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 3, mort);
             Pac_man->etat = 1;
             break;
         case 4:
-            // movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 4, mort);
             Pac_man->etat = 0;
             break;
         case 2:
-            // movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, 2, mort);
             Pac_man->etat = 2;
             break;
         default:
@@ -35,4 +31,134 @@ int movePacman(int **plateau, perso_t *Pac_man, int *mort, int direction, SDL_Re
         }
     }
     return direction;
+}
+int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
+
+{
+    int newHeuri = 0;
+    if (ite > 0)
+    {
+        for (int j = 1; j < 5; j++)
+        {
+            if (j != dir && movePossible(plateau, x, y, j))
+            {
+                switch (j)
+                {
+                case 1:
+                    newHeuri = heuriBasiquePac(plateau, x + 1, y, 3, ite - 1)/2;
+                    break;
+                case 2:
+                    newHeuri = heuriBasiquePac(plateau, x, y - 1, 4, ite - 1)/2;
+                    break;
+                case 3:
+                    newHeuri = heuriBasiquePac(plateau, x - 1, y, 1, ite - 1)/2;
+                    break;
+                case 4:
+                    newHeuri = heuriBasiquePac(plateau, x, y + 1, 2, ite - 1)/2;
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }
+    }
+    // else
+    // {
+    //     for (int i = 1; i < 5; i++)
+    //     {
+    //         if (i != dir && movePossible(plateau, x, y, i))
+    //         {
+
+    //             switch (i)
+    //             {
+    //             case 1:
+    //                 newHeuri += plateau[x + 1][y];
+    //                 break;
+    //             case 2:
+    //                 newHeuri += plateau[x][y - 1];
+    //                 break;
+    //             case 3:
+    //                 newHeuri += plateau[x - 1][y];
+    //                 break;
+    //             case 4:
+    //                 newHeuri += plateau[x][y + 1];
+    //                 break;
+
+    //             default:
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
+    if(plateau[x][y]>100){
+        newHeuri= newHeuri - plateau[x][y];
+    } else {
+        newHeuri= newHeuri + plateau[x][y]+1;
+    }
+    return newHeuri;
+}
+
+int movePacmanIA(int **plateau, perso_t *Pac_man)
+{
+    // fprintf(stderr, "movePac\n");
+    int dir = 0;
+    int heuri = -1;
+    int i = rand() % 4 + 1;
+    for (int j = 1; j < 5; j++)
+    {
+        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, i))
+        {
+            int newHeuri = 0;
+            switch (i)
+            {
+            case 1:
+                newHeuri = heuriBasiquePac(plateau, Pac_man->posX + 1, Pac_man->posY, 3, 10);
+                break;
+            case 2:
+                newHeuri = heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY - 1, 4, 10);
+                break;
+            case 3:
+                newHeuri = heuriBasiquePac(plateau, Pac_man->posX - 1, Pac_man->posY, 1, 10);
+                break;
+            case 4:
+                newHeuri = heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY + 1, 2, 10);
+                break;
+
+            default:
+                break;
+            }
+            // fprintf(stderr, "heuri = %d\n", newHeuri);
+            if ((heuri == -1) || newHeuri > heuri )
+            {
+                // fprintf(stderr, "rentre\n");
+                heuri = newHeuri;
+                dir = i;
+            }
+        }
+        i = (i + 1) % 5;
+        if (i == 0)
+        {
+            i++;
+        }
+    }
+    switch (dir)
+    {
+    case 1:
+        Pac_man->etat = 3;
+        break;
+    case 3:
+        Pac_man->etat = 1;
+        break;
+    case 4:
+        Pac_man->etat = 0;
+        break;
+    case 2:
+        Pac_man->etat = 2;
+        break;
+    default:
+        break;
+    }
+
+    return dir;
 }

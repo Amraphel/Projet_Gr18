@@ -84,7 +84,7 @@ int main()
     }
 
     
-    int speedMove = 150000;
+    int speedMove = 100000;
     int speed = speedMove/10;
     int speedDep= speedMove/10;
     int test=1;
@@ -192,7 +192,7 @@ int main()
             if (move == 0)
             {
                 
-                dir[0] =movePacman(plateau, Pac_man, &mort, direction, &rectPac);
+                dir[0] =movePacmanIA(plateau, Pac_man);
                 if (Blinky->posX != 0)
                 {
                    dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);

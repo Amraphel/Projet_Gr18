@@ -25,3 +25,4 @@ typedef struct perso
 
 perso_t* initPac_man(int ** plateau, int w, int h);
 int movePacman(int ** plateau, perso_t* Pac_man,int* mort, int direction, SDL_Rect* rectPac);
+int movePacmanIA(int **plateau, perso_t *Pac_man);
