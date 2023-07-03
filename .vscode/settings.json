@@ -13,6 +13,7 @@
         "recherchelocal.h": "c",
         "sdlbasic.h": "c",
         "stdbool.h": "c",
-        "regleinky.h": "c"
+        "regleinky.h": "c",
+        "calculregle.h": "c"
     }
 }

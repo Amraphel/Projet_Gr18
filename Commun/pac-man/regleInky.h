@@ -13,10 +13,10 @@
 
 typedef enum
 {
-    NE,
-    NO,
-    SO,
-    SE
+    N,
+    E,
+    S,
+    O
 } cadran_t;
 
 typedef enum
@@ -51,8 +51,8 @@ typedef struct
     case_t droite, haut, gauche, bas;       // le contenu des 4 cases voisines
     distance_t distance_fantome;           // dans quelle direction se trouve le fantome le plus proche
     distance_t distance_pacman;           // dans quelle direction se trouve pacman la plus proche
-    cadran_t cadran_fantome;             // dans quel cadran se trouve le fantome le plus proche
-    cadran_t cadran_pacman;             // dans quel cadran se trouve pacman
+    cadran_t dir_fantome;             // dans quel cadran se trouve le fantome le plus proche
+    cadran_t dir_pacman;             // dans quel cadran se trouve pacman
     int priorite;                      // de 0 à 5
     action_t action;                  // quelle action doit être prise
 }regles_t;

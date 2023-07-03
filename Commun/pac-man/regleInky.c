@@ -35,11 +35,11 @@ void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
 
     case 6: // cadran_t cadran_fantome
     nouvC = rand() % 4;
-    tabRegle[numRegle]->cadran_fantome = nouvC;
+    tabRegle[numRegle]->dir_fantome = nouvC;
         break;
     case 7: // cadran_t cadran_pacman
         nouvC = rand() % 4;
-        tabRegle[numRegle]->cadran_pacman = nouvC;
+        tabRegle[numRegle]->dir_pacman = nouvC;
         break;
 
     case 8: // int priorite
@@ -69,8 +69,8 @@ regles_t** initCervau(int nbRegle, int nbContrainte)
         tabRegle[i]->bas = -1;
         tabRegle[i]->distance_fantome = -1;
         tabRegle[i]->distance_pacman = -1;
-        tabRegle[i]->cadran_fantome = -1;
-        tabRegle[i]->cadran_pacman = -1;
+        tabRegle[i]->dir_fantome = -1;
+        tabRegle[i]->dir_pacman = -1;
         tabRegle[i]->priorite = 0;
         tabRegle[i]->action = i;
     }
@@ -82,8 +82,8 @@ regles_t** initCervau(int nbRegle, int nbContrainte)
         tabRegle[i]->bas = rand() % 5 - 1;
         tabRegle[i]->distance_fantome = rand() % 5;
         tabRegle[i]->distance_pacman = rand() % 5;
-        tabRegle[i]->cadran_fantome = rand() % 4;
-        tabRegle[i]->cadran_pacman = rand() % 4;
+        tabRegle[i]->dir_fantome = rand() % 4;
+        tabRegle[i]->dir_pacman = rand() % 4;
         tabRegle[i]->priorite = rand() % 6;
         tabRegle[i]->action = rand() % 4;
     }
