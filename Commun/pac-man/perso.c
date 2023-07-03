@@ -4,6 +4,7 @@ perso_t *initPac_man(int **plateau, int w, int h)
     perso_t *Pac_man = malloc(sizeof(perso_t));
     Pac_man->id = 99;
     Pac_man->etat = 0;
+    Pac_man->super = 0;
     coordPlat(plateau, w, h, Pac_man->id, &Pac_man->posX, &Pac_man->posY);
     return Pac_man;
 }
