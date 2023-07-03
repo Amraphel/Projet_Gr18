@@ -11,7 +11,7 @@ perso_t *initPac_man(int **plateau, int w, int h)
 
 int movePacman(int **plateau, perso_t *Pac_man, int *mort, int direction, SDL_Rect *rectPac)
 {
-    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction))
+    if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction, Pac_man->id, &Pac_man->super))
     {
         switch (direction)
         {
@@ -41,7 +41,7 @@ int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
     {
         for (int j = 1; j < 5; j++)
         {
-            if (j != dir && movePossible(plateau, x, y, j))
+            if (j != dir && movePossible(plateau, x, y, j, -1, NULL))
             {
                 switch (j)
                 {
@@ -108,7 +108,7 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
     int i = rand() % 4 + 1;
     for (int j = 1; j < 5; j++)
     {
-        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, i))
+        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, i, Pac_man->id, &Pac_man->super))
         {
             int newHeuri = 0;
             switch (i)
@@ -163,3 +163,4 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
 
     return dir;
 }
+

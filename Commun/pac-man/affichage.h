@@ -1,4 +1,7 @@
+#ifndef PLATEAU
+#define PLATEAU
 #include "plateau.h"
+#endif
 #ifndef PERSO
 #define PERSO
 #include "perso.h"

@@ -9,7 +9,10 @@
 #include <SDL2/SDL_ttf.h>
 #include <time.h>
 #endif
+#ifndef PLATEAU
+#define PLATEAU
 #include "plateau.h"
+#endif
 
 
 

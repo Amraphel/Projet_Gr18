@@ -69,7 +69,7 @@ int **loadPlateau(char *lvl, int *w, int *h)
 
 // return 0 -> ne peux pas
 // return 1 -> peux
-int movePossible(int **plateau, int xPerso, int yPerso, int direction)
+int movePossible(int **plateau, int xPerso, int yPerso, int direction, int id, int* super)
 {
     int DeplacementPossible = 0;
     int xd, yh, xg, yb;
@@ -77,32 +77,48 @@ int movePossible(int **plateau, int xPerso, int yPerso, int direction)
     {
     case 1: // droite
         xd = xPerso + 1;
-        if (plateau[xd][yPerso] == 0 || plateau[xd][yPerso] == -1 || plateau[xd][yPerso] >= 150 || plateau[xd][yPerso] == 99)
+        if (plateau[xd][yPerso] == 0 || plateau[xd][yPerso] == -1 || plateau[xd][yPerso] >= 150 || plateau[xd][yPerso] == 99 || plateau[xd][yPerso] == 20)
         {
             DeplacementPossible = 1;
+            if(plateau[xd][yPerso] == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
 
     case 2: // haut
         yh = yPerso - 1;
-        if (plateau[xPerso][yh] == 0 || plateau[xPerso][yh] == -1 || plateau[xPerso][yh] >= 150 || plateau[xPerso][yh] == 99)
+        if (plateau[xPerso][yh] == 0 || plateau[xPerso][yh] == -1 || plateau[xPerso][yh] >= 150 || plateau[xPerso][yh] == 99 || plateau[xPerso][yh] == 20)
         {
             DeplacementPossible = 1;
+            if(plateau[xPerso][yh] == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
 
     case 3: // gauche
         xg = xPerso - 1;
-        if (plateau[xg][yPerso] == 0 || plateau[xg][yPerso] == -1 || plateau[xg][yPerso] >= 150 || plateau[xg][yPerso] == 99)
+        if (plateau[xg][yPerso] == 0 || plateau[xg][yPerso] == -1 || plateau[xg][yPerso] >= 150 || plateau[xg][yPerso] == 99 || plateau[xg][yPerso] == 20)
         {
             DeplacementPossible = 1;
+            if(plateau[xg][yPerso] == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
     case 4: // bas
         yb = yPerso + 1;
-        if (plateau[xPerso][yb] == 0 || plateau[xPerso][yb] == -1 || plateau[xPerso][yb] >= 150 || plateau[xPerso][yb] == 99)
+        if (plateau[xPerso][yb] == 0 || plateau[xPerso][yb] == -1 || plateau[xPerso][yb] >= 150 || plateau[xPerso][yb] == 99 || plateau[xPerso][yb] == 20)
         {
             DeplacementPossible = 1;
+            if(plateau[xPerso][yb] == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
     default:
@@ -111,13 +127,13 @@ int movePossible(int **plateau, int xPerso, int yPerso, int direction)
     return DeplacementPossible;
 }
 
-void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, int direction, int *mort)
+void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, int direction, int *mort, int* super)
 {
 
     int xDeplacement = *xPerso;
     int yDeplacement = *yPerso;
 
-    if (movePossible(plateau, *xPerso, *yPerso, direction) == 1)
+    if (movePossible(plateau, *xPerso, *yPerso, direction, idPerso, super) == 1)
     {
 
         switch (direction)
@@ -201,4 +217,12 @@ void freePlateau(int **plateau, int w)
         plateau[i] = NULL;
     }
     free(plateau);
+}
+
+void etatSuperPac(int id, int* super)
+{
+    if(id == 99 && super == 0)
+    {
+        *super = 1;
+    }
 }

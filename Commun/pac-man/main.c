@@ -1,6 +1,9 @@
 #include "affichage.h"
 #include "fantome.h"
+#ifndef PLATEAU
+#define PLATEAU
 #include "plateau.h"
+#endif
 
 // #define WINDOWL 700
 // #define WINDOWW 700
@@ -124,7 +127,7 @@ int main()
 
                     if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1) && !keyPressed)
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction= 1;
                         }
@@ -133,7 +136,7 @@ int main()
                 case SDLK_UP:
                     if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3) && !keyPressed)
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction = 3;
                         }
@@ -142,7 +145,7 @@ int main()
                 case SDLK_RIGHT:
                     if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4) && !keyPressed)
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                            direction = 4;
                         }
@@ -151,7 +154,7 @@ int main()
                 case SDLK_LEFT:
                     if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
-                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2) && !keyPressed)
+                        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction = 2;
                         }
@@ -202,7 +205,7 @@ int main()
                    dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort);
                 }
                 for(int j=0; j<3; j++){
-                    movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort);
+                    movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort, &tabPerso[j]->super);
                 }
                 direction=0;
             }

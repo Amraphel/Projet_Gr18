@@ -93,7 +93,7 @@ regles_t** initCervau(int nbRegle, int nbContrainte)
 void freeCerveau(regles_t** tabRegle, int nbRegle)
 {
     int i = 0;
-    for(i; i<nbRegle; i++)
+    for(i=0; i<nbRegle; i++)
     {
         free(tabRegle[i]);
     }

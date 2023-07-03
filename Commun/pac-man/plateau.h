@@ -12,13 +12,15 @@
 #endif
 
 
+
+
 int **loadPlateau(char *lvl, int*w, int* h);
 
 void coordPlat(int **plateau,int w, int h, int val, int *x, int *y);
 
-int movePossible(int** plateau, int xPerso, int yPerso, int direction);
+int movePossible(int** plateau, int xPerso, int yPerso, int direction, int id, int* super);
 
-void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso,int direction, int* mort);
+void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso,int direction, int* mort, int* super);
 
 void printPlateau(int **mat, int w, int h);
 
@@ -27,3 +29,5 @@ int gom_exist(int ** plateau, int w, int h);
 void savePlateau(int ** plateau, int w, int h);
 
 void freePlateau(int **plateau, int w);
+
+void etatSuperPac(int id, int* super);

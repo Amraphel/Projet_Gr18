@@ -30,7 +30,7 @@ void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
     {
         int newX = x;
         int newY = y;
-        if (movePossible(plateau, x, y, i))
+        if (movePossible(plateau, x, y, i, -1, NULL))
         {
             switch (i)
             {
@@ -92,7 +92,7 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY)
     int heuri = -1;
     for (int i = 1; i < 5; i++)
     {
-        if (movePossible(plateau, fantX, fantY, i))
+        if (movePossible(plateau, fantX, fantY, i, -1, NULL))
         {
             int newHeuri = 0;
             switch (i)
@@ -132,7 +132,7 @@ int moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde, 
     SDL_GetWindowSize(window,
                       &window_dimensions.w,
                       &window_dimensions.h);
-    while (!movePossible(plateau, Clyde->posX, Clyde->posY, i))
+    while (!movePossible(plateau, Clyde->posX, Clyde->posY, i, Clyde->id, &Clyde->super))
     {
         i = rand() % 4 + 1;
     }
