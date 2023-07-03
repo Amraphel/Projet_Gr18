@@ -13,3 +13,4 @@ void animePerso(SDL_Texture* skin, SDL_Renderer *renderer, SDL_Rect *rectPerso, 
 void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font);
 void afficherBravo(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font);
 int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan);
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *dir, int **plateau, perso_t **tabPerso);

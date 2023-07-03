@@ -81,11 +81,10 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
                     state.w = offset_x;
                     state.h = offset_y;
 
-                    SDL_RenderCopy(renderer,gom, // Préparation de l'affichage
+                    SDL_RenderCopy(renderer, gom, // Préparation de l'affichage
                                    &state,
                                    &tabRect[i][j]);
                 }
-
             }
         }
     }
@@ -93,7 +92,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     SDL_DestroyTexture(gom);
 }
 
-void afficherPerso(SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
+void afficherPerso(SDL_Texture *my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
 {
     int nbw = 4;
     int nbh = 4;
@@ -105,7 +104,7 @@ void afficherPerso(SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *Re
     SDL_RenderCopy(renderer, my_texture, &state, RectPac);
 }
 
-void animePerso(SDL_Texture* my_texture, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
+void animePerso(SDL_Texture *my_texture, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
 {
     int nbw = 4;
     int nbh = 4;
@@ -144,7 +143,7 @@ void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
 
     SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
 
-    SDL_Rect pos = {W/8 , H/2 - 62, 0, 0};                               // rectangle où le texte va être prositionné
+    SDL_Rect pos = {W / 8, H / 2 - 62, 0, 0};                   // rectangle où le texte va être prositionné
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
 
@@ -176,7 +175,7 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
 
     SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
 
-    SDL_Rect pos = {W/3.5 , H/2 - 62, 0, 0};                               // rectangle où le texte va être prositionné
+    SDL_Rect pos = {W / 3.5, H / 2 - 62, 0, 0};                 // rectangle où le texte va être prositionné
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
    
@@ -184,55 +183,75 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     // SDL_RenderPresent(renderer);
 }
 
-int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan)
+int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
 {
     int col = 0;
-    int i = 0;
+    int i = 1;
 
     int ptHautGauchePac = rectPac.x;
     int ptHautDroitPac = rectPac.x + rectPac.w;
+    int ptBasGauchePac = rectPac.y + rectPac.h;
     int ptBasGauchePac = rectPac.y + rectPac.h;
     int ptYPac = rectPac.y;
 
     int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
     int ptYFan;
-    
 
-    while(i<nbFan)
+    while (i < nbFan + 1)
     {
-        ptHautDroitFan = rectFan[i]->x + rectFan[i]->w; 
+        ptHautDroitFan = rectFan[i]->x + rectFan[i]->w;
         ptHautGaucheFan = rectFan[i]->x;
         ptBasGaucheFan = rectFan[i]->y + rectFan[i]->h;
         ptYFan = rectFan[i]->y;
-        // fprintf(stderr,"Collision fant %d\n",i);
-        // fprintf(stderr,"-------------------\n");
-        // fprintf(stderr,"fan x = %d, y %d\n", ptHautGaucheFan, ptYFan);
-        // fprintf(stderr,"pac x = %d, y %d\n", ptHautGauchePac, ptYPac);
-        // fprintf(stderr,"-------------------\n");
 
-        if(ptYFan == ptYPac)
-        {   
-            //  printf("A\n");
-            if((ptHautDroitFan <= ptHautDroitPac && ptHautDroitFan > ptHautGauchePac) ||
-                (ptHautGaucheFan >= ptHautGauchePac && ptHautGaucheFan < ptHautDroitPac))  
+        if (ptYFan == ptYPac)
+        {
+            if ((ptHautDroitFan <= ptHautDroitPac && ptHautDroitFan > ptHautGauchePac) ||
+                (ptHautGaucheFan >= ptHautGauchePac && ptHautGaucheFan < ptHautDroitPac))
             {
-                // printf("AA\n");
                 col = 1;
             }
         }
         else if (ptHautGaucheFan == ptHautGauchePac)
         {
-            //  printf("B\n");
-            if((ptYFan >= ptYPac && ptYFan < ptBasGauchePac) ||
-                (ptBasGaucheFan <= ptBasGauchePac && ptBasGaucheFan > ptYPac))  
+
+            if ((ptYFan >= ptYPac && ptYFan < ptBasGauchePac) ||
+                (ptBasGaucheFan <= ptBasGauchePac && ptBasGaucheFan > ptYPac))
             {
-                // printf("C\n");
-               col = 1;
+
+                col = 1;
             }
         }
-        
+
         i++;
     }
 
     return col;
+}
+
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *dir, int **plateau, perso_t **tabPerso)
+{
+
+    for (int k = 0; k < nbPerso; k++)
+    {
+      
+            switch (dir[k])
+            {
+            case 1:
+                rectPerso[k]->y += rectPerso[k]->h / 10;
+                break;
+            case 2:
+                rectPerso[k]->x -= rectPerso[k]->w / 10;
+                break;
+            case 3:
+                rectPerso[k]->y -= rectPerso[k]->h / 10;
+                break;
+            case 4:
+                rectPerso[k]->x += rectPerso[k]->w / 10;
+                break;
+            default:
+                break;
+          }
+        
+    }
 }

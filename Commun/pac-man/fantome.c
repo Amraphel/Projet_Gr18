@@ -124,7 +124,7 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY)
     return dir;
 }
 
-void moveRandom(int **plateau, SDL_Window *window, int w, int h, perso_t *Clyde, int *mort, SDL_Rect *rectCly)
+int moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde, int *mort, SDL_Rect* rectCly)
 {
     int i = rand() % 4 + 1;
     SDL_Rect
@@ -141,33 +141,30 @@ void moveRandom(int **plateau, SDL_Window *window, int w, int h, perso_t *Clyde,
         switch (i)
         {
         case 1:
-            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 1, mort);
-            rectCly->y += window_dimensions.h / h;
-            Clyde->etat = 3;
+            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 1, mort);
+            Clyde->etat=3;
             break;
         case 2:
-            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 2, mort);
-            rectCly->x -= window_dimensions.w / w;
-            Clyde->etat = 2;
+            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 2, mort);
+            Clyde->etat=2;
             break;
         case 3:
-            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 3, mort);
-            rectCly->y -= window_dimensions.h / h;
-            Clyde->etat = 1;
+            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 3, mort);
+            Clyde->etat=1;
             break;
         case 4:
-            movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 4, mort);
-            rectCly->x += window_dimensions.w / w;
-            Clyde->etat = 0;
+            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 4, mort);
+            Clyde->etat=0;
             break;
 
         default:
             break;
         }
     }
+    return i;
 }
 
-void moveBlinky( // fonction blinky : plus court chemin vers pac-man
+int moveBlinky( // fonction blinky : plus court chemin vers pac-man
     SDL_Window *window,
     int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin, int *mort)
 {
@@ -184,25 +181,24 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     switch ((move))
     {
     case 1:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 1, mort);
-        rectBlin->y += window_dimensions.h / h;
-        Blinky->etat = 3;
+        // movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 1, mort);
+        
+        Blinky->etat=3;
         break;
     case 2:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2, mort);
-        rectBlin->x -= window_dimensions.w / w;
-        Blinky->etat = 2;
+        // movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 2, mort);
+        
+        Blinky->etat=2;
         break;
 
     case 3:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 3, mort);
-        rectBlin->y -= window_dimensions.h / h;
-        Blinky->etat = 1;
+        // movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 3, mort);
+        Blinky->etat=1;
         break;
     case 4:
-        movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 4, mort);
-        rectBlin->x += window_dimensions.w / w;
-        Blinky->etat = 0;
+        // movePersoInPlateau(plateau, &Blinky->posX, &Blinky->posY, Blinky->id, 4, mort);
+        
+        Blinky->etat=0;
         break;
 
     default:
@@ -210,17 +206,18 @@ void moveBlinky( // fonction blinky : plus court chemin vers pac-man
     }
 
     freeHeuri(heuri,w);
+    return move;
 }
 
-void moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, SDL_Rect *rectClyde, int *mort)
+int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, SDL_Rect *rectClyde, int *mort)
 {
-    int i = rand() % 100 + 1;
-    if (i < 25)
-    {
-        moveRandom(plateau, window, w, h, Clyde, mort, rectClyde);
+    int dir;
+    int i=rand()%100 +1;
+    if(i<25){
+        dir=moveRandom(plateau,window,w,h,Clyde,mort, rectClyde);
+    } else{
+        dir=moveBlinky(window,plateau,w,h,Clyde, Pac_man,rectClyde,mort);
     }
-    else
-    {
-        moveBlinky(window, plateau, w, h, Clyde, Pac_man, rectClyde, mort);
-    }
+    return dir;
+
 }
