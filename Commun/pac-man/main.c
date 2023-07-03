@@ -96,6 +96,7 @@ int main()
     int animeF=0;
     int mort = 0;
     int etatAnim = 0;
+    int etatAnimPlat =0;
     int keyPressed = 0;
     int direction = 0;
     Pac_man->etat = 0;
@@ -211,14 +212,14 @@ int main()
             }
             move = (move + 1) % speedMove;
             if(animeF==0){
-                afficherPlateau(tabRect, plateau, w, h, window, renderer);
+                afficherPlateau(tabRect, plateau, w, h, window, renderer,&etatAnimPlat);
                 animeFluide(tabRectPerso,3, dir, plateau, tabPerso);
                 //  SDL_RenderPresent(renderer);
             }
             animeF= (animeF+1) % speedDep;
             if (i == 0)
             {
-                afficherPlateau(tabRect, plateau, w, h, window, renderer);
+                afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {

@@ -25,12 +25,13 @@ SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
     return tabRect;
 }
 
-void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window *window, SDL_Renderer *renderer)
+void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window *window, SDL_Renderer *renderer, int *etatAnim)
 {
     SDL_RenderClear(renderer);
     int fondW, fondH;
     SDL_Texture *my_texture = load_texture_from_image("./source/Murs.png", window, renderer);
     SDL_Texture *gom = load_texture_from_image("./source/Pac-gomme.png", window, renderer);
+    SDL_Texture *supergom = load_texture_from_image("./source/SuperPacGomme.png", window, renderer);
     SDL_GetWindowSize(window, &fondW, &fondH);
     for (int i = 0; i < w; i++)
     {
@@ -39,7 +40,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
             if (plateau[j][i] != -1 && plateau[j][i] < 99)
             {
                 int nb_images = 0;
-                if (plateau[j][i] != 0)
+                if (plateau[j][i] != 0 && plateau[j][i] < 20)
                 {
                     nb_images = 15;
                     SDL_Rect
@@ -64,32 +65,51 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
                 }
                 else
                 {
-                    nb_images = 1;
-                    SDL_Rect
-                        source = {0},
-                        state = {0};
+                    if (plateau[j][i] == 0)
+                    {
+                        nb_images = 1;
+                        SDL_Rect
+                            source = {0},
+                            state = {0};
 
-                    SDL_QueryTexture(gom,
-                                     NULL, NULL,
-                                     &source.w, &source.h);
+                        SDL_QueryTexture(gom,
+                                         NULL, NULL,
+                                         &source.w, &source.h);
 
-                    int offset_x = source.w / nb_images,
-                        offset_y = source.h;
+                        int offset_x = source.w / nb_images,
+                            offset_y = source.h;
 
-                    state.x = 0;
-                    state.y = 0;
-                    state.w = offset_x;
-                    state.h = offset_y;
+                        state.x = 0;
+                        state.y = 0;
+                        state.w = offset_x;
+                        state.h = offset_y;
 
-                    SDL_RenderCopy(renderer, gom, // Préparation de l'affichage
-                                   &state,
-                                   &tabRect[i][j]);
+                        SDL_RenderCopy(renderer, gom, // Préparation de l'affichage
+                                       &state,
+                                       &tabRect[i][j]);
+                    }
+                    else
+                    {
+
+                        nb_images = 4;
+                        SDL_Rect source = {0}, state = {0};
+                        SDL_QueryTexture(supergom, NULL, NULL, &source.w, &source.h);
+                        state.x = (*etatAnim) * source.w / nb_images;
+                        state.y = 0;
+                        state.w = source.w / nb_images;
+                        state.h = source.h;
+                        // state = {(*etatAnim) * source.w / nb_images, source.h, source.w / nb_images, source.h};
+                        SDL_RenderCopy(renderer, supergom, &state, &tabRect[i][j]);
+
+                        
+                    }
                 }
             }
         }
     }
+    *etatAnim += 1;
+                        *etatAnim = (*etatAnim) % 4;
     SDL_DestroyTexture(my_texture);
-    SDL_DestroyTexture(gom);
 }
 
 void afficherPerso(SDL_Texture *my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
@@ -178,7 +198,7 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     SDL_Rect pos = {W / 3.5, H / 2 - 62, 0, 0};                 // rectangle où le texte va être prositionné
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
-   
+
     SDL_DestroyTexture(text_texture);
     // SDL_RenderPresent(renderer);
 }
@@ -233,24 +253,23 @@ void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *dir, int **plateau, per
 
     for (int k = 0; k < nbPerso; k++)
     {
-      
-            switch (dir[k])
-            {
-            case 1:
-                rectPerso[k]->y += rectPerso[k]->h / 10;
-                break;
-            case 2:
-                rectPerso[k]->x -= rectPerso[k]->w / 10;
-                break;
-            case 3:
-                rectPerso[k]->y -= rectPerso[k]->h / 10;
-                break;
-            case 4:
-                rectPerso[k]->x += rectPerso[k]->w / 10;
-                break;
-            default:
-                break;
-          }
-        
+
+        switch (dir[k])
+        {
+        case 1:
+            rectPerso[k]->y += rectPerso[k]->h / 10;
+            break;
+        case 2:
+            rectPerso[k]->x -= rectPerso[k]->w / 10;
+            break;
+        case 3:
+            rectPerso[k]->y -= rectPerso[k]->h / 10;
+            break;
+        case 4:
+            rectPerso[k]->x += rectPerso[k]->w / 10;
+            break;
+        default:
+            break;
+        }
     }
 }
