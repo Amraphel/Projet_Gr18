@@ -10,14 +10,14 @@ regles_t ** createMatRegles(int nbRegle)
     return matRegles;
 }
 
-regles_t **loadRegles(char* regles)
+regles_t **loadRegles(char* regles, int* valObj)
 {
-    int* nbRegle=malloc(sizeof(nbRegle));
+    int* nbRegle=malloc(sizeof(int));
     regles_t **matRegles = NULL;
     FILE *file = fopen(regles, "r");
     if (file)
     {
-        fscanf(file, "%d\n", nbRegle);
+        fscanf(file, "%d %d\n", nbRegle, valObj);
 
         matRegles = createMatRegles(*nbRegle);
         
@@ -30,17 +30,18 @@ regles_t **loadRegles(char* regles)
         }
     }
     free(nbRegle);
+    nbRegle=NULL;
     fclose(file);
     return matRegles;
 }
 
 
-void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle)
+void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle, int valObj)
 {
     FILE *file = fopen(regles, "w");
     if (file)
     {
-        fprintf(file, "%d\n", nbRegle);
+        fprintf(file, "%d %d\n", nbRegle, valObj);
 
         for (int i = 0; i < nbRegle; i++)
         {
@@ -51,4 +52,23 @@ void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle)
     }
     fclose(file);
 
+}
+
+int * initRegle(int nbRegle, int nbContrainte){
+    int * reg= malloc(sizeof(int)*nbRegle*nbContrainte);
+    for(int i =0; i<nbRegle*nbContrainte; i++){
+        reg[i]=i;
+    }
+    return reg;
+}
+
+
+void shuffleRegle(int nbRegle, int nbContrainte, int * reg){
+    for(int i=0; i <100; i++){
+        int val1 = rand() %(nbRegle*nbContrainte);
+        int val2 = rand() %(nbRegle*nbContrainte);
+        int temp=reg[val1];
+        reg[val1]=reg[val2];
+        reg[val2]= temp;
+    }
 }

@@ -66,3 +66,4 @@ void freeCerveau(regles_t** tabRegle, int nbRegle);
 int * createListePos(int nbPos);
 
 int possibilite(int nbContrainte);
+void freeHeuri(int **heuri, int w);

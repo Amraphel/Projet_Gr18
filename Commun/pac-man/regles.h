@@ -16,5 +16,7 @@
 #endif
 
 regles_t ** createMatRegles(int nbRegle);
-regles_t **loadRegles(char* regles);
-void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle);
+regles_t **loadRegles(char* regles, int * valObj);
+void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle, int valObj);
+int * initRegle(int nbRegle, int nbContrainte);
+void shuffleRegle(int nbRegle, int nbContrainte, int * reg);

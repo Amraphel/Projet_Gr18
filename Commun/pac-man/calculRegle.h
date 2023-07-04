@@ -25,6 +25,7 @@
 
 typedef struct param{
     int id;
+    int type;
     int * valSortie;
     regles_t ** listeRegle;
 }param_t;
@@ -32,4 +33,4 @@ typedef struct param{
 
 int testParcours(regles_t **tabRegle,int nbRegle, perso_t** tabPerso, int ** plateau, int w, int h, double s);
 int recuit(int NBREGLE, char * source, char * dest);
-int parcours( regles_t **tabRegle);
+int parcours(regles_t **tabRegle, int type, double s);

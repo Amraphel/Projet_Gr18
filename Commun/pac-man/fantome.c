@@ -18,6 +18,24 @@ perso_t *initClyde(int **plateau, int w, int h)
     return clyde;
 }
 
+perso_t *initInky(int **plateau, int w, int h)
+{
+    perso_t *clyde = malloc(sizeof(perso_t));
+    clyde->id = 220;
+    coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
+
+    return clyde;
+}
+
+perso_t *initPinky(int **plateau, int w, int h)
+{
+    perso_t *clyde = malloc(sizeof(perso_t));
+    clyde->id = 230;
+    coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
+
+    return clyde;
+}
+
 int heuriBasique(int x, int y, int pacX, int pacY)
 {
     return pow(pacX - x, 2) + pow(pacY - y, 2);

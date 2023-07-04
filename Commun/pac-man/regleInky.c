@@ -44,11 +44,9 @@ void modifRegle(regles_t *regle, int numContrainte, int valeur)
     }
 }
 
-int possibilite(int nbContrainte)
+int possibilite(int numContrainte)
 {
     int possible = 0;
-    int numContrainte = rand() % nbContrainte;
-    int nouvC = 0;
     switch (numContrainte)
     {
     case 0: // case_ t droite de -1 à 3
@@ -116,8 +114,10 @@ void freeCerveau(regles_t **tabRegle, int nbRegle)
     for (i = 0; i < nbRegle; i++)
     {
         free(tabRegle[i]);
+        tabRegle[i]=NULL;
     }
     free(tabRegle);
+    tabRegle=NULL;
 }
 
 

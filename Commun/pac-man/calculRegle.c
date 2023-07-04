@@ -41,13 +41,18 @@ int compareRegle(regles_t *regleOrigin, regles_t *etatPlateau)
 regles_t *calculEtat(perso_t **tabPerso, int w, int idFantome)
 {
     int idAutreFant = 0;
-    if (idFantome == 1)
+    int distFant = 1000;
+    for (int i = 1; i < 5; i++)
     {
-        idAutreFant = 2;
-    }
-    else
-    {
-        idAutreFant = 1;
+        if (i != idFantome)
+        {
+            int dist = pow(tabPerso[idFantome]->posX - tabPerso[i]->posX, 2) + pow(tabPerso[idFantome]->posY - tabPerso[i]->posY, 2);
+            if (dist < distFant)
+            {
+                idAutreFant = i;
+                distFant = dist;
+            }
+        }
     }
     regles_t *etat = malloc(sizeof(regles_t));
     if (etat)
@@ -115,7 +120,7 @@ regles_t *calculEtat(perso_t **tabPerso, int w, int idFantome)
         }
         else
         {
-            if (tabPerso[2]->posY - tabPerso[0]->posY < 0)
+            if (tabPerso[idFantome]->posY - tabPerso[0]->posY < 0)
             {
                 etat->dir_pacman = S;
             }
@@ -198,121 +203,78 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
     return dir;
 }
 
-int testParcours(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, int h, double s)
+int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, int h, double s)
 {
     int nbIter = 0;
     int mort = 0;
-    while (nbIter < 5000 && mort != 1)
+    int distMin = -1;
+    while (nbIter < 100 && mort != 1)
     {
-        // fprintf(stderr, "------------------\nnbIter= %d\n", nbIter);
+
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
         movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort);
-        for (int i = 1; i < 3; i++)
+        int** heuri= heuristique(plateau,tabPerso[0]->posX,tabPerso[0]->posY,w,h);
+        int dist=0;
+        for (int i = 1; i < 5; i++)
         {
-            // fprintf(stderr, "aled1\n");
             regles_t *etatPlat = calculEtat(tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
-            // fprintf(stderr, "dir= %d\n", dir);
             movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
-
+            dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY]*100 +nbIter;
             free(etatPlat);
         }
-
+        dist=dist/4;
+        if (distMin == -1 || distMin > dist)
+            {
+                distMin = dist;
+            }
+        freeHeuri(heuri, w);
         nbIter++;
     }
     // printPlateau(plateau, w, h);
+    // fprintf(stderr, "\n%d\n", nbIter);
+    return distMin;
+}
+
+int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, int h, double s)
+{
+    int nbIter = 0;
+    int mort = 0;
+    // int distMin = -1;
+    while (nbIter < 10000 && mort != 1)
+    {
+
+        int dirPac = movePacmanIA(plateau, tabPerso[0]);
+        movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort);
+        // int** heuri= heuristique(plateau,tabPerso[0]->posX,tabPerso[0]->posY,w,h);
+        // int dist=0;
+        for (int i = 1; i < 5; i++)
+        {
+            regles_t *etatPlat = calculEtat(tabPerso, w, i);
+            int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
+            movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
+            // dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY]*100 +nbIter;
+            free(etatPlat);
+        }
+        // dist=dist/4;
+        // if (distMin == -1 || distMin > dist)
+        //     {
+        //         distMin = dist;
+        //     }
+        // freeHeuri(heuri, w);
+        nbIter++;
+    }
+    // printPlateau(plateau, w, h);
+    // fprintf(stderr, "\n%d\n", nbIter);
     return nbIter;
 }
 
-// int recuit(int NBREGLE, char * source, char * dest)
-// {
-//     regles_t** tabRegle=NULL;
-//     tabRegle = loadRegles(source, &NBREGLE);
-    
-//     if (!tabRegle)
-//     {
-//         tabRegle = createMatRegles(NBREGLE);
-//         initCerveau(tabRegle, NBREGLE);
-//     }
-//     ecrireRegle(tabRegle, dest, NBREGLE);
-//     fprintf(stderr, "aled\n");
-
-//     regles_t **tabRegle2 = tabRegle;
-//     double init = 5000;
-//     double temp = init;
-//     double objectif = 100;
-//     int nbIterObj = -1;
-//     int w, h;
-//     int nbIter = 0;
-//     for (int i = 0; i < 1000; i++)
-//     {
-//         fprintf(stderr, "iteration : %d\n", i);
-//         int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
-
-//         perso_t *Pac_man = initPac_man(plateau, w, h);
-//         perso_t *Blinky = initBlinky(plateau, w, h);
-//         perso_t *Clyde = initClyde(plateau, w, h);
-//         perso_t **tabPerso = malloc(sizeof(perso_t *) * 3);
-//         tabPerso[0] = Pac_man;
-//         tabPerso[1] = Blinky;
-//         tabPerso[2] = Clyde;
-// fprintf(stderr, "aled\n");
-//         nbIter += testParcours(tabRegle2, NBREGLE, tabPerso, plateau, w, h, 1);
-//         fprintf(stderr, "aled");
-//         if (i % 15 == 0 && i != 0)
-//         {
-//             nbIter = nbIter / 15;
-
-//             if (nbIterObj == -1 || nbIter < nbIterObj)
-//             {
-//                 nbIterObj = nbIter;
-//                 tabRegle = tabRegle2;
-//             }
-//             else
-//             {
-//                 double prop = (float)rand() / RAND_MAX;
-//                 if (prop < temp)
-//                 {
-//                     nbIterObj = nbIter;
-//                     tabRegle = tabRegle2;
-//                 }
-//                 else
-//                 {
-//                     tabRegle2 = tabRegle;
-//                 }
-//             }
-//             temp = init * pow(sqrt(objectif / init), 1000);
-//             tabRegle2 = modifRegle(tabRegle2, NBREGLE, 10);
-//             nbIter = 0;
-//         }
-//         fprintf(stderr, "aled\n");
-//         printf("NbIter : %d\n", nbIter);
-
-//         ecrireRegle(tabRegle, dest, NBREGLE);
-//         for (int i = 0; i < 3; i++)
-//         {
-//             free(tabPerso[i]);
-//             tabPerso[i]=NULL;
-//         }
-//         free(tabPerso);
-//         tabPerso=NULL;
-//         freePlateau(plateau, w);
-        
-
-//         for(int i=0; i<NBREGLE; i++){
-//             free(tabRegle2[i]);
-//             tabRegle2[i]=NULL;
-//         }
-//         tabRegle2=NULL;
-//         printf("iterFin : %d", nbIterObj);
-//     }
-// }
 
 
-int parcours( regles_t **tabRegle){
+int parcours(regles_t **tabRegle, int type, double s)
+{
     int NBREGLE = 12;
     // regles_t **tabRegle = NULL;
-   
 
     if (!tabRegle)
     {
@@ -321,27 +283,35 @@ int parcours( regles_t **tabRegle){
         // ecrireRegle(tabRegle, dest, NBREGLE);
     }
 
-
-    int w,h;
-    int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
+    int w, h;
+    int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
     perso_t *Blinky = initBlinky(plateau, w, h);
     perso_t *Clyde = initClyde(plateau, w, h);
-    perso_t **tabPerso = malloc(sizeof(perso_t *) * 3);
+    perso_t *Inky = initInky(plateau, w, h);
+    perso_t *Pinky = initPinky(plateau, w, h);
+    perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
     tabPerso[0] = Pac_man;
     tabPerso[1] = Blinky;
     tabPerso[2] = Clyde;
-    int dist = testParcours(tabRegle, NBREGLE, tabPerso,plateau,w,h,1);
+    tabPerso[3] = Inky;
+    tabPerso[4] = Pinky;
+    int dist = 0;
+    if (type == 0)
+    {
+        dist = testParcoursProche(tabRegle, NBREGLE, tabPerso, plateau, w, h, s);
+    }
+    else
+    {
+        dist = testParcoursFinLevel(tabRegle, NBREGLE, tabPerso, plateau, w, h, s);
+    }
 
-
-    for (int i = 0; i < 3; i++)
-        {
-            free(tabPerso[i]);
-            tabPerso[i]=NULL;
-        }
-        free(tabPerso);
-        tabPerso=NULL;
-        freePlateau(plateau, w);
+    for (int i = 0; i < 5; i++)
+    {
+        free(tabPerso[i]);
+    }
+    free(tabPerso);
+    freePlateau(plateau, w);
 
     return dist;
 }
