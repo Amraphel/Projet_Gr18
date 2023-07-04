@@ -13,14 +13,11 @@ regles_t ** createMatRegles(int nbRegle)
 regles_t **loadRegles(char* regles,int* nbRegle)
 {
     regles_t **matRegles = NULL;
-    fprintf(stderr, "aled\n");
     FILE *file = fopen(regles, "r");
-    fprintf(stderr, "aled\n");
     if (file)
     {
-        fprintf(stderr, "nbregle = %d\n", *nbRegle);
         fscanf(file, "%d\n", nbRegle);
-fprintf(stderr, "nbregle = %d\n", *nbRegle);
+
         matRegles = createMatRegles(*nbRegle);
         
         for (int i = 0; i < *nbRegle; i++)
