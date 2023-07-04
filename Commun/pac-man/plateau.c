@@ -154,6 +154,16 @@ void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, in
         default:
             break;
         }
+        /*
+        if (xDeplacement==11 && yDeplacement==-1)
+        {
+            yDeplacement=22;
+        }
+        else if (xDeplacement==11 && yDeplacement==23)
+        {
+            yDeplacement=0;
+        }
+        */
         if (idPerso == 99)
         {
 

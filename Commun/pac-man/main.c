@@ -234,11 +234,11 @@ int main()
             if (move == 0)
             {
                 
-                //dir[0] =movePacmanIA(plateau, Pac_man);
-                dir[0]=direction;
+                dir[0] =movePacmanIA(plateau, Pac_man);
+                //dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                   dir[1]= 0;// moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
+                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
                 }
                 if (Clyde->posX != 0)
                 {

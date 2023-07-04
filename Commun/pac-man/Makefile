@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS =-g -fsanitize=undefined -Wall -Wextra 
-LDFLAGS =-g -fsanitize=undefined -lSDL2 -Wall -Wextra -lSDL2_image -lm -lSDL2_ttf
+LDFLAGS =-O2 -fsanitize=undefined -lSDL2 -Wall -Wextra -lSDL2_image -lm -lSDL2_ttf
 
 #liste des fichiers source
 SRC = $(wildcard *.c) 
