@@ -1,7 +1,8 @@
 #include "regleInky.h"
 
-void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
+regles_t **modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
 {
+    regles_t **newTableRegle = tabRegle;
     int numRegle = rand() % nbRegle;
     int numContrainte = rand() % nbContrainte;
     int nouvC = 0;
@@ -9,59 +10,94 @@ void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
     {
     case 0: // case_ t droite de -1 à 3
         nouvC = rand() % 5 - 1;
-        tabRegle[numRegle]->droite = nouvC;
+        newTableRegle[numRegle]->droite = nouvC;
         break;
     case 1: // case_ t haut
         nouvC = rand() % 5 - 1;
-        tabRegle[numRegle]->haut = nouvC;
+        newTableRegle[numRegle]->haut = nouvC;
         break;
     case 2: // case_ t gauche
         nouvC = rand() % 5 - 1;
-        tabRegle[numRegle]->gauche = nouvC;
+        newTableRegle[numRegle]->gauche = nouvC;
         break;
     case 3: // case_ t bas
         nouvC = rand() % 5 - 1;
-        tabRegle[numRegle]->bas = nouvC;
+        newTableRegle[numRegle]->bas = nouvC;
         break;
 
     case 4: // distance_t distance_fantome
-        nouvC = rand() % 5;
-        tabRegle[numRegle]->distance_fantome = nouvC;
+        nouvC = rand() % 6 - 1;
+        newTableRegle[numRegle]->distance_fantome = nouvC;
         break;
     case 5: // distance_t distance_pacman
-        nouvC = rand() % 5;
-        tabRegle[numRegle]->distance_pacman = nouvC;
+        nouvC = rand() % 6 - 1;
+        newTableRegle[numRegle]->distance_pacman = nouvC;
         break;
 
     case 6: // cadran_t cadran_fantome
-    nouvC = rand() % 4;
-    tabRegle[numRegle]->dir_fantome = nouvC;
+        nouvC = rand() % 5 - 1;
+        newTableRegle[numRegle]->dir_fantome = nouvC;
         break;
     case 7: // cadran_t cadran_pacman
-        nouvC = rand() % 4;
-        tabRegle[numRegle]->dir_pacman = nouvC;
+        nouvC = rand() % 5 - 1;
+        newTableRegle[numRegle]->dir_pacman = nouvC;
         break;
 
     case 8: // int priorite
-        nouvC = rand() % 6;
-        tabRegle[numRegle]->priorite = nouvC;
+        nouvC = rand() % 6 + 1;
+        newTableRegle[numRegle]->priorite = nouvC;
         break;
 
     case 9: // action_t action
-        nouvC = rand() % 4;
-        tabRegle[nbRegle]->action = nouvC;
+        nouvC = rand() % 4 + 1;
+        newTableRegle[numRegle]->action = nouvC;
         break;
 
     default:
         break;
     }
+    return newTableRegle;
 }
 
-regles_t** initCervau(int nbRegle, int nbContrainte)
+int possibilite(int nbContrainte)
 {
-    regles_t** tabRegle = malloc(sizeof(regles_t)*nbRegle);
+    int possible = 0;
+    int numContrainte = rand() % nbContrainte;
+    int nouvC = 0;
+    switch (numContrainte)
+    {
+    case 0: // case_ t droite de -1 à 3
+    case 1:
+    case 2:
+    case 3: // case_ t bas
+        possible = 5;
+        break;
+
+    case 4: // distance_t distance_fantome
+    case 5:
+        possible = 6;
+        break;
+    case 6:
+    case 7:
+        possible = 5;
+        break; // case_ t haut
+    case 8:
+        possible = 6;
+        break; // case_ t haut
+    case 9:    // action_t action
+        possible = 4;
+        break; // case_ t haut
+
+    default:
+        break;
+    }
+    return possible;
+}
+
+void initCerveau(regles_t **tabRegle, int nbRegle)
+{
     int i = 0;
-    for(i = 0; i < 4; i++)
+    for (i = 0; i < 4; i++)
     {
         tabRegle[i]->droite = -1;
         tabRegle[i]->haut = -1;
@@ -71,10 +107,10 @@ regles_t** initCervau(int nbRegle, int nbContrainte)
         tabRegle[i]->distance_pacman = -1;
         tabRegle[i]->dir_fantome = -1;
         tabRegle[i]->dir_pacman = -1;
-        tabRegle[i]->priorite = 0;
-        tabRegle[i]->action = i;
+        tabRegle[i]->priorite = 1;
+        tabRegle[i]->action = i + 1;
     }
-    for(i; i < nbRegle; i++)
+    for (i = 4; i < nbRegle; i++)
     {
         tabRegle[i]->droite = rand() % 5 - 1;
         tabRegle[i]->haut = rand() % 5 - 1;
@@ -84,18 +120,26 @@ regles_t** initCervau(int nbRegle, int nbContrainte)
         tabRegle[i]->distance_pacman = rand() % 5;
         tabRegle[i]->dir_fantome = rand() % 4;
         tabRegle[i]->dir_pacman = rand() % 4;
-        tabRegle[i]->priorite = rand() % 6;
-        tabRegle[i]->action = rand() % 4;
+        tabRegle[i]->priorite = rand() % 6 + 1;
+        tabRegle[i]->action = rand() % 4 + 1;
     }
-    return tabRegle;
 }
 
-void freeCerveau(regles_t** tabRegle, int nbRegle)
+void freeCerveau(regles_t **tabRegle, int nbRegle)
 {
     int i = 0;
-    for(i; i<nbRegle; i++)
+    for (i = 0; i < nbRegle; i++)
     {
         free(tabRegle[i]);
     }
     free(tabRegle);
+}
+
+
+int * createListePos(int nbPos){
+    int * listpost= malloc(sizeof(int)*nbPos);
+    for(int i=0; i<nbPos; i++){
+        listpost[i]=i-1;
+    }   
+    return listpost;
 }

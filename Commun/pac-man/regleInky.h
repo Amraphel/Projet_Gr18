@@ -13,6 +13,7 @@
 
 typedef enum
 {
+    JOKERc = -1,
     N,
     E,
     S,
@@ -21,6 +22,7 @@ typedef enum
 
 typedef enum
 {
+    JOKERd = -1,
     TL,
     L,
     AP,
@@ -31,7 +33,7 @@ typedef enum
 
 typedef enum
 {
-    JOKER = -1,
+    JOKERca = -1,
     MUR,
     VIDE,
     PACMAN,
@@ -53,10 +55,11 @@ typedef struct
     distance_t distance_pacman;           // dans quelle direction se trouve pacman la plus proche
     cadran_t dir_fantome;             // dans quel cadran se trouve le fantome le plus proche
     cadran_t dir_pacman;             // dans quel cadran se trouve pacman
-    int priorite;                      // de 0 à 5
     action_t action;                  // quelle action doit être prise
+    int priorite;                      // de 0 à 5
 }regles_t;
 
-void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte);
-regles_t** initCervau(int nbRegle, int nbContrainte);
+regles_t **modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte);
+void initCerveau(regles_t** tabRegle,int nbRegle);
 void freeCerveau(regles_t** tabRegle, int nbRegle);
+int * createListePos(int nbPos);
