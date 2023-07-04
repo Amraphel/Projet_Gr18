@@ -137,7 +137,7 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY, perso_t 
     return dir;
 }
 
-int moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde, int *mort, SDL_Rect* rectCly)
+int moveRandom(int **plateau, SDL_Window* window, perso_t *Clyde)
 {
     int i = rand() % 4 + 1;
     SDL_Rect
@@ -154,19 +154,15 @@ int moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde, 
         switch (i)
         {
         case 1:
-            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 1, mort);
             Clyde->etat=3;
             break;
         case 2:
-            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 2, mort);
             Clyde->etat=2;
             break;
         case 3:
-            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 3, mort);
             Clyde->etat=1;
             break;
         case 4:
-            // movePersoInPlateau(plateau, &Clyde->posX, &Clyde->posY, Clyde->id, 4, mort);
             Clyde->etat=0;
             break;
 
@@ -176,10 +172,8 @@ int moveRandom(int **plateau, SDL_Window* window, int w, int h, perso_t *Clyde, 
     }
     return i;
 }
-
-int moveBlinky( // fonction blinky : plus court chemin vers pac-man
-    SDL_Window *window,
-    int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, SDL_Rect *rectBlin, int *mort, perso_t * pacman)
+// fonction blinky : plus court chemin vers pac-man
+int moveBlinky( SDL_Window *window,int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, perso_t * pacman)
 {
     SDL_Rect
         window_dimensions = {0};
@@ -222,14 +216,14 @@ int moveBlinky( // fonction blinky : plus court chemin vers pac-man
     return move;
 }
 
-int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, SDL_Rect *rectClyde, int *mort, perso_t * pacman)
+int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, perso_t * pacman)
 {
     int dir;
     int i=rand()%100 +1;
     if(i<50){
-        dir=moveRandom(plateau,window,w,h,Clyde,mort, rectClyde);
+        dir=moveRandom(plateau,window,Clyde);
     } else{
-        dir=moveBlinky(window,plateau,w,h,Clyde, Pac_man,rectClyde,mort, pacman);
+        dir=moveBlinky(window,plateau,w,h,Clyde, Pac_man, pacman);
     }
     return dir;
 

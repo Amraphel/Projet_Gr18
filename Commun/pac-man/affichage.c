@@ -181,20 +181,16 @@ void animePerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *re
  * @param [in] renderer renderer de la fenetre
  * @param [in] font police d'ecriture utilisee
  */
-void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
+void afficherTexteFin(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, SDL_Color couleur, char* text, int posx, int posy)
 {
-    SDL_Color color = {219, 0, 0, 255};
     SDL_Surface *text_surface = NULL;
-
-    text_surface = TTF_RenderText_Blended(font, "GAME OVER", color); 
+    text_surface = TTF_RenderText_Blended(font, text, couleur);
     if (text_surface == NULL)
     {
         end_sdl(0, "Can't create text surface", window, renderer);
     }
-
     int W, H;
     SDL_GetWindowSize(window, &W, &H);
-
     SDL_Texture *text_texture = NULL;                                   
     text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); 
     if (text_texture == NULL)
@@ -204,50 +200,13 @@ void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
 
     SDL_FreeSurface(text_surface); 
 
-    SDL_Rect pos = {W / 8, H / 2 - 62, 0, 0};                   
+    SDL_Rect pos = {posx, posy, 0, 0};                   
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); 
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         
 
     SDL_DestroyTexture(text_texture);
 }
 
-/**
- * @brief Affiche Bravo a la fin du jeu si gagne
- * @param [in] window fenetre de jeu
- * @param [in] renderer renderer de la fenetre
- * @param [in] font police d'ecriture utilisee
- */
-void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
-{
-    SDL_Color color = {0, 219, 0, 255};
-    SDL_Surface *text_surface = NULL;
-
-    text_surface = TTF_RenderText_Blended(font, "BRAVO", color); // création du texte dans la surface
-    if (text_surface == NULL)
-    {
-        end_sdl(0, "Can't create text surface", window, renderer);
-    }
-
-    int W, H;
-    SDL_GetWindowSize(window, &W, &H);
-
-    // Création de la texture du text
-    SDL_Texture *text_texture = NULL;                                    // la texture qui contient le texte
-    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); // transfert de la surface à la texture
-    if (text_texture == NULL)
-    {
-        end_sdl(0, "Can't create texture from surface", window, renderer);
-    }
-
-    SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
-
-    SDL_Rect pos = {W / 3.5, H / 2 - 62, 0, 0};                 // rectangle où le texte va être prositionné
-    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
-
-    SDL_DestroyTexture(text_texture);
-    // SDL_RenderPresent(renderer);
-}
 
 /**
  * @brief Detecte une collision entre un fantome et pac_man grace aux rects
@@ -272,7 +231,6 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
     int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
     int ptYFan;
 
-    int superFan;
     int superPac = tabPerso[0]->super;
     int j = 1;
 
@@ -329,10 +287,8 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
  * @param [in] rectPerso tableau de ranctangle des perso
  * @param [in] nbPerso nombre de perso dans le jeu
  * @param [in] direction direction du perso
- * @param [in] plateau plateau (matrice) du jeu
- * @param [in] tabPerso tableau des perso 
  */
-void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **plateau, perso_t **tabPerso)
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction)
 {
 
     for (int k = 0; k < nbPerso; k++)
@@ -358,54 +314,30 @@ void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **platea
     }
 }
 
-SDL_Texture* spriteSuperPacMan(int super, SDL_Window* window, SDL_Renderer* renderer)
+
+/**
+ * @brief Selectionne la bonne texture de Pac man en fonction de super
+ * @param [in] textPerso texture du perso dans le jeu
+ * @param [in] textPersoNormal texture du perso en normal
+ * @param [in] textPersoSuper texture du perso en super
+ * @param [in] super 0 pac man n'est pas en super; 1 pac man est en super
+ * @return texture de pac_man
+ */
+SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super)
 {
-    SDL_Texture *textPac = NULL;
     switch (super)
     {
     case 0:
-        textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
+        *textPerso = textPersoNormal;
         break;
 
     case 1:
-        textPac = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
+        *textPerso = textPersoSuper;
         break;
     
     default:
         break;
     } 
-    return textPac;  
+    return *textPerso;  
 
-}
-
-SDL_Texture* spriteBlinkyChasse(int super, SDL_Window* window, SDL_Renderer* renderer)
-{
-    SDL_Texture *textBlin = NULL;
-    switch (super)
-    {
-        case 0:
-            textBlin = load_texture_from_image("./source/Blinky.png", window, renderer);
-            break;
-        
-        case 1:
-            textBlin = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
-            break;
-    }
-    return textBlin;
-}
-
-SDL_Texture* spriteClydeChasse(int super, SDL_Window* window, SDL_Renderer* renderer)
-{
-    SDL_Texture *textCly = NULL;
-    switch (super)
-    {
-        case 0:
-            textCly = load_texture_from_image("./source/Clyde.png", window, renderer);
-            break;
-        
-        case 1:
-            textCly = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
-            break;
-    }
-    return textCly;
 }

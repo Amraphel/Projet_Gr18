@@ -51,9 +51,18 @@ int main()
     dir[2]=0;
 
     //int super = 0;
-    SDL_Texture *textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
-    SDL_Texture *textBlin = load_texture_from_image("./source/Blinky.png", window, renderer);
-    SDL_Texture *textCly = load_texture_from_image("./source/Clyde.png", window, renderer);
+    SDL_Texture *textPacNormal = load_texture_from_image("./source/Pac-man.png", window, renderer);
+    SDL_Texture *textPacSuper = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
+    SDL_Texture *textPac = NULL;
+
+    SDL_Texture *textBlinNormal = load_texture_from_image("./source/Blinky.png", window, renderer);
+    SDL_Texture *textBlinSuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
+    SDL_Texture *textBlin = NULL;
+
+    SDL_Texture *textClyNormal = load_texture_from_image("./source/Clyde.png", window, renderer);
+    SDL_Texture *textClySuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
+    SDL_Texture *textCly = NULL;
+
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectCly = {Clyde->posY * WINDOWL / h, Clyde->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
@@ -73,7 +82,7 @@ int main()
         afficherPerso(textBlin, renderer, &rectBlin);
     }
 
-    afficherPerso(textPac, renderer, &rectPac);
+    afficherPerso(textPacNormal, renderer, &rectPac);
     if (Clyde->posX != 0)
     {
         afficherPerso(textCly, renderer, &rectCly);
@@ -94,7 +103,6 @@ int main()
     int speedMove = 100000;
     int speed = speedMove/10;
     int speedDep= speedMove/10;
-    int test=1;
     int i = 0;
     int move = 0;
     int animeF=0;
@@ -200,11 +208,11 @@ int main()
                 dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
+                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, Pac_man);
                 }
                 if (Clyde->posX != 0)
                 {
-                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort, Pac_man);
+                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, Pac_man);
                 }
                 for(int j=0; j<3; j++){
                     movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort, &tabPerso[j]->super);
@@ -223,7 +231,7 @@ int main()
             move = (move + 1) % speedMove;
             if(animeF==0){
                 afficherPlateau(tabRect, plateau, w, h, window, renderer,&etatAnimPlat);
-                animeFluide(tabRectPerso,3, dir, plateau, tabPerso);
+                animeFluide(tabRectPerso,3, dir);
                 // SDL_RenderPresent(renderer);
             }
             animeF= (animeF+1) % speedDep;
@@ -231,13 +239,13 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
-                textPac = spriteSuperPacMan(Pac_man->super, window, renderer);
+                textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, Pac_man->super);
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {
                     if(tabPerso[1]->super == 0)
                     {    
-                        textBlin = spriteBlinkyChasse(Pac_man->super, window, renderer);
+                        textBlin = spriteSuperPerso(&textBlin, textBlinNormal, textBlinSuper, Pac_man->super);
                         animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
                     }
                     else
@@ -249,7 +257,7 @@ int main()
                 {
                     if(tabPerso[2]->super == 0)
                     {
-                        textCly = spriteClydeChasse(Pac_man->super, window, renderer);
+                        textCly = spriteSuperPerso(&textCly, textClyNormal, textClySuper, Pac_man->super);
                         animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                     }
                     else
@@ -260,11 +268,15 @@ int main()
                 reapparitionFantome(tempsMortFantome, tabPerso, nbFan);
                 if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
                 {
-                    afficherGameOver(window, renderer, font);
+                    SDL_Color couleurGameOver = {219, 0, 0, 255};
+                    afficherTexteFin(window, renderer, font, couleurGameOver, "Game Over", WINDOWW/8, WINDOWL/2-62);
+                    //afficherGameOver(window, renderer, font);
                 }
                 if (gom_exist(plateau, w, h) != 0)
                 {
-                    afficherBravo(window, renderer, font);
+                    SDL_Color couleurBravo = {0, 219, 0, 255};
+                    afficherTexteFin(window, renderer, font, couleurBravo, "Bravo", WINDOWW/3.5, WINDOWL/2-62);
+                    //afficherBravo(window, renderer, font);
                 }
                 SDL_RenderPresent(renderer);
             }
@@ -279,7 +291,17 @@ int main()
 
     free(tabRectPerso);
     SDL_DestroyTexture(textCly);
+    SDL_DestroyTexture(textClyNormal);
+    SDL_DestroyTexture(textClySuper);
+
     SDL_DestroyTexture(textPac);
+    SDL_DestroyTexture(textPacNormal);
+    SDL_DestroyTexture(textPacSuper);
+
+    SDL_DestroyTexture(textCly);
+    SDL_DestroyTexture(textClyNormal);
+    SDL_DestroyTexture(textClySuper);
+
     SDL_DestroyTexture(textBlin);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
