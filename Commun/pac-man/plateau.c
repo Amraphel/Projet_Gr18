@@ -221,7 +221,7 @@ void freePlateau(int **plateau, int w)
 
 void etatSuperPac(int id, int* super)
 {
-    if(id == 99 && super == 0)
+    if(id == 99 && *super == 0)
     {
         *super = 1;
     }

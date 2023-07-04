@@ -50,7 +50,7 @@ int main()
     dir[1]=0;
     dir[2]=0;
 
-    int super = 0;
+    //int super = 0;
     SDL_Texture *textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
     SDL_Texture *textBlin = load_texture_from_image("./source/Blinky.png", window, renderer);
     SDL_Texture *textCly = load_texture_from_image("./source/Clyde.png", window, renderer);
@@ -162,7 +162,7 @@ int main()
                     }
                     break;
                 case SDLK_SPACE:
-                    if (super == 0)
+                    /*if (super == 0)
                     {
                         textPac = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
                         super = 1;
@@ -171,7 +171,7 @@ int main()
                     {
                         textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
                         super = 0;
-                    }
+                    }*/
                     break;
                 case SDLK_p:
                     if (pause == 1)
@@ -191,12 +191,14 @@ int main()
                 }
             }
         }
+        
         if (collision(rectPac, tabRectPerso, nbFan)  != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
         {
             if (move == 0)
             {
                 
                 dir[0] =movePacmanIA(plateau, Pac_man);
+                //dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
                    dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort);
@@ -220,6 +222,7 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
+                textPac = spriteSuperPacMan(Pac_man->super, window, renderer);
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {

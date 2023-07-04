@@ -273,3 +273,23 @@ void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *dir, int **plateau, per
         }
     }
 }
+
+SDL_Texture* spriteSuperPacMan(int super, SDL_Window* window, SDL_Renderer* renderer)
+{
+    SDL_Texture *textPac = NULL;
+    switch (super)
+    {
+    case 0:
+        textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
+        break;
+
+    case 1:
+        textPac = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
+        break;
+    
+    default:
+        break;
+    } 
+    return textPac;  
+
+}
