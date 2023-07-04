@@ -1,5 +1,12 @@
 #include "fantome.h"
 
+/**
+ * @brief initialisation du fantome blinky
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @return fantome blinky
+ */ 
 perso_t *initBlinky(int **plateau, int w, int h)
 {
     perso_t *blinky = malloc(sizeof(perso_t));
@@ -10,6 +17,13 @@ perso_t *initBlinky(int **plateau, int w, int h)
     return blinky;
 }
 
+/**
+ * @brief initialisation du fantome clyde
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @return fantome clyde
+ */ 
 perso_t *initClyde(int **plateau, int w, int h)
 {
     perso_t *clyde = malloc(sizeof(perso_t));
@@ -20,11 +34,15 @@ perso_t *initClyde(int **plateau, int w, int h)
     return clyde;
 }
 
-int heuriBasique(int x, int y, int pacX, int pacY)
-{
-    return pow(pacX - x, 2) + pow(pacY - y, 2);
-}
 
+/**
+ * @brief créer une heuristique pour trouver un chemin le plus court possible entre un fantome et Pac-man
+ * @param [in] heuri 
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] x
+ * @param [in] y
+ * @param [in] val
+ */ 
 void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
 {
     heuri[x][y] = val;
@@ -61,6 +79,14 @@ void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
     }
 }
 
+/**
+ * @brief 
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] pacX 
+ * @param [in] pacY
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ */ 
 int **heuristique(int **plateau, int pacX, int pacY, int w, int h)
 {
     int **heuri = malloc(sizeof(int *) * w);
@@ -77,17 +103,33 @@ int **heuristique(int **plateau, int pacX, int pacY, int w, int h)
     return heuri;
 }
 
+/**
+ * @brief 
+ * @param [in] heuri
+ * @param [in] w
+ */ 
 void freeHeuri(int **heuri, int w)
 {
     for (int i = 0; i < w; i++)
     {
         free(heuri[i]);
-        heuri[i] = NULL;
     }
     free(heuri);
-    heuri = NULL;
 }
 
+/**
+ * @brief trouve le prochain déplacement à faire pour le fantome 
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] heuristique
+ * @param [in] fantX numéro de la ligne sur laquelle se trouve le fantome
+ * @param [in] fantY numéro de la colonne sur laquelle se trouve le fantome
+ * @param [in] pacman structure du personnage Pac-man
+ * @return 
+ *       -1 pour aller à droite
+ *       -2 pour aller en haut
+ *       -3 pour aller à gauche
+ *       -4 pour aller en bas
+ */ 
 int getNextMove(int **plateau, int **heuristique, int fantX, int fantY, perso_t * pacman)
 {
     int dir = 0;
@@ -137,6 +179,17 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY, perso_t 
     return dir;
 }
 
+/**
+ * @brief déplacer clyde de façon aléatoire
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] window fenêtre d'affichage
+ * @param [in] Clyde structure du personnage clyde
+ * @return 
+ *       -1 pour aller à droite
+ *       -2 pour aller en haut
+ *       -3 pour aller à gauche
+ *       -4 pour aller en bas
+ */ 
 int moveRandom(int **plateau, SDL_Window* window, perso_t *Clyde)
 {
     int i = rand() % 4 + 1;
@@ -173,7 +226,21 @@ int moveRandom(int **plateau, SDL_Window* window, perso_t *Clyde)
     return i;
 }
 // fonction blinky : plus court chemin vers pac-man
-int moveBlinky( SDL_Window *window,int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man, perso_t * pacman)
+/**
+ * @brief déplace Blinky dans la direction du plus court chemin trouvé
+ * @param [in] window fenêtre d'affichage
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @param [in] Blinky structure du personnage blinky
+ * @param [in] Pac_man structure du personnage Pac-man
+ * @return 
+ *       -1 pour aller à droite
+ *       -2 pour aller en haut
+ *       -3 pour aller à gauche
+ *       -4 pour aller en bas
+ */ 
+int moveBlinky( SDL_Window *window,int **plateau, int w, int h, perso_t *Blinky, perso_t *Pac_man)
 {
     SDL_Rect
         window_dimensions = {0};
@@ -184,7 +251,7 @@ int moveBlinky( SDL_Window *window,int **plateau, int w, int h, perso_t *Blinky,
                       &window_dimensions.w,
                       &window_dimensions.h);
 
-    int move = getNextMove(plateau, heuri, Blinky->posX, Blinky->posY, pacman);
+    int move = getNextMove(plateau, heuri, Blinky->posX, Blinky->posY, Pac_man);
     switch ((move))
     {
     case 1:
@@ -216,19 +283,39 @@ int moveBlinky( SDL_Window *window,int **plateau, int w, int h, perso_t *Blinky,
     return move;
 }
 
-int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man, perso_t * pacman)
+/**
+ * @brief déplace clyde dans la direction du plus court chemin trouvé et parfois dans une direction aléatoire
+ * @param [in] window fenêtre d'affichage
+ * @param [in] plateau tableau contenant les id des objets et des personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @param [in] Clyde structure du personnage clyde
+ * @param [in] Pac_man structure du personnage Pac-man
+ * @return 
+ *       -1 pour aller à droite
+ *       -2 pour aller en haut
+ *       -3 pour aller à gauche
+ *       -4 pour aller en bas
+ */ 
+int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, perso_t *Pac_man)
 {
     int dir;
     int i=rand()%100 +1;
     if(i<50){
         dir=moveRandom(plateau,window,Clyde);
     } else{
-        dir=moveBlinky(window,plateau,w,h,Clyde, Pac_man, pacman);
+        dir=moveBlinky(window,plateau,w,h,Clyde, Pac_man);
     }
     return dir;
 
 }
 
+/**
+ * @brief fait réapparaître un fantome après qu'il soit tué
+ * @param [in] tempsMortFantome temps pendant lequel le fantome est mort
+ * @param [in] tabPerso tableau qui contient tous les personnages
+ * @param [in] nbFan nombre de fantomes
+ */ 
 void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan)
 {
     int i;
