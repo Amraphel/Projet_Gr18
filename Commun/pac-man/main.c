@@ -16,7 +16,7 @@ int main()
     time(&t);
 
     srand(t);
-    int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl/lvl2.txt", &w, &h);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
     printPlateau(plateau, w, h);
@@ -269,11 +269,15 @@ int main()
                 reapparitionFantome(tempsMortFantome, tabPerso, nbFan);
                 if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
                 {
-                    afficherGameOver(window, renderer, font);
+                    SDL_Color couleurGameOver = {219, 0, 0, 255};
+                    afficherTexteFin(window, renderer, font, couleurGameOver, "Game Over", WINDOWW/8, WINDOWL/2-62);
+                    //afficherGameOver(window, renderer, font);
                 }
                 if (gom_exist(plateau, w, h) != 0)
                 {
-                    afficherBravo(window, renderer, font);
+                    SDL_Color couleurBravo = {0, 219, 0, 255};
+                    afficherTexteFin(window, renderer, font, couleurBravo, "Bravo", WINDOWW/3.5, WINDOWL/2-62);
+                    //afficherBravo(window, renderer, font);
                 }
                 SDL_RenderPresent(renderer);
             }

@@ -181,20 +181,16 @@ void animePerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *re
  * @param [in] renderer renderer de la fenetre
  * @param [in] font police d'ecriture utilisee
  */
-void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
+void afficherTexteFin(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, SDL_Color couleur, char* text, int posx, int posy)
 {
-    SDL_Color color = {219, 0, 0, 255};
     SDL_Surface *text_surface = NULL;
-
-    text_surface = TTF_RenderText_Blended(font, "GAME OVER", color); 
+    text_surface = TTF_RenderText_Blended(font, text, couleur);
     if (text_surface == NULL)
     {
         end_sdl(0, "Can't create text surface", window, renderer);
     }
-
     int W, H;
     SDL_GetWindowSize(window, &W, &H);
-
     SDL_Texture *text_texture = NULL;                                   
     text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); 
     if (text_texture == NULL)
@@ -204,50 +200,13 @@ void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
 
     SDL_FreeSurface(text_surface); 
 
-    SDL_Rect pos = {W / 8, H / 2 - 62, 0, 0};                   
+    SDL_Rect pos = {posx, posy, 0, 0};                   
     SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); 
     SDL_RenderCopy(renderer, text_texture, NULL, &pos);         
 
     SDL_DestroyTexture(text_texture);
 }
 
-/**
- * @brief Affiche Bravo a la fin du jeu si gagne
- * @param [in] window fenetre de jeu
- * @param [in] renderer renderer de la fenetre
- * @param [in] font police d'ecriture utilisee
- */
-void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
-{
-    SDL_Color color = {0, 219, 0, 255};
-    SDL_Surface *text_surface = NULL;
-
-    text_surface = TTF_RenderText_Blended(font, "BRAVO", color); // création du texte dans la surface
-    if (text_surface == NULL)
-    {
-        end_sdl(0, "Can't create text surface", window, renderer);
-    }
-
-    int W, H;
-    SDL_GetWindowSize(window, &W, &H);
-
-    // Création de la texture du text
-    SDL_Texture *text_texture = NULL;                                    // la texture qui contient le texte
-    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); // transfert de la surface à la texture
-    if (text_texture == NULL)
-    {
-        end_sdl(0, "Can't create texture from surface", window, renderer);
-    }
-
-    SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
-
-    SDL_Rect pos = {W / 3.5, H / 2 - 62, 0, 0};                 // rectangle où le texte va être prositionné
-    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
-
-    SDL_DestroyTexture(text_texture);
-    // SDL_RenderPresent(renderer);
-}
 
 /**
  * @brief Detecte une collision entre un fantome et pac_man grace aux rects
