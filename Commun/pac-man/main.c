@@ -208,11 +208,11 @@ int main()
                 dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, Pac_man);
+                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man);
                 }
                 if (Clyde->posX != 0)
                 {
-                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, Pac_man);
+                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man);
                 }
                 for(int j=0; j<3; j++){
                     movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort, &tabPerso[j]->super);
