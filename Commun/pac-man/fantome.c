@@ -4,6 +4,7 @@ perso_t *initBlinky(int **plateau, int w, int h)
 {
     perso_t *blinky = malloc(sizeof(perso_t));
     blinky->id = 200;
+    blinky->super = 0;
     coordPlat(plateau, w, h, blinky->id, &blinky->posX, &blinky->posY);
 
     return blinky;
@@ -13,6 +14,7 @@ perso_t *initClyde(int **plateau, int w, int h)
 {
     perso_t *clyde = malloc(sizeof(perso_t));
     clyde->id = 210;
+    clyde->super = 0;
     coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
 
     return clyde;
@@ -231,4 +233,17 @@ int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, p
     }
     return dir;
 
+}
+
+void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan)
+{
+    int i;
+    for(i = 1; i<=nbFan; i++)
+    {
+        if(tempsMortFantome[i-1]>=40)
+        {
+            tabPerso[i]->super = 0;
+            tempsMortFantome[i-1]=0;
+        }
+    }
 }

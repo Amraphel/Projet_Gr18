@@ -64,6 +64,10 @@ int main()
     tabRectPerso[1] = &rectBlin;
     tabRectPerso[2] = &rectCly;
 
+    int tempsMortFantome[nbFan];
+    tempsMortFantome[0]=0;
+    tempsMortFantome[1]=0;
+
     if (Blinky->posX != 0)
     {
         afficherPerso(textBlin, renderer, &rectBlin);
@@ -101,6 +105,8 @@ int main()
     int direction = 0;
     Pac_man->etat = 0;
     int timer=0;
+    
+    
 
     int pause = 0;
     SDL_RenderPresent(renderer);
@@ -135,7 +141,7 @@ int main()
                             if (Pac_man->super==1)
                             {
                                 timer+=1;
-                                if (timer>=10)
+                                if (timer>=20)
                                 {
                                     Pac_man->super=0;
                                     timer=0;
@@ -153,7 +159,7 @@ int main()
                             if (Pac_man->super==1)
                             {
                                 timer+=1;
-                                if (timer>=10)
+                                if (timer>=20)
                                 {
                                     Pac_man->super=0;
                                     timer=0;
@@ -171,7 +177,7 @@ int main()
                            if (Pac_man->super==1)
                             {
                                 timer+=1;
-                                if (timer>=10)
+                                if (timer>=20)
                                 {
                                     Pac_man->super=0;
                                     timer=0;
@@ -189,7 +195,7 @@ int main()
                             if (Pac_man->super==1)
                             {
                                 timer+=1;
-                                if (timer>=10)
+                                if (timer>=20)
                                 {
                                     Pac_man->super=0;
                                     timer=0;
@@ -197,18 +203,6 @@ int main()
                             }
                         }
                     }
-                    break;
-                case SDLK_SPACE:
-                    /*if (super == 0)
-                    {
-                        textPac = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
-                        super = 1;
-                    }
-                    else
-                    {
-                        textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
-                        super = 0;
-                    }*/
                     break;
                 case SDLK_p:
                     if (pause == 1)
@@ -265,6 +259,7 @@ int main()
                 //  SDL_RenderPresent(renderer);
             }
             animeF= (animeF+1) % speedDep;
+
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
@@ -272,15 +267,29 @@ int main()
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {
-                    textBlin = spriteBlinkyChasse(Pac_man->super, window, renderer);
-                    animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
+                    if(tabPerso[1]->super == 0)
+                    {    
+                        textBlin = spriteBlinkyChasse(Pac_man->super, window, renderer);
+                        animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
+                    }
+                    else
+                    {
+                        tempsMortFantome[0]++;
+                    }
                 }
-
                 if (Clyde->posX != 0)
                 {
-                    textCly = spriteClydeChasse(Pac_man->super, window, renderer);
-                    animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
+                    if(tabPerso[2]->super == 0)
+                    {
+                        textCly = spriteClydeChasse(Pac_man->super, window, renderer);
+                        animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
+                    }
+                    else
+                    {
+                        tempsMortFantome[1]++;
+                    }
                 }
+                reapparitionFantome(tempsMortFantome, tabPerso, nbFan);
                 if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
                 {
                     afficherGameOver(window, renderer, font);
