@@ -1,5 +1,27 @@
+#ifndef REGLEF
+#define REGLEF
 #include "regleInky.h"
+#endif
 #ifndef PERSO
 #define PERSO
 #include "perso.h"
-#endif 
+#endif
+#ifndef BASE
+#define BASE
+#include <stdlib.h>
+#include <SDL2/SDL.h>
+#include <stdio.h>
+#include <SDL2/SDL_image.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <SDL2/SDL_ttf.h>
+#include <time.h>
+#endif
+#ifndef REGLES
+#define REGLES
+#include "regles.h"
+#endif
+#include "fantome.h"
+int testParcours(regles_t **tabRegle,int nbRegle, perso_t** tabPerso, int ** plateau, int w, int h, double s);
+int recuit(int NBREGLE, char * source, char * dest);
+int parcours(char * source, char * dest);
