@@ -16,7 +16,7 @@ int main()
     time(&t);
 
     srand(t);
-    int **plateau = loadPlateau("./source/lvl/lvl2.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
     printPlateau(plateau, w, h);
@@ -103,7 +103,6 @@ int main()
     int speedMove = 100000;
     int speed = speedMove/10;
     int speedDep= speedMove/10;
-    int test=1;
     int i = 0;
     int move = 0;
     int animeF=0;
@@ -209,11 +208,11 @@ int main()
                 dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
+                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, Pac_man);
                 }
                 if (Clyde->posX != 0)
                 {
-                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, &rectCly, &mort, Pac_man);
+                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man, Pac_man);
                 }
                 for(int j=0; j<3; j++){
                     movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort, &tabPerso[j]->super);
@@ -232,7 +231,7 @@ int main()
             move = (move + 1) % speedMove;
             if(animeF==0){
                 afficherPlateau(tabRect, plateau, w, h, window, renderer,&etatAnimPlat);
-                animeFluide(tabRectPerso,3, dir, plateau, tabPerso);
+                animeFluide(tabRectPerso,3, dir);
                 // SDL_RenderPresent(renderer);
             }
             animeF= (animeF+1) % speedDep;

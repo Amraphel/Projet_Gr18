@@ -14,6 +14,6 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
 void afficherPerso(SDL_Texture* texture_perso, SDL_Renderer *renderer, SDL_Rect *rectPerso);
 void animePerso(SDL_Texture* texture_perso, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int direction);
 int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan, perso_t ** tabPerso);
-void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **plateau, perso_t **tabPerso);
-SDL_Texture* spriteSuperPerso(SDL_Texture *textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super);
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction);
+SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super);
 void afficherTexteFin(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, SDL_Color couleur, char* text, int posx, int posy);

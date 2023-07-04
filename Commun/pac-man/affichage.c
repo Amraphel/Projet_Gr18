@@ -231,7 +231,6 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
     int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
     int ptYFan;
 
-    int superFan;
     int superPac = tabPerso[0]->super;
     int j = 1;
 
@@ -288,10 +287,8 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
  * @param [in] rectPerso tableau de ranctangle des perso
  * @param [in] nbPerso nombre de perso dans le jeu
  * @param [in] direction direction du perso
- * @param [in] plateau plateau (matrice) du jeu
- * @param [in] tabPerso tableau des perso 
  */
-void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **plateau, perso_t **tabPerso)
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction)
 {
 
     for (int k = 0; k < nbPerso; k++)
@@ -326,21 +323,21 @@ void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **platea
  * @param [in] super 0 pac man n'est pas en super; 1 pac man est en super
  * @return texture de pac_man
  */
-SDL_Texture* spriteSuperPerso(SDL_Texture *textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super)
+SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super)
 {
     switch (super)
     {
     case 0:
-        textPerso = textPersoNormal;
+        *textPerso = textPersoNormal;
         break;
 
     case 1:
-        textPerso = textPersoSuper;
+        *textPerso = textPersoSuper;
         break;
     
     default:
         break;
     } 
-    return textPerso;  
+    return *textPerso;  
 
 }
