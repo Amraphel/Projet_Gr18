@@ -361,9 +361,10 @@ void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **platea
 
 /**
  * @brief Selectionne la bonne texture de Pac man en fonction de super
+ * @param [in] textPerso texture du perso dans le jeu
+ * @param [in] textPersoNormal texture du perso en normal
+ * @param [in] textPersoSuper texture du perso en super
  * @param [in] super 0 pac man n'est pas en super; 1 pac man est en super
- * @param [in] window fenetre du jeu
- * @param [in] renderer renderer
  * @return texture de pac_man
  */
 SDL_Texture* spriteSuperPerso(SDL_Texture *textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super)
