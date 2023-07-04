@@ -1,4 +1,12 @@
 #include "perso.h"
+
+/**
+ * @brief initialisation du perso pac man
+ * @param [in] plateau plateau du jeu  
+ * @param [in] w coordonnee sur la longueur 
+ * @param [in] h coordonne sur la largeur
+ * @return un perso_t pac man
+ */
 perso_t *initPac_man(int **plateau, int w, int h)
 {
     perso_t *Pac_man = malloc(sizeof(perso_t));
@@ -9,6 +17,18 @@ perso_t *initPac_man(int **plateau, int w, int h)
     return Pac_man;
 }
 
+
+/**
+ * @brief deplacement de pac man dans le jeu attention matrice transposee
+ * @param [in] plateau du jeu (matrice)
+ * @param [in] Pac_man perso pour recuperer ses info
+ * @param [in] direction dans laquel il va
+ * @return
+ *      - 3 a droite
+ *      - 1 en haut
+ *      - 0 a gauche
+ *      - 2 en bas
+ */
 int movePacman(int **plateau, perso_t *Pac_man, int direction)
 {
     if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction, Pac_man->id, &Pac_man->super))
@@ -33,8 +53,19 @@ int movePacman(int **plateau, perso_t *Pac_man, int direction)
     }
     return direction;
 }
-int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
 
+/**
+ * @brief deplacement de pac man dans le jeu attention matrice transposee
+ * @param [in] plateau du jeu (matrice)
+ * @param [in] Pac_man perso pour recuperer ses info
+ * @param [in] direction dans laquel il va
+ * @return
+ *      - 3 a droite
+ *      - 1 en haut
+ *      - 0 a gauche
+ *      - 2 en bas
+ */
+int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
 {
     int newHeuri = 0;
     if (ite > 0)
@@ -100,6 +131,17 @@ int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
     return newHeuri;
 }
 
+/**
+ * @brief deplacement automatique (IA) de pacman
+ * @param [in] plateau du jeu (matrice)
+ * @param [in] Pac_man perso pour recuperer ses info
+ * @return
+ *      la direction dans lequel il doit aller
+ *      - 0
+ *      - 1
+ *      - 2
+ *      - 3
+ */
 int movePacmanIA(int **plateau, perso_t *Pac_man)
 {
     // fprintf(stderr, "movePac\n");
