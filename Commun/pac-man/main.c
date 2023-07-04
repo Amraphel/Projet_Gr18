@@ -100,6 +100,7 @@ int main()
     int keyPressed = 0;
     int direction = 0;
     Pac_man->etat = 0;
+    int timer=0;
 
     int pause = 0;
     SDL_RenderPresent(renderer);
@@ -131,6 +132,15 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction= 1;
+                            if (Pac_man->super==1)
+                            {
+                                timer+=1;
+                                if (timer>=10)
+                                {
+                                    Pac_man->super=0;
+                                    timer=0;
+                                }
+                            }
                         }
                     }
                     break;
@@ -140,6 +150,15 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction = 3;
+                            if (Pac_man->super==1)
+                            {
+                                timer+=1;
+                                if (timer>=10)
+                                {
+                                    Pac_man->super=0;
+                                    timer=0;
+                                }
+                            }
                         }
                     }
                     break;
@@ -149,6 +168,15 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                            direction = 4;
+                           if (Pac_man->super==1)
+                            {
+                                timer+=1;
+                                if (timer>=10)
+                                {
+                                    Pac_man->super=0;
+                                    timer=0;
+                                }
+                            }
                         }
                     }
                     break;
@@ -158,6 +186,15 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction = 2;
+                            if (Pac_man->super==1)
+                            {
+                                timer+=1;
+                                if (timer>=10)
+                                {
+                                    Pac_man->super=0;
+                                    timer=0;
+                                }
+                            }
                         }
                     }
                     break;
@@ -211,6 +248,15 @@ int main()
                     movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort, &tabPerso[j]->super);
                 }
                 direction=0;
+                if (Pac_man->super==1)
+                {
+                    timer+=1;
+                    if (timer>=20)
+                    {
+                        Pac_man->super=0;
+                        timer=0;
+                    }
+                }
             }
             move = (move + 1) % speedMove;
             if(animeF==0){
