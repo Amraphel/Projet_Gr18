@@ -10,8 +10,9 @@ regles_t ** createMatRegles(int nbRegle)
     return matRegles;
 }
 
-regles_t **loadRegles(char* regles,int* nbRegle)
+regles_t **loadRegles(char* regles)
 {
+    int* nbRegle=malloc(sizeof(nbRegle));
     regles_t **matRegles = NULL;
     FILE *file = fopen(regles, "r");
     if (file)
@@ -28,6 +29,7 @@ regles_t **loadRegles(char* regles,int* nbRegle)
                                                     (int*) (&(matRegles[i]->dir_fantome)),(int*) (&(matRegles[i]->dir_pacman)), (int*) (&(matRegles[i]->action)), (int*) (&(matRegles[i]->priorite)));
         }
     }
+    free(nbRegle);
     fclose(file);
     return matRegles;
 }

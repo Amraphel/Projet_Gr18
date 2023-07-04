@@ -309,18 +309,17 @@ int testParcours(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **pla
 // }
 
 
-int parcours(char * source, char * dest){
+int parcours( regles_t **tabRegle){
     int NBREGLE = 12;
-    regles_t **tabRegle = NULL;
-    tabRegle = loadRegles( source, &NBREGLE);
+    // regles_t **tabRegle = NULL;
+   
 
     if (!tabRegle)
     {
         tabRegle = createMatRegles(NBREGLE);
         initCerveau(tabRegle, NBREGLE);
-        ecrireRegle(tabRegle, dest, NBREGLE);
+        // ecrireRegle(tabRegle, dest, NBREGLE);
     }
-     ecrireRegle(tabRegle, dest, NBREGLE);
 
 
     int w,h;

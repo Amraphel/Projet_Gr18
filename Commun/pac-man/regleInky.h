@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL_ttf.h>
 #include <time.h>
+#include <threads.h>
 #endif
 
 
@@ -59,7 +60,9 @@ typedef struct
     int priorite;                      // de 0 à 5
 }regles_t;
 
-regles_t **modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte);
+void modifRegle(regles_t *regle, int numContrainte, int valeur);
 void initCerveau(regles_t** tabRegle,int nbRegle);
 void freeCerveau(regles_t** tabRegle, int nbRegle);
 int * createListePos(int nbPos);
+
+int possibilite(int nbContrainte);

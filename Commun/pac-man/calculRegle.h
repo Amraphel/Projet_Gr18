@@ -22,6 +22,14 @@
 #include "regles.h"
 #endif
 #include "fantome.h"
+
+typedef struct param{
+    int id;
+    int * valSortie;
+    regles_t ** listeRegle;
+}param_t;
+
+
 int testParcours(regles_t **tabRegle,int nbRegle, perso_t** tabPerso, int ** plateau, int w, int h, double s);
 int recuit(int NBREGLE, char * source, char * dest);
-int parcours(char * source, char * dest);
+int parcours( regles_t **tabRegle);

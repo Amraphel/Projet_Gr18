@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <SDL2/SDL_ttf.h>
 #include <time.h>
+#include <threads.h>
 #endif
 #ifndef REGLEF
 #define REGLEF
@@ -15,5 +16,5 @@
 #endif
 
 regles_t ** createMatRegles(int nbRegle);
-regles_t **loadRegles(char* regles,int* nbRegle);
+regles_t **loadRegles(char* regles);
 void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle);
