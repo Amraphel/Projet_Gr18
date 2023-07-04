@@ -226,11 +226,13 @@ int main()
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
                 if (Blinky->posX != 0)
                 {
+                    textBlin = spriteBlinkyChasse(Pac_man->super, window, renderer);
                     animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
                 }
 
                 if (Clyde->posX != 0)
                 {
+                    textCly = spriteClydeChasse(Pac_man->super, window, renderer);
                     animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                 }
                 if (collision(rectPac, tabRectPerso, nbFan) == 1)

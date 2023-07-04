@@ -295,3 +295,35 @@ SDL_Texture* spriteSuperPacMan(int super, SDL_Window* window, SDL_Renderer* rend
     return textPac;  
 
 }
+
+SDL_Texture* spriteBlinkyChasse(int super, SDL_Window* window, SDL_Renderer* renderer)
+{
+    SDL_Texture *textBlin = NULL;
+    switch (super)
+    {
+        case 0:
+            textBlin = load_texture_from_image("./source/Blinky.png", window, renderer);
+            break;
+        
+        case 1:
+            textBlin = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
+            break;
+    }
+    return textBlin;
+}
+
+SDL_Texture* spriteClydeChasse(int super, SDL_Window* window, SDL_Renderer* renderer)
+{
+    SDL_Texture *textCly = NULL;
+    switch (super)
+    {
+        case 0:
+            textCly = load_texture_from_image("./source/Clyde.png", window, renderer);
+            break;
+        
+        case 1:
+            textCly = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
+            break;
+    }
+    return textCly;
+}
