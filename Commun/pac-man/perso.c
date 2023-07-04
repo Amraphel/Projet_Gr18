@@ -9,7 +9,7 @@ perso_t *initPac_man(int **plateau, int w, int h)
     return Pac_man;
 }
 
-int movePacman(int **plateau, perso_t *Pac_man, int *mort, int direction, SDL_Rect *rectPac)
+int movePacman(int **plateau, perso_t *Pac_man, int direction)
 {
     if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction, Pac_man->id, &Pac_man->super))
     {
