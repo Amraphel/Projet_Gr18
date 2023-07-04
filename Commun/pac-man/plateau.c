@@ -162,7 +162,7 @@ void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, in
         }
         else
         {
-            if (plateau[xDeplacement][yDeplacement] == 99)
+            if (plateau[xDeplacement][yDeplacement] == 99 && *super == 0)
             {
                 *mort = 1;
             }

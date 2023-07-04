@@ -126,7 +126,7 @@ int main()
                     break;
                 case SDLK_DOWN:
 
-                    if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
+                    if (collision(rectPac, tabRectPerso, nbFan, tabPerso) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
@@ -135,7 +135,7 @@ int main()
                     }
                     break;
                 case SDLK_UP:
-                    if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
+                    if (collision(rectPac, tabRectPerso, nbFan, tabPerso) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
@@ -144,7 +144,7 @@ int main()
                     }
                     break;
                 case SDLK_RIGHT:
-                    if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
+                    if (collision(rectPac, tabRectPerso, nbFan, tabPerso) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
@@ -153,7 +153,7 @@ int main()
                     }
                     break;
                 case SDLK_LEFT:
-                    if (collision(rectPac, tabRectPerso, nbFan) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
+                    if (collision(rectPac, tabRectPerso, nbFan, tabPerso) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
                     {
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
@@ -192,16 +192,16 @@ int main()
             }
         }
         
-        if (collision(rectPac, tabRectPerso, nbFan)  != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
+        if (collision(rectPac, tabRectPerso, nbFan, tabPerso)  != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
         {
             if (move == 0)
             {
                 
-                dir[0] =movePacmanIA(plateau, Pac_man);
-                //dir[0]=direction;
+                //dir[0] =movePacmanIA(plateau, Pac_man);
+                dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
+                   dir[1]= 0;// moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
                 }
                 if (Clyde->posX != 0)
                 {
@@ -235,7 +235,7 @@ int main()
                     textCly = spriteClydeChasse(Pac_man->super, window, renderer);
                     animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                 }
-                if (collision(rectPac, tabRectPerso, nbFan) == 1)
+                if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
                 {
                     afficherGameOver(window, renderer, font);
                 }

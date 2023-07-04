@@ -205,7 +205,7 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     // SDL_RenderPresent(renderer);
 }
 
-int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
+int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPerso)
 {
     int col = 0;
     int i = 1;
@@ -218,6 +218,10 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
     int ptHautDroitFan, ptHautGaucheFan, ptBasGaucheFan;
     int ptYFan;
 
+    int superFan;
+    int superPac = tabPerso[0]->super;
+    int j = 1;
+
     while (i < nbFan + 1)
     {
         ptHautDroitFan = rectFan[i]->x + rectFan[i]->w;
@@ -225,12 +229,20 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
         ptBasGaucheFan = rectFan[i]->y + rectFan[i]->h;
         ptYFan = rectFan[i]->y;
 
+
         if (ptYFan == ptYPac)
         {
             if ((ptHautDroitFan <= ptHautDroitPac && ptHautDroitFan > ptHautGauchePac) ||
                 (ptHautGaucheFan >= ptHautGauchePac && ptHautGaucheFan < ptHautDroitPac))
             {
-                col = 1;
+                if(superPac == 0)
+                {
+                    col = 1;
+                }
+                else
+                {
+                    tabPerso[j]->super = 1;
+                }
             }
         }
         else if (ptHautGaucheFan == ptHautGauchePac)
@@ -239,12 +251,19 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan)
             if ((ptYFan > ptYPac && ptYFan < ptBasGauchePac) ||
                 (ptBasGaucheFan < ptBasGauchePac && ptBasGaucheFan > ptYPac))
             {
-
-                col = 1;
+                if(superPac == 0)
+                {
+                    col = 1;
+                }
+                else
+                {
+                    tabPerso[j]->super = 1;
+                }
             }
         }
 
         i++;
+        j++;
     }
 
     return col;
