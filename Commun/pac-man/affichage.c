@@ -1,5 +1,13 @@
 #include "affichage.h"
 
+
+/**
+ * @brief Creation d'un tableau de SDL_Rect. fenetre découper en grille de SDL_Rect
+ * @param [in] window fenetre de jeu 
+ * @param [in] w longueur du plateau de jeu  
+ * @param [in] h largeur du plateau de jeu
+ * @return un tableau de SDL_Rect
+ */
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
 {
     SDL_Rect **tabRect = malloc(sizeof(SDL_Rect *) * w);
@@ -25,6 +33,16 @@ SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
     return tabRect;
 }
 
+/**
+ * @brief Affiche le plateau de jeu avec les gom, les murs, super gom
+ * @param [in] tabRect tableau de SDL_Rect 
+ * @param [in] plateau matrice du plateau de jeu
+ * @param [in] W longueur du plateau de jeu
+ * @param [in] h largeur du plateau de jeu
+ * @param [in] window fenetre de jeu
+ * @param [in] renderer renderer de la fenetre de jeu
+ * @param [in] etatAnim etat de l'animation en cours
+ */
 void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window *window, SDL_Renderer *renderer, int *etatAnim)
 {
     SDL_RenderClear(renderer);
@@ -114,39 +132,61 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     SDL_DestroyTexture(supergom);
 }
 
-void afficherPerso(SDL_Texture *my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
+
+/**
+ * @brief Affiche un personnage sur le plateau
+ * @param [in] texture_perso texture du perso
+ * @param [in] renderer renderer de la fenetre
+ * @param [in] rectPerso rectangle du perso
+ */
+void afficherPerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *rectPerso)
 {
-    int nbw = 4;
-    int nbh = 4;
+    int nbw = 4; //nombre de sprite sur une ligne
+    int nbh = 4; //nombre de sprite sur une colonne
 
     SDL_Rect pos = {0, 0, 0, 0};
-    SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
+    SDL_QueryTexture(texture_perso, NULL, NULL, &pos.w, &pos.h); 
     SDL_Rect state = {0, 0, pos.w / nbw, pos.h / nbh};
 
-    SDL_RenderCopy(renderer, my_texture, &state, RectPac);
+    SDL_RenderCopy(renderer, texture_perso, &state, rectPerso);
 }
 
-void animePerso(SDL_Texture *my_texture, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int dir)
+/**
+ * @brief Anime le personnage sur le plateau lors du deplacement
+ * @param [in] texture_perso texture du perso
+ * @param [in] renderer renderer de la fenetre
+ * @param [in] rectPerso rectangle du perso
+ * @param [in] etatAnim etat de l'animation du perso
+ * @param [in] direction direction du perso
+ */
+void animePerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *rectPerso, int *etatAnim, int direction) 
 {
-    int nbw = 4;
-    int nbh = 4;
+    int nbw = 4; //nombre de sprite sur une ligne
+    int nbh = 4; //nombre de sprite sur une colonne
 
     SDL_Rect pos = {0, 0, 0, 0};
-    SDL_QueryTexture(my_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_Rect state = {(*etatAnim) * pos.w / nbw, dir * pos.h / nbh, pos.w / nbw, pos.h / nbh};
+    SDL_QueryTexture(texture_perso, NULL, NULL, &pos.w, &pos.h); 
+    SDL_Rect state = {(*etatAnim) * pos.w / nbw, direction * pos.h / nbh, pos.w / nbw, pos.h / nbh};
 
-    SDL_RenderCopy(renderer, my_texture, &state, rectPerso);
+    SDL_RenderCopy(renderer, texture_perso, &state, rectPerso);
 
     *etatAnim += 1;
     *etatAnim = (*etatAnim) % nbw;
 }
 
+
+/**
+ * @brief Affiche Game Over a la fin du jeu si perdu
+ * @param [in] window fenetre de jeu
+ * @param [in] renderer renderer de la fenetre
+ * @param [in] font police d'ecriture utilisee
+ */
 void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
 {
     SDL_Color color = {219, 0, 0, 255};
     SDL_Surface *text_surface = NULL;
 
-    text_surface = TTF_RenderText_Blended(font, "GAME OVER", color); // création du texte dans la surface
+    text_surface = TTF_RenderText_Blended(font, "GAME OVER", color); 
     if (text_surface == NULL)
     {
         end_sdl(0, "Can't create text surface", window, renderer);
@@ -155,24 +195,28 @@ void afficherGameOver(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font
     int W, H;
     SDL_GetWindowSize(window, &W, &H);
 
-    // Création de la texture du text
-    SDL_Texture *text_texture = NULL;                                    // la texture qui contient le texte
-    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); // transfert de la surface à la texture
+    SDL_Texture *text_texture = NULL;                                   
+    text_texture = SDL_CreateTextureFromSurface(renderer, text_surface); 
     if (text_texture == NULL)
     {
         end_sdl(0, "Can't create texture from surface", window, renderer);
     }
 
-    SDL_FreeSurface(text_surface); // la surface ne sert plus à rien
+    SDL_FreeSurface(text_surface); 
 
-    SDL_Rect pos = {W / 8, H / 2 - 62, 0, 0};                   // rectangle où le texte va être prositionné
-    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); // récupération de la taille (w, h) du texte
-    SDL_RenderCopy(renderer, text_texture, NULL, &pos);         // Ecriture du texte dans le renderer
+    SDL_Rect pos = {W / 8, H / 2 - 62, 0, 0};                   
+    SDL_QueryTexture(text_texture, NULL, NULL, &pos.w, &pos.h); 
+    SDL_RenderCopy(renderer, text_texture, NULL, &pos);         
 
     SDL_DestroyTexture(text_texture);
-    // SDL_RenderPresent(renderer);
 }
 
+/**
+ * @brief Affiche Bravo a la fin du jeu si gagne
+ * @param [in] window fenetre de jeu
+ * @param [in] renderer renderer de la fenetre
+ * @param [in] font police d'ecriture utilisee
+ */
 void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
 {
     SDL_Color color = {0, 219, 0, 255};
@@ -205,6 +249,16 @@ void afficherBravo(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font)
     // SDL_RenderPresent(renderer);
 }
 
+/**
+ * @brief Detecte une collision entre un fantome et pac_man grace aux rects
+ * @param [in] rectPac ranctangle de Pac_man
+ * @param [in] rectFan tableau de rectangle des fantomes
+ * @param [in] nbFan nombre de fantome
+ * @param [in] tabPerso tableau des perso
+ * @return 
+ *      - 0 pas de collision
+ *      - 1 collision 
+ */
 int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPerso)
 {
     int col = 0;
@@ -269,13 +323,22 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
     return col;
 }
 
-void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *dir, int **plateau, perso_t **tabPerso)
+
+/**
+ * @brief animation fluide dans le deplacement des perso
+ * @param [in] rectPerso tableau de ranctangle des perso
+ * @param [in] nbPerso nombre de perso dans le jeu
+ * @param [in] direction direction du perso
+ * @param [in] plateau plateau (matrice) du jeu
+ * @param [in] tabPerso tableau des perso 
+ */
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **plateau, perso_t **tabPerso)
 {
 
     for (int k = 0; k < nbPerso; k++)
     {
 
-        switch (dir[k])
+        switch (direction[k])
         {
         case 1:
             rectPerso[k]->y += rectPerso[k]->h / 10;
