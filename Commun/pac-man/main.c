@@ -147,15 +147,7 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 1, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction= 1;
-                            if (Pac_man->super==1)
-                            {
-                                timer+=1;
-                                if (timer>=20)
-                                {
-                                    Pac_man->super=0;
-                                    timer=0;
-                                }
-                            }
+                            
                         }
                     }
                     break;
@@ -165,15 +157,7 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 3, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction = 3;
-                            if (Pac_man->super==1)
-                            {
-                                timer+=1;
-                                if (timer>=20)
-                                {
-                                    Pac_man->super=0;
-                                    timer=0;
-                                }
-                            }
+                            
                         }
                     }
                     break;
@@ -183,15 +167,7 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 4, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                            direction = 4;
-                           if (Pac_man->super==1)
-                            {
-                                timer+=1;
-                                if (timer>=20)
-                                {
-                                    Pac_man->super=0;
-                                    timer=0;
-                                }
-                            }
+                           
                         }
                     }
                     break;
@@ -201,15 +177,7 @@ int main()
                         if (movePossible(plateau, Pac_man->posX, Pac_man->posY, 2, Pac_man->id, &Pac_man->super) && !keyPressed)
                         {
                             direction = 2;
-                            if (Pac_man->super==1)
-                            {
-                                timer+=1;
-                                if (timer>=20)
-                                {
-                                    Pac_man->super=0;
-                                    timer=0;
-                                }
-                            }
+                    
                         }
                     }
                     break;
@@ -237,8 +205,8 @@ int main()
             if (move == 0)
             {
                 
-                dir[0] =movePacmanIA(plateau, Pac_man);
-                //dir[0]=direction;
+                //dir[0] =movePacmanIA(plateau, Pac_man);
+                dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
                    dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man, &rectBlin, &mort, Pac_man);
@@ -265,7 +233,7 @@ int main()
             if(animeF==0){
                 afficherPlateau(tabRect, plateau, w, h, window, renderer,&etatAnimPlat);
                 animeFluide(tabRectPerso,3, dir, plateau, tabPerso);
-                //  SDL_RenderPresent(renderer);
+                // SDL_RenderPresent(renderer);
             }
             animeF= (animeF+1) % speedDep;
 
@@ -332,6 +300,8 @@ int main()
     SDL_DestroyTexture(textClySuper);
 
     SDL_DestroyTexture(textBlin);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
     end_sdl(1, "Normal ending", window, renderer);
     for(int i =0; i<3; i++){
         free(tabPerso[i]);
@@ -339,6 +309,8 @@ int main()
     }
     free(tabPerso);
     free(tabRect);
+    free(dir);
+
 
     return 0;
 }
