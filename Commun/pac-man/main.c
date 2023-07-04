@@ -80,7 +80,7 @@ int main()
 
     TTF_Font *font = NULL;
 
-    font = TTF_OpenFont("./Front/BadComic-Regular.ttf", 90);
+    font = TTF_OpenFont("./Front/videotype.ttf", 90);
     if (font == NULL)
     {
         end_sdl(0, "Can't load font", window, renderer);
