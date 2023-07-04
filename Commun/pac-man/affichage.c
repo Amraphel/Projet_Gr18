@@ -110,6 +110,8 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     *etatAnim += 1;
                         *etatAnim = (*etatAnim) % 4;
     SDL_DestroyTexture(my_texture);
+    SDL_DestroyTexture(gom);
+    SDL_DestroyTexture(supergom);
 }
 
 void afficherPerso(SDL_Texture *my_texture, SDL_Renderer *renderer, SDL_Rect *RectPac)
