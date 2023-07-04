@@ -358,54 +358,29 @@ void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **platea
     }
 }
 
-SDL_Texture* spriteSuperPacMan(int super, SDL_Window* window, SDL_Renderer* renderer)
+
+/**
+ * @brief Selectionne la bonne texture de Pac man en fonction de super
+ * @param [in] super 0 pac man n'est pas en super; 1 pac man est en super
+ * @param [in] window fenetre du jeu
+ * @param [in] renderer renderer
+ * @return texture de pac_man
+ */
+SDL_Texture* spriteSuperPerso(SDL_Texture *textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super)
 {
-    SDL_Texture *textPac = NULL;
     switch (super)
     {
     case 0:
-        textPac = load_texture_from_image("./source/Pac-man.png", window, renderer);
+        textPerso = textPersoNormal;
         break;
 
     case 1:
-        textPac = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
+        textPerso = textPersoSuper;
         break;
     
     default:
         break;
     } 
-    return textPac;  
+    return textPerso;  
 
-}
-
-SDL_Texture* spriteBlinkyChasse(int super, SDL_Window* window, SDL_Renderer* renderer)
-{
-    SDL_Texture *textBlin = NULL;
-    switch (super)
-    {
-        case 0:
-            textBlin = load_texture_from_image("./source/Blinky.png", window, renderer);
-            break;
-        
-        case 1:
-            textBlin = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
-            break;
-    }
-    return textBlin;
-}
-
-SDL_Texture* spriteClydeChasse(int super, SDL_Window* window, SDL_Renderer* renderer)
-{
-    SDL_Texture *textCly = NULL;
-    switch (super)
-    {
-        case 0:
-            textCly = load_texture_from_image("./source/Clyde.png", window, renderer);
-            break;
-        
-        case 1:
-            textCly = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
-            break;
-    }
-    return textCly;
 }

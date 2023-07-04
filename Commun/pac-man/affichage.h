@@ -17,6 +17,4 @@ void afficherGameOver(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font
 void afficherBravo(SDL_Window* window, SDL_Renderer *renderer, TTF_Font *font);
 int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan, perso_t ** tabPerso);
 void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int **plateau, perso_t **tabPerso);
-SDL_Texture* spriteSuperPacMan(int super, SDL_Window* window, SDL_Renderer* renderer);
-SDL_Texture* spriteBlinkyChasse(int super, SDL_Window* window, SDL_Renderer* renderer);
-SDL_Texture* spriteClydeChasse(int super, SDL_Window* window, SDL_Renderer* renderer);
+SDL_Texture* spriteSuperPerso(SDL_Texture *textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super);
