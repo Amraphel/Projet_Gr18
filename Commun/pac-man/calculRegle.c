@@ -38,10 +38,14 @@ int compareRegle(regles_t *regleOrigin, regles_t *etatPlateau)
     return i;
 }
 
-regles_t *calculEtat(perso_t **tabPerso, int w, int idFantome)
+regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
 {
     int idAutreFant = 0;
     int distFant = 1000;
+    int xFant = tabPerso[idFantome]->posX;
+    int yFant = tabPerso[idFantome]->posY;
+    int caseX = xFant;
+    int caseY = yFant;
     for (int i = 1; i < 5; i++)
     {
         if (i != idFantome)
@@ -59,6 +63,65 @@ regles_t *calculEtat(perso_t **tabPerso, int w, int idFantome)
     {
         etat->action = 0;
         etat->priorite = 0;
+        for (int i = 1; i < 5; i++)
+        {
+            switch (i)
+            {
+            case 1:
+                caseX = xFant + 1;
+                caseY = yFant;
+                break;
+            case 2:
+                caseX = xFant;
+                caseY = yFant - 1;
+                break;
+            case 3:
+                caseX = xFant - 1;
+                caseY = yFant;
+                break;
+            case 4:
+                caseX = xFant;
+                caseY = yFant + 1;
+                break;
+            default:
+                break;
+            }
+            int val;
+            if (tableau[caseX][caseY] == 99)
+            {
+                val = PACMAN;
+            }
+            else if (tableau[caseX][caseY] == 0 || (tableau[caseX][caseY] == -1))
+            {
+                val = VIDE;
+            }
+            else if (tableau[caseX][caseY] < 50)
+            {
+                val = MUR;
+            }
+            else
+            {
+                val = FANTOME;
+            }
+
+            switch (i)
+            {
+            case 1:
+                etat->droite = val;
+                break;
+            case 2:
+                etat->haut = val;
+                break;
+            case 3:
+                etat->gauche = val;
+                break;
+            case 4:
+                etat->bas = val;
+                break;
+            default:
+                break;
+            }
+        }
 
         // Détermination de la distance de Pacman par rapport au fantome
         int dPac = pow(tabPerso[0]->posX - tabPerso[idFantome]->posX, 2) + pow(tabPerso[0]->posY - tabPerso[idFantome]->posY, 2);
@@ -178,25 +241,40 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
     }
     if (nbPossibilite != 0)
     {
-        // fprintf(stderr, "nbPoss=%d\n", nbPossibilite);
-        int poidsMax = 0;
+        double poidsMax = 0;
         for (int k = 0; k < nbPossibilite; k++)
         {
             poidsMax += pow(regles[tabPoss[k]]->priorite, s);
         }
 
-        double nextMove = (double)rand() / (double)RAND_MAX;
         int mouv = 0;
-        // fprintf(stderr, "tab=%d\n", tabPoss[mouv]);
-        while (nextMove >= 0)
+        if (poidsMax == 0)
         {
-            // fprintf(stderr, "mouv=%d\n", mouv);
-            nextMove -= pow(regles[tabPoss[mouv]]->priorite, s) / poidsMax;
-            mouv++;
+            for (int k = 0; k < nbPossibilite; k++)
+            {
+                poidsMax += pow(regles[tabPoss[k]]->priorite, s) + 1;
+            }
+            double nextMove = (double)rand() / (double)RAND_MAX;
+            int mouv = 0;
+            while (nextMove >= 0)
+            {
+                nextMove -= (pow(regles[tabPoss[mouv]]->priorite, s)+1) / poidsMax;
+                mouv++;
+            }
+            mouv--;
         }
-        mouv--;
-        // fprintf(stderr, "JPP\n");
-        // fprintf(stderr, "tabPoss : %d\n", tabPoss[mouv]);
+        else
+        {
+            double nextMove = (double)rand() / (double)RAND_MAX;
+            
+            while (nextMove >= 0)
+            {
+                nextMove -= pow(regles[tabPoss[mouv]]->priorite, s) / poidsMax;
+                mouv++;
+            }
+            mouv--;
+        }
+
         dir = regles[tabPoss[mouv]]->action;
     }
     free(tabPoss);
@@ -213,21 +291,22 @@ int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int
 
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
         movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort);
-        int** heuri= heuristique(plateau,tabPerso[0]->posX,tabPerso[0]->posY,w,h);
-        int dist=0;
+        int **heuri = heuristique(plateau, tabPerso[0]->posX, tabPerso[0]->posY, w, h);
+        int dist = 0;
         for (int i = 1; i < 5; i++)
         {
-            regles_t *etatPlat = calculEtat(tabPerso, w, i);
+            regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
             movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
-            dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY]*100 +nbIter;
+            dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY] * 100 + nbIter;
+
             free(etatPlat);
         }
-        dist=dist/4;
+        dist = dist / 4;
         if (distMin == -1 || distMin > dist)
-            {
-                distMin = dist;
-            }
+        {
+            distMin = dist;
+        }
         freeHeuri(heuri, w);
         nbIter++;
     }
@@ -240,48 +319,27 @@ int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, i
 {
     int nbIter = 0;
     int mort = 0;
-    // int distMin = -1;
-    while (nbIter < 10000 && mort != 1)
+    while (nbIter < 500 && mort != 1)
     {
 
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
         movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort);
-        // int** heuri= heuristique(plateau,tabPerso[0]->posX,tabPerso[0]->posY,w,h);
-        // int dist=0;
         for (int i = 1; i < 5; i++)
         {
-            regles_t *etatPlat = calculEtat(tabPerso, w, i);
+            regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
             movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
-            // dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY]*100 +nbIter;
+
             free(etatPlat);
         }
-        // dist=dist/4;
-        // if (distMin == -1 || distMin > dist)
-        //     {
-        //         distMin = dist;
-        //     }
-        // freeHeuri(heuri, w);
         nbIter++;
     }
-    // printPlateau(plateau, w, h);
-    // fprintf(stderr, "\n%d\n", nbIter);
     return nbIter;
 }
-
-
 
 int parcours(regles_t **tabRegle, int type, double s)
 {
     int NBREGLE = 12;
-    // regles_t **tabRegle = NULL;
-
-    if (!tabRegle)
-    {
-        tabRegle = createMatRegles(NBREGLE);
-        initCerveau(tabRegle, NBREGLE);
-        // ecrireRegle(tabRegle, dest, NBREGLE);
-    }
 
     int w, h;
     int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
@@ -314,4 +372,116 @@ int parcours(regles_t **tabRegle, int type, double s)
     freePlateau(plateau, w);
 
     return dist;
+}
+
+int treatment(void *parameters)
+{
+    param_t *p = (param_t *)parameters;
+    int sortie = 0;
+    int espCarr = 0;
+    int val = 0;
+    int variance = 0;
+    for (int i = 0; i < 100; i++)
+    {
+        val = parcours(p->listeRegle, p->type, S);
+        espCarr += pow(val, 2);
+        sortie += val;
+    }
+    sortie = sortie / 100;
+    variance = (espCarr / 100) - pow(sortie, 2);
+    fprintf(stderr, "ecart-type : %1f\n", sqrt(variance));
+    p->valSortie[p->id] = sortie;
+    return 0;
+}
+
+int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int *valSortieG)
+{
+
+    int numRegle = ordreRegle[parcOrdre] / 10;
+    int numContrainte = ordreRegle[parcOrdre] % 10;
+    int nbPoss = possibilite(numContrainte);
+    int *listPos = createListePos(nbPoss, numContrainte);
+    int *valSortie = malloc(sizeof(int) * nbPoss);
+
+    thrd_t *tabThread = malloc(sizeof(thrd_t) * nbPoss);
+    param_t **tabParam = malloc(sizeof(param_t *) * nbPoss);
+
+    int valRand = rand() % nbPoss;
+    int valRetour = 10;
+
+    // Création du tableau de paramètres
+    for (int i = 0; i < nbPoss; i++)
+    {
+        param_t *param = malloc(sizeof(param_t));
+        regles_t **regleParam = loadRegles(source, valOpti);
+        if (numContrainte == 8)
+        {
+            modifRegle(regleParam[numRegle], numContrainte, (valRand + i) % nbPoss);
+        }
+        else
+        {
+            modifRegle(regleParam[numRegle], numContrainte, (valRand + i) % nbPoss - 1);
+        }
+
+        valSortie[i] = 10001;
+        param->type = type;
+        param->id = i;
+        param->listeRegle = regleParam;
+        param->valSortie = valSortie;
+        tabParam[i] = param;
+    }
+    // Creation des Thread
+    for (int i = 0; i < nbPoss; i++)
+    {
+        thrd_create(&tabThread[i], treatment, tabParam[i]);
+    }
+    for (int i = 0; i < nbPoss; i++)
+    {
+        int error_code_of_thread = 0;
+        thrd_join(tabThread[i], &error_code_of_thread);
+    }
+    int next = 0;
+    int valmin = 10001;
+
+    // Récuperation de de la valeur minimum calculé par les threads
+    for (int i = 0; i < nbPoss; i++)
+    {
+
+        if (valSortie[i] < valmin)
+        {
+            valmin = valSortie[i];
+            next = i;
+        }
+    }
+    valSortieG[id] = valmin;
+    if (*valOpti == -1 || valmin < *valOpti)
+    {
+        *valOpti = valmin;
+
+        if (numContrainte == 8)
+        {
+            valRetour = (valRand + next) % nbPoss + 1;
+        }
+        else
+        {
+            valRetour = (valRand + next) % nbPoss - 1;
+        }
+    }
+    printf("val : %d\n", valmin);
+    printf("opti : %d\n", *valOpti);
+    for (int i = 0; i < nbPoss; i++)
+    {
+        freeCerveau(tabParam[i]->listeRegle, NBREGLE);
+        free(tabParam[i]);
+        tabParam[i] = NULL;
+    }
+    free(tabParam);
+    tabParam = NULL;
+    free(valSortie);
+    valSortie = NULL;
+
+    free(listPos);
+    listPos = NULL;
+
+    return valRetour;
 }

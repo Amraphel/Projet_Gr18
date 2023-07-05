@@ -5,7 +5,7 @@ void modifRegle(regles_t *regle, int numContrainte, int valeur)
     switch (numContrainte)
     {
     case 0: // case_ t droite de -1 à 3
-        regle->droite =valeur;
+        regle->droite = valeur;
         break;
     case 1: // case_ t haut
         regle->haut = valeur;
@@ -14,7 +14,7 @@ void modifRegle(regles_t *regle, int numContrainte, int valeur)
         regle->gauche = valeur;
         break;
     case 3: // case_ t bas
-        regle->bas =valeur;
+        regle->bas = valeur;
         break;
 
     case 4: // distance_t distance_fantome
@@ -90,7 +90,7 @@ void initCerveau(regles_t **tabRegle, int nbRegle)
         tabRegle[i]->distance_pacman = -1;
         tabRegle[i]->dir_fantome = -1;
         tabRegle[i]->dir_pacman = -1;
-        tabRegle[i]->priorite = 1;
+        tabRegle[i]->priorite = 0;
         tabRegle[i]->action = i + 1;
     }
     for (i = 4; i < nbRegle; i++)
@@ -114,17 +114,25 @@ void freeCerveau(regles_t **tabRegle, int nbRegle)
     for (i = 0; i < nbRegle; i++)
     {
         free(tabRegle[i]);
-        tabRegle[i]=NULL;
+        tabRegle[i] = NULL;
     }
     free(tabRegle);
-    tabRegle=NULL;
+    tabRegle = NULL;
 }
 
-
-int * createListePos(int nbPos){
-    int * listpost= malloc(sizeof(int)*nbPos);
-    for(int i=0; i<nbPos; i++){
-        listpost[i]=i-1;
-    }   
+int *createListePos(int nbPos, int numContrainte)
+{
+    int *listpost = malloc(sizeof(int) * nbPos);
+    for (int i = 0; i < nbPos; i++)
+    {
+        if (numContrainte == 8)
+        {
+            listpost[i] = i;
+        }
+        else
+        {
+            listpost[i] = i - 1;
+        }
+    }
     return listpost;
 }

@@ -63,7 +63,7 @@ typedef struct
 void modifRegle(regles_t *regle, int numContrainte, int valeur);
 void initCerveau(regles_t** tabRegle,int nbRegle);
 void freeCerveau(regles_t** tabRegle, int nbRegle);
-int * createListePos(int nbPos);
+int *createListePos(int nbPos, int numContrainte);
 
 int possibilite(int nbContrainte);
 void freeHeuri(int **heuri, int w);
