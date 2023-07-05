@@ -25,7 +25,7 @@ regles_t **loadRegles(char* regles, int* valObj)
         {
             
             fscanf(file,"%d %d %d %d %d %d %d %d %d %d\n",(int*) (&(matRegles[i]->droite)),(int*) (&(matRegles[i]->haut)),(int*) (&(matRegles[i]->gauche))
-                                                    ,(int*) (&(matRegles[i]->bas)),(int*) (&(matRegles[i]->distance_fantome)),(int*) (&(matRegles[i]->dir_pacman)),
+                                                    ,(int*) (&(matRegles[i]->bas)),(int*) (&(matRegles[i]->distance_fantome)),(int*) (&(matRegles[i]->distance_pacman)),
                                                     (int*) (&(matRegles[i]->dir_fantome)),(int*) (&(matRegles[i]->dir_pacman)), (int*) (&(matRegles[i]->action)), (int*) (&(matRegles[i]->priorite)));
         }
     }
@@ -46,7 +46,7 @@ void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle, int valObj)
         for (int i = 0; i < nbRegle; i++)
         {
             fprintf(file,"%d %d %d %d %d %d %d %d %d %d\n",(matRegles[i]->droite),(matRegles[i]->haut),(matRegles[i]->gauche)
-                                                    , (matRegles[i]->bas), (matRegles[i]->distance_fantome),(matRegles[i]->dir_pacman),
+                                                    , (matRegles[i]->bas), (matRegles[i]->distance_fantome),(matRegles[i]->distance_pacman),
                                                     (matRegles[i]->dir_fantome), (matRegles[i]->dir_pacman), (matRegles[i]->action), (matRegles[i]->priorite));
         }
     }

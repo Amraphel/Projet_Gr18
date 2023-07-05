@@ -6,34 +6,43 @@ int compareRegle(regles_t *regleOrigin, regles_t *etatPlateau)
     if (regleOrigin->gauche != -1 && regleOrigin->gauche != etatPlateau->gauche)
     {
         i = 1;
+        // fprintf(stderr, "test1\n");
     }
     if (regleOrigin->haut != -1 && regleOrigin->haut != etatPlateau->haut)
     {
         i = 1;
+        // fprintf(stderr, "test2\n");
     }
     if (regleOrigin->bas != -1 && regleOrigin->bas != etatPlateau->bas)
     {
         i = 1;
+        // fprintf(stderr, "test3\n");
     }
     if (regleOrigin->droite != -1 && regleOrigin->droite != etatPlateau->droite)
     {
         i = 1;
+        // fprintf(stderr, "test4\n");
     }
     if (regleOrigin->dir_fantome != -1 && regleOrigin->dir_fantome != etatPlateau->dir_fantome)
     {
         i = 1;
+        // fprintf(stderr, "test5\n");
     }
     if (regleOrigin->dir_pacman != -1 && regleOrigin->dir_pacman != etatPlateau->dir_pacman)
     {
         i = 1;
+        // fprintf(stderr, "test6\n");
     }
     if (regleOrigin->distance_fantome != -1 && regleOrigin->distance_fantome != etatPlateau->distance_fantome)
     {
         i = 1;
+        // fprintf(stderr, "test7\n");
     }
     if (regleOrigin->distance_pacman != -1 && regleOrigin->distance_pacman != etatPlateau->distance_pacman)
     {
         i = 1;
+        // fprintf(stderr, "test8\n");
+        // fprintf(stderr, "dist Pac : %d\n", regleOrigin->distance_pacman);
     }
     return i;
 }
@@ -222,16 +231,18 @@ regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
 
 int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t **tabPerso, int nbRegles, double s, int idFantome)
 {
-
     int dir = 0;
 
     int nbPossibilite = 0;
     int *tabPoss = malloc(sizeof(int) * nbRegles);
     for (int i = 0; i < nbRegles; i++)
     {
+        //  fprintf(stderr,"regles n° %d\n", i);
+        // fprintf(stderr,"regles %d\n", regles[i]->distance_fantome);
+        // fprintf(stderr,"regles %d\n", regles[i]->priorite);
         if (compareRegle(regles[i], etatPlateau) == 0)
         {
-            // fprintf(stderr,"aled55\n");
+            // fprintf(stderr,"compareRegleOk \n");
             if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY, regles[i]->action))
             {
                 tabPoss[nbPossibilite] = i;
@@ -239,6 +250,15 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
             }
         }
     }
+    // if (idFantome == 1)
+    // {
+    //     for (int k = 0; k < nbPossibilite; k++)
+    //     {
+    //         fprintf(stderr, "%d ", tabPoss[k]);
+    //     }
+    //     fprintf(stderr, "\n");
+    // }
+    // fprintf(stderr,"nbPoss : %d\n", nbPossibilite);
     if (nbPossibilite != 0)
     {
         double poidsMax = 0;
@@ -255,29 +275,46 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
                 poidsMax += pow(regles[tabPoss[k]]->priorite, s) + 1;
             }
             double nextMove = (double)rand() / (double)RAND_MAX;
-            int mouv = 0;
+
             while (nextMove >= 0)
             {
-                nextMove -= (pow(regles[tabPoss[mouv]]->priorite, s)+1) / poidsMax;
+                nextMove -= (pow(regles[tabPoss[mouv]]->priorite, s) + 1) / poidsMax;
+                // if (idFantome == 1)
+                // {
+                //     fprintf(stderr, "nextMove-- : %f\n", nextMove);
+                // }
                 mouv++;
+                // fprintf(stderr, " mouv add %d \n", mouv);
             }
             mouv--;
+            // fprintf(stderr, " mouv supp %d \n", mouv);
         }
         else
         {
             double nextMove = (double)rand() / (double)RAND_MAX;
-            
+            if (idFantome == 1)
+            // {
+            //     fprintf(stderr, "nextMove2 : %f\n", nextMove);
+            // }
             while (nextMove >= 0)
             {
                 nextMove -= pow(regles[tabPoss[mouv]]->priorite, s) / poidsMax;
+                // if (idFantome == 1)
+                // {
+                //     fprintf(stderr, "nextMove2-- : %f\n", nextMove);
+                // }
                 mouv++;
             }
             mouv--;
         }
-
+        // if (idFantome == 1)
+        // {
+        //     fprintf(stderr, " mouv %d et %d\n", mouv, tabPoss[mouv]);
+        // }
         dir = regles[tabPoss[mouv]]->action;
     }
     free(tabPoss);
+    // fprintf(stderr,"dir : %d\n", dir);
     return dir;
 }
 
@@ -297,6 +334,7 @@ int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int
         {
             regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
+
             movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
             dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY] * 100 + nbIter;
 
@@ -328,18 +366,23 @@ int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, i
         {
             regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
+            // if (i == 1)
+            // {
+            //     fprintf(stderr, "mouvOpti %d, num %d\n", i, dir);
+            // }
+
             movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
 
             free(etatPlat);
         }
         nbIter++;
     }
+    // printPlateau(plateau, w, h);
     return nbIter;
 }
 
-int parcours(regles_t **tabRegle, int type, double s)
+int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
 {
-    int NBREGLE = 12;
 
     int w, h;
     int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
@@ -355,13 +398,14 @@ int parcours(regles_t **tabRegle, int type, double s)
     tabPerso[3] = Inky;
     tabPerso[4] = Pinky;
     int dist = 0;
+
     if (type == 0)
     {
-        dist = testParcoursProche(tabRegle, NBREGLE, tabPerso, plateau, w, h, s);
+        dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w, h, s);
     }
     else
     {
-        dist = testParcoursFinLevel(tabRegle, NBREGLE, tabPerso, plateau, w, h, s);
+        dist = testParcoursFinLevel(tabRegle, nbRegle, tabPerso, plateau, w, h, s);
     }
 
     for (int i = 0; i < 5; i++)
@@ -378,18 +422,20 @@ int treatment(void *parameters)
 {
     param_t *p = (param_t *)parameters;
     int sortie = 0;
-    int espCarr = 0;
+    int sommeCarr = 0;
     int val = 0;
     int variance = 0;
-    for (int i = 0; i < 100; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        val = parcours(p->listeRegle, p->type, S);
-        espCarr += pow(val, 2);
+        val = parcours(p->listeRegle, 16, p->type, S);
+        // fprintf(stderr, "val : %d\n", val);
+        sommeCarr += pow(val, 2);
         sortie += val;
     }
-    sortie = sortie / 100;
-    variance = (espCarr / 100) - pow(sortie, 2);
+    sortie = sortie / 1000;
+    variance = (sommeCarr / 1000) - pow(sortie, 2);
     fprintf(stderr, "ecart-type : %1f\n", sqrt(variance));
+
     p->valSortie[p->id] = sortie;
     return 0;
 }

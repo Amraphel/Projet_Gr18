@@ -33,5 +33,5 @@ typedef struct param{
 
 int testParcours(regles_t **tabRegle,int nbRegle, perso_t** tabPerso, int ** plateau, int w, int h, double s);
 int recuit(int NBREGLE, char * source, char * dest);
-int parcours(regles_t **tabRegle, int type, double s);
+int parcours(regles_t **tabRegle,int nbregle, int type, double s);
 int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int* valSortieG);

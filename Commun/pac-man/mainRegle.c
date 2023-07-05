@@ -11,13 +11,13 @@ int main()
 {
     time_t t;
     time(&t);
-    srand(42);
+    srand(t);
     char *source = "./source/regles/regle3.txt";
     char *dest = "./source/regles/regle3.txt";
     int valOpti = -1;
-    int type = 0;
+    int type = 1;
     // regles_t **regle = loadRegles(source, &valOpti);
-    // parcours(regle,0);
+    // parcours(regle,NBREGLE, 1, S);
     int *ordreRegle = initRegle(NBREGLE, 10);
     int parcOrdre = 0;
     int compt = 0;
