@@ -33,23 +33,7 @@ int movePacman(int **plateau, perso_t *Pac_man, int direction)
 {
     if (movePossible(plateau, Pac_man->posX, Pac_man->posY, direction, Pac_man->id, &Pac_man->super))
     {
-        switch (direction)
-        {
-        case 1:
-            Pac_man->etat = 3;
-            break;
-        case 3:
-            Pac_man->etat = 1;
-            break;
-        case 4:
-            Pac_man->etat = 0;
-            break;
-        case 2:
-            Pac_man->etat = 2;
-            break;
-        default:
-            break;
-        }
+        switchDirection(direction, Pac_man);
     }
     return direction;
 }
@@ -185,7 +169,14 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
             i++;
         }
     }
-    switch (dir)
+    switchDirection(dir, Pac_man);
+
+    return dir;
+}
+
+void switchDirection(int direction, perso_t* Pac_man)
+{
+    switch (direction)
     {
     case 1:
         Pac_man->etat = 3;
@@ -202,7 +193,5 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
     default:
         break;
     }
-
-    return dir;
 }
 
