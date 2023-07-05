@@ -4,8 +4,8 @@
 /**
  * @brief Creation d'un tableau de SDL_Rect. fenetre découper en grille de SDL_Rect
  * @param [in] window fenetre de jeu 
- * @param [in] w longueur du plateau de jeu  
- * @param [in] h largeur du plateau de jeu
+ * @param [in] w largeur du plateau de jeu  
+ * @param [in] h longueur du plateau de jeu
  * @return un tableau de SDL_Rect
  */
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
@@ -37,8 +37,8 @@ SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
  * @brief Affiche le plateau de jeu avec les gom, les murs, super gom
  * @param [in] tabRect tableau de SDL_Rect 
  * @param [in] plateau matrice du plateau de jeu
- * @param [in] W longueur du plateau de jeu
- * @param [in] h largeur du plateau de jeu
+ * @param [in] W largeur du plateau de jeu
+ * @param [in] h largeur longueur du plateau de jeu
  * @param [in] window fenetre de jeu
  * @param [in] renderer renderer de la fenetre de jeu
  * @param [in] etatAnim etat de l'animation en cours
