@@ -326,13 +326,11 @@ int main()
                 {
                     SDL_Color couleurGameOver = {219, 0, 0, 255};
                     afficherTexteFin(window, renderer, font, couleurGameOver, "Game Over", WINDOWW/8, WINDOWL/2-62);
-                    //afficherGameOver(window, renderer, font);
                 }
                 if (gom_exist(plateau, w, h) != 0)
                 {
                     SDL_Color couleurBravo = {0, 219, 0, 255};
                     afficherTexteFin(window, renderer, font, couleurBravo, "Bravo", WINDOWW/3.5, WINDOWL/2-62);
-                    //afficherBravo(window, renderer, font);
                 }
                 SDL_RenderPresent(renderer);
             }

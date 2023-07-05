@@ -17,3 +17,4 @@ int collision(SDL_Rect rectPac, SDL_Rect** rectFan, int nbFan, perso_t ** tabPer
 void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int w, int h);
 SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNormal, SDL_Texture *textPersoSuper, int super);
 void afficherTexteFin(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font, SDL_Color couleur, char* text, int posx, int posy);
+void chargerTextureMap(SDL_Texture *texture,int **plateau, int nb_images, SDL_Rect **tabRect, SDL_Renderer* renderer, int i, int j, int type, int *etatAnim);

@@ -47,7 +47,6 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
 {
     SDL_RenderClear(renderer);
     int fondW, fondH;
-    int nb_images;
     SDL_Texture *my_texture = load_texture_from_image("./source/Murs.png", window, renderer);
     SDL_Texture *gom = load_texture_from_image("./source/Pac-gomme.png", window, renderer);
     SDL_Texture *supergom = load_texture_from_image("./source/SuperPacGomme.png", window, renderer);
@@ -58,69 +57,19 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
         {
             if (plateau[j][i] != -1 && plateau[j][i] < 99)
             {
-                nb_images = 0;
                 if (plateau[j][i] != 0 && plateau[j][i] < 20)
                 {
-                    nb_images = 15;
-                    SDL_Rect
-                        source = {0},
-                        state = {0};
-
-                    SDL_QueryTexture(my_texture,
-                                     NULL, NULL,
-                                     &source.w, &source.h);
-
-                    int offset_x = source.w / nb_images,
-                        offset_y = source.h;
-
-                    state.x = (plateau[j][i] - 1) * offset_x;
-                    state.y = 0;
-                    state.w = offset_x;
-                    state.h = offset_y;
-
-                    SDL_RenderCopy(renderer, my_texture, // Préparation de l'affichage
-                                   &state,
-                                   &tabRect[i][j]);
+                    chargerTextureMap(my_texture, plateau, 15, tabRect, renderer, i, j, 0, etatAnim);
                 }
                 else
                 {
                     if (plateau[j][i] == 0)
                     {
-                        nb_images = 1;
-                        SDL_Rect
-                            source = {0},
-                            state = {0};
-
-                        SDL_QueryTexture(gom,
-                                         NULL, NULL,
-                                         &source.w, &source.h);
-
-                        int offset_x = source.w / nb_images,
-                            offset_y = source.h;
-
-                        state.x = 0;
-                        state.y = 0;
-                        state.w = offset_x;
-                        state.h = offset_y;
-
-                        SDL_RenderCopy(renderer, gom, // Préparation de l'affichage
-                                       &state,
-                                       &tabRect[i][j]);
+                        chargerTextureMap(gom, plateau, 1, tabRect, renderer, i, j, 1, etatAnim);
                     }
                     else
                     {
-
-                        nb_images = 4;
-                        SDL_Rect source = {0}, state = {0};
-                        SDL_QueryTexture(supergom, NULL, NULL, &source.w, &source.h);
-                        state.x = (*etatAnim) * source.w / nb_images;
-                        state.y = 0;
-                        state.w = source.w / nb_images;
-                        state.h = source.h;
-                        // state = {(*etatAnim) * source.w / nb_images, source.h, source.w / nb_images, source.h};
-                        SDL_RenderCopy(renderer, supergom, &state, &tabRect[i][j]);
-
-                        
+                        chargerTextureMap(supergom, plateau, 4, tabRect, renderer, i, j, 2, etatAnim);
                     }
                 }
             }
@@ -133,6 +82,50 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     SDL_DestroyTexture(supergom);
 }
 
+void chargerTextureMap(SDL_Texture *texture,int **plateau, int nb_images, SDL_Rect **tabRect, SDL_Renderer* renderer, int i, int j, int type, int *etatAnim)
+{
+    SDL_Rect
+        source = {0},
+        state = {0};
+
+    SDL_QueryTexture(texture,
+                     NULL, NULL,
+                     &source.w, &source.h);
+
+    int offset_x = source.w / nb_images,
+        offset_y = source.h;
+
+    switch (type)
+    {
+    case 0:
+        state.x = (plateau[j][i] - 1) * offset_x;
+        state.y = 0;
+        state.w = offset_x;
+        state.h = offset_y;
+        break;
+    case 1:
+        state.x = 0;
+        state.y = 0;
+        state.w = offset_x;
+        state.h = offset_y;
+        break;
+    case 2:
+        state.x = (*etatAnim) * source.w / nb_images;
+        state.y = 0;
+        state.w = source.w / nb_images;
+        state.h = source.h;
+        break;
+    
+    default:
+        break;
+    }
+
+    
+
+    SDL_RenderCopy(renderer, texture, // Préparation de l'affichage
+                   &state,
+                   &tabRect[i][j]);
+}
 
 /**
  * @brief Affiche un personnage sur le plateau
