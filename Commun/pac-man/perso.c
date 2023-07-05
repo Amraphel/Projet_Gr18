@@ -1,6 +1,10 @@
 #include "perso.h"
 
 /**
+ * REVIEW
+ * Cette fonction ressemble beaucoup à la fonction d'initialisation des fantômes dans fantome.c
+ * Pourquoi les avoir séparées, et comment est découpé le projet ?
+ * 
  * @brief initialisation du perso pac man
  * @param [in] plateau plateau du jeu  
  * @param [in] w coordonnee sur la longueur 
