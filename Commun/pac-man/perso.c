@@ -24,10 +24,10 @@ perso_t *initPac_man(int **plateau, int w, int h)
  * @param [in] Pac_man perso pour recuperer ses info
  * @param [in] direction dans laquel il va
  * @return
- *      - 3 a droite
- *      - 1 en haut
- *      - 0 a gauche
- *      - 2 en bas
+ *      - 0 bas
+ *      - 1 gauche
+ *      - 2 haut
+ *      - 3 droite
  */
 int movePacman(int **plateau, perso_t *Pac_man, int direction)
 {
@@ -60,10 +60,10 @@ int movePacman(int **plateau, perso_t *Pac_man, int direction)
  * @param [in] Pac_man perso pour recuperer ses info
  * @param [in] direction dans laquel il va
  * @return
- *      - 3 a droite
- *      - 1 en haut
- *      - 0 a gauche
- *      - 2 en bas
+ *      - 0 bas
+ *      - 1 gauche
+ *      - 2 haut
+ *      - 3 droite
  */
 int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
 {
