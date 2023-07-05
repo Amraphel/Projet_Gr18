@@ -34,6 +34,40 @@ perso_t *initClyde(int **plateau, int w, int h)
     return clyde;
 }
 
+/**
+ * @brief initialisation du fantome Inky
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @return fantome Inky
+ */ 
+perso_t *initInky(int **plateau, int w, int h)
+{
+    perso_t *inky = malloc(sizeof(perso_t));
+    inky->id = 220;
+    inky->super = 0;
+    coordPlat(plateau, w, h, inky->id, &inky->posX, &inky->posY);
+
+    return inky;
+}
+
+/**
+ * @brief initialisation du fantome Pinky
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @return fantome Pinky
+ */ 
+perso_t *initPinky(int **plateau, int w, int h)
+{
+    perso_t *pinky = malloc(sizeof(perso_t));
+    pinky->id = 230;
+    pinky->super = 0;
+    coordPlat(plateau, w, h, pinky->id, &pinky->posX, &pinky->posY);
+
+    return pinky;
+}
+
 
 /**
  * @brief créer une heuristique pour trouver un chemin le plus court possible entre un fantome et Pac-man
@@ -308,6 +342,20 @@ int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, p
     }
     return dir;
 
+}
+
+int moveInky(SDL_Window *window, int **plateau, int w, int h, perso_t* Inky, perso_t *Pac_man)
+{
+    int dir;
+    dir=moveBlinky(window,plateau,w,h,Inky, Pac_man);
+    return dir;
+}
+
+int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, perso_t *Pac_man)
+{
+    int dir;
+    dir=moveBlinky(window,plateau,w,h,Pinky, Pac_man);
+    return dir;
 }
 
 /**
