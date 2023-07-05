@@ -231,7 +231,7 @@ int main()
             move = (move + 1) % speedMove;
             if(animeF==0){
                 afficherPlateau(tabRect, plateau, w, h, window, renderer,&etatAnimPlat);
-                animeFluide(tabRectPerso,3, dir);
+                animeFluide(tabRectPerso,3, dir, WINDOWW, WINDOWL);
                 // SDL_RenderPresent(renderer);
             }
             animeF= (animeF+1) % speedDep;

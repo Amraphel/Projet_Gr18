@@ -288,25 +288,24 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
  * @param [in] nbPerso nombre de perso dans le jeu
  * @param [in] direction direction du perso
  */
-void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction)
+void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int w, int h)
 {
-
     for (int k = 0; k < nbPerso; k++)
     {
 
         switch (direction[k])
         {
         case 1:
-            rectPerso[k]->y += rectPerso[k]->h / 10;
+            rectPerso[k]->y = (rectPerso[k]->y + rectPerso[k]->h / 10)%h;
             break;
         case 2:
-            rectPerso[k]->x -= rectPerso[k]->w / 10;
+            rectPerso[k]->x = (w + rectPerso[k]->x -rectPerso[k]->w / 10)%w;
             break;
         case 3:
-            rectPerso[k]->y -= rectPerso[k]->h / 10;
+            rectPerso[k]->y = (h+rectPerso[k]->y -rectPerso[k]->h / 10)%h;
             break;
         case 4:
-            rectPerso[k]->x += rectPerso[k]->w / 10;
+            rectPerso[k]->x = (rectPerso[k]->x +rectPerso[k]->w / 10)%w;
             break;
         default:
             break;
