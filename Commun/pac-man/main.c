@@ -90,6 +90,7 @@ int main()
     tabRectPerso[2] = &rectCly;
     tabRectPerso[3] = &rectInk;
     tabRectPerso[4] = &rectPin;
+    //8
 
     int tempsMortFantome[nbFan];
     tempsMortFantome[0]=0;
