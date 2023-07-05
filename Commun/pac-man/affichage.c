@@ -47,6 +47,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
 {
     SDL_RenderClear(renderer);
     int fondW, fondH;
+    int nb_images;
     SDL_Texture *my_texture = load_texture_from_image("./source/Murs.png", window, renderer);
     SDL_Texture *gom = load_texture_from_image("./source/Pac-gomme.png", window, renderer);
     SDL_Texture *supergom = load_texture_from_image("./source/SuperPacGomme.png", window, renderer);
@@ -57,7 +58,7 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
         {
             if (plateau[j][i] != -1 && plateau[j][i] < 99)
             {
-                int nb_images = 0;
+                nb_images = 0;
                 if (plateau[j][i] != 0 && plateau[j][i] < 20)
                 {
                     nb_images = 15;

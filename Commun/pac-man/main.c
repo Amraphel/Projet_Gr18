@@ -62,20 +62,18 @@ int main()
     SDL_Texture *textPac = NULL;
 
     SDL_Texture *textBlinNormal = load_texture_from_image("./source/Blinky.png", window, renderer);
-    SDL_Texture *textBlinSuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
     SDL_Texture *textBlin = NULL;
 
     SDL_Texture *textClyNormal = load_texture_from_image("./source/Clyde.png", window, renderer);
-    SDL_Texture *textClySuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
     SDL_Texture *textCly = NULL;
 
     SDL_Texture *textInkNormal = load_texture_from_image("./source/Inky.png", window, renderer);
-    SDL_Texture *textInkSuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
     SDL_Texture *textInk = NULL;
 
     SDL_Texture *textPinNormal = load_texture_from_image("./source/Pinky.png", window, renderer);
-    SDL_Texture *textPinSuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
     SDL_Texture *textPin = NULL;
+
+    SDL_Texture *textFanSuper = load_texture_from_image("./source/fantomeChasse.png", window, renderer);
 
     SDL_Rect rectPac = {Pac_man->posY * WINDOWL / h, Pac_man->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
     SDL_Rect rectBlin = {Blinky->posY * WINDOWL / h, Blinky->posX * WINDOWW / w, WINDOWL / h, WINDOWW / w};
@@ -90,7 +88,6 @@ int main()
     tabRectPerso[2] = &rectCly;
     tabRectPerso[3] = &rectInk;
     tabRectPerso[4] = &rectPin;
-    //8
 
     int tempsMortFantome[nbFan];
     tempsMortFantome[0]=0;
@@ -280,7 +277,7 @@ int main()
                 {
                     if(tabPerso[1]->super == 0)
                     {    
-                        textBlin = spriteSuperPerso(&textBlin, textBlinNormal, textBlinSuper, Pac_man->super);
+                        textBlin = spriteSuperPerso(&textBlin, textBlinNormal, textFanSuper, Pac_man->super);
                         animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
                     }
                     else
@@ -292,7 +289,7 @@ int main()
                 {
                     if(tabPerso[2]->super == 0)
                     {
-                        textCly = spriteSuperPerso(&textCly, textClyNormal, textClySuper, Pac_man->super);
+                        textCly = spriteSuperPerso(&textCly, textClyNormal, textFanSuper, Pac_man->super);
                         animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
                     }
                     else
@@ -304,7 +301,7 @@ int main()
                 {
                     if(tabPerso[3]->super == 0)
                     {
-                        textInk = spriteSuperPerso(&textInk, textInkNormal, textInkSuper, Pac_man->super);
+                        textInk = spriteSuperPerso(&textInk, textInkNormal, textFanSuper, Pac_man->super);
                         animePerso(textInk, renderer, &rectInk, &etatAnim, Inky->etat);
                     }
                     else
@@ -316,7 +313,7 @@ int main()
                 {
                     if(tabPerso[4]->super == 0)
                     {
-                        textPin = spriteSuperPerso(&textPin, textPinNormal, textPinSuper, Pac_man->super);
+                        textPin = spriteSuperPerso(&textPin, textPinNormal, textFanSuper, Pac_man->super);
                         animePerso(textPin, renderer, &rectPin, &etatAnim, Pinky->etat);
                     }
                     else
@@ -351,23 +348,21 @@ int main()
     free(tabRectPerso);
     SDL_DestroyTexture(textBlin);
     SDL_DestroyTexture(textBlinNormal);
-    SDL_DestroyTexture(textBlinSuper);
+
 
     SDL_DestroyTexture(textPac);
     SDL_DestroyTexture(textPacNormal);
-    SDL_DestroyTexture(textPacSuper);
 
     SDL_DestroyTexture(textCly);
     SDL_DestroyTexture(textClyNormal);
-    SDL_DestroyTexture(textClySuper);
 
     SDL_DestroyTexture(textInk);
     SDL_DestroyTexture(textInkNormal);
-    SDL_DestroyTexture(textInkSuper);
 
     SDL_DestroyTexture(textPin);
     SDL_DestroyTexture(textPinNormal);
-    SDL_DestroyTexture(textPinSuper);
+
+    SDL_DestroyTexture(textFanSuper);
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
