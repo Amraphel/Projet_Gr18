@@ -6,34 +6,34 @@
 #include "plateau.h"
 #endif
 
-// #define WINDOWL 700
-// #define WINDOWW 700
+// // #define WINDOWL 700
+// // #define WINDOWW 700
 
-int main()
-{
-    int w;
-    int h;
-    time_t t;
-    time(&t);
+// int main()
+// {
+//     int w;
+//     int h;
+//     time_t t;
+//     time(&t);
 
-    srand(t);
-    int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
-    int WINDOWW = w * (700 / w);
-    int WINDOWL = h * (700 / h);
-    printPlateau(plateau, w, h);
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        SDL_Log("Error : SDL initialisation - %s\n",
-                SDL_GetError());
-        exit(EXIT_FAILURE);
-    }
+//     srand(t);
+//     int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
+//     int WINDOWW = w * (700 / w);
+//     int WINDOWL = h * (700 / h);
+//     printPlateau(plateau, w, h);
+//     if (SDL_Init(SDL_INIT_VIDEO) != 0)
+//     {
+//         SDL_Log("Error : SDL initialisation - %s\n",
+//                 SDL_GetError());
+//         exit(EXIT_FAILURE);
+//     }
 
-    SDL_bool
-        program_on = SDL_TRUE,
-        event_utile = SDL_FALSE;
+//     SDL_bool
+//         program_on = SDL_TRUE,
+//         event_utile = SDL_FALSE;
 
-    SDL_Event
-        event;
+//     SDL_Event
+//         event;
 
     SDL_Window *window = initWindow(200, 100, WINDOWW, WINDOWL);
     SDL_Renderer *renderer = initRenderer(window);
@@ -111,10 +111,10 @@ int main()
     tempsMortFantome[2] = 0;
     tempsMortFantome[3] = 0;
 
-    if (Blinky->posX != 0)
-    {
-        afficherPerso(textBlin, renderer, &rectBlin);
-    }
+//     if (Blinky->posX != 0)
+//     {
+//         afficherPerso(textBlin, renderer, &rectBlin);
+//     }
 
     afficherPerso(textPacNormal, renderer, &rectPac);
     if (Clyde->posX != 0)
@@ -130,10 +130,10 @@ int main()
         afficherPerso(textPin, renderer, &rectPin);
     }
 
-    if (TTF_Init() < 0)
-        end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
+//     if (TTF_Init() < 0)
+//         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
 
-    TTF_Font *font = NULL;
+//     TTF_Font *font = NULL;
 
     font = TTF_OpenFont("./Front/videotype.ttf", 90);
     if (font == NULL)
@@ -158,27 +158,27 @@ int main()
     int compt = 0;
     int oldDir = 0;
 
-    int pause = 0;
-    SDL_RenderPresent(renderer);
+//     int pause = 0;
+//     SDL_RenderPresent(renderer);
 
-    while (program_on)
-    {
-        event_utile = SDL_FALSE;
-        while (!event_utile && SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                program_on = SDL_FALSE;
-                event_utile = SDL_TRUE;
-                break;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_ESCAPE:
-                case SDLK_q:
-                    program_on = 0;
-                    event_utile = SDL_TRUE;
+//     while (program_on)
+//     {
+//         event_utile = SDL_FALSE;
+//         while (!event_utile && SDL_PollEvent(&event))
+//         {
+//             switch (event.type)
+//             {
+//             case SDL_QUIT:
+//                 program_on = SDL_FALSE;
+//                 event_utile = SDL_TRUE;
+//                 break;
+//             case SDL_KEYDOWN:
+//                 switch (event.key.keysym.sym)
+//                 {
+//                 case SDLK_ESCAPE:
+//                 case SDLK_q:
+//                     program_on = 0;
+//                     event_utile = SDL_TRUE;
 
                     break;
                 case SDLK_DOWN:
@@ -364,5 +364,5 @@ int main()
     free(tabRect);
     free(dir);
 
-    return 0;
-}
+//     return 0;
+// }

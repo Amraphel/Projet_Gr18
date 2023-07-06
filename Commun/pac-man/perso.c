@@ -66,16 +66,16 @@ int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
                 switch (j)
                 {
                 case 1:
-                    newHeuri = heuriBasiquePac(plateau, x + 1, y, 3, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, x + 1, y, 3, ite - 1)/2;
                     break;
                 case 2:
-                    newHeuri = heuriBasiquePac(plateau, x, y - 1, 4, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, x, y - 1, 4, ite - 1)/2;
                     break;
                 case 3:
-                    newHeuri = heuriBasiquePac(plateau, x - 1, y, 1, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, x - 1, y, 1, ite - 1)/2;
                     break;
                 case 4:
-                    newHeuri = heuriBasiquePac(plateau, x, y + 1, 2, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, x, y + 1, 2, ite - 1)/2;
                     break;
 
                 default:
