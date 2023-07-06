@@ -156,11 +156,22 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
                 break;
             }
             // fprintf(stderr, "heuri = %d\n", newHeuri);
-            if ((heuri == -1) || newHeuri > heuri )
+            if (Pac_man->super==0)
             {
-                // fprintf(stderr, "rentre\n");
-                heuri = newHeuri;
-                dir = i;
+                if ((heuri == -1) || newHeuri > heuri )
+                {
+                    // fprintf(stderr, "rentre\n");
+                    heuri = newHeuri;
+                    dir = i;
+                }
+            }
+            if (Pac_man->super==1)
+            {
+                if ((heuri==-1) || newHeuri < heuri)
+                {
+                    heuri = newHeuri;
+                    dir = i;
+                }
             }
         }
         i = (i + 1) % 5;

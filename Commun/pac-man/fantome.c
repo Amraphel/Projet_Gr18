@@ -115,6 +115,16 @@ void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
             }
         }
     }
+    /*
+    if (heuri[11][23]<heuri[11][-1])
+    {
+        heuri[11][-1]=heuri[11][23];
+    }
+    if (heuri[11][-1]<heuri[11][23])
+    {
+        heuri[11][23]=heuri[11][-1];
+    }
+    */
 }
 
 /**
