@@ -42,6 +42,8 @@ void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Textu
 
     SDL_DestroyTexture(textPac);
     SDL_DestroyTexture(textPacNormal);
+    SDL_DestroyTexture(textPacSuper);
+
 
     SDL_DestroyTexture(textCly);
     SDL_DestroyTexture(textClyNormal);

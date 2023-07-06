@@ -93,17 +93,17 @@ void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
             switch (i)
             {
             case 1:
-                newX += 1;
+                newX = (newX+1)%23;
 
                 break;
             case 2:
-                newY -= 1;
+                newY = (newY-1+23)%23;
                 break;
             case 3:
-                newX -= 1;
+                newX = (newX-1+23)%23;
                 break;
             case 4:
-                newY += 1;
+                newY = (newY+1)%23;
                 break;
 
             default:
@@ -172,48 +172,76 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY, perso_t 
 {
     int dir = 0;
     int heuri = -1;
-    for (int i = 1; i < 5; i++)
+    int pass=0;
+    /*
+    if (pacman->posY<10)
     {
-        if (movePossible(plateau, fantX, fantY, i, -1, NULL))
+        for (int j = 1; j<6; j++)
         {
-            int newHeuri = 0;
-            switch (i)
-            {
-            case 1:
-                newHeuri = heuristique[fantX + 1][fantY];
-                break;
-            case 2:
-                newHeuri = heuristique[fantX][fantY - 1];
-                break;
-            case 3:
-                newHeuri = heuristique[fantX - 1][fantY];
-                break;
-            case 4:
-                newHeuri = heuristique[fantX][fantY + 1];
-                break;
-
-            default:
-                break;
-            }
-            if (pacman->super==0)
-            {
-                if (heuri == -1 || heuri > newHeuri)
-                {
-                    heuri = newHeuri;
-                    dir = i;
-                }
-            }
-            if (pacman->super==1)
-            {
-                if (heuri ==-1 || heuri < newHeuri)
-                {
-                    heuri = newHeuri;
-                    dir =i ;
-                }
-            }
+            heuristique[11][23-j]=heuristique[11][0]+j;
+        }
+    }
+    else if (pacman->posY>12)
+    {
+        for (int j = 1; j<6; j++)
+        {
+            heuristique[11][j-1]=heuristique[11][22]+j;
         }
     }
     
+    if (pacman->posX==11 && pacman->posY<6 && fantX==11 && fantY>16 )
+    {
+        dir=4;
+    }
+    else if (pacman->posX==11 && pacman->posY>16 && fantX==11 && fantY<6 )
+    {
+        dir=2;
+    }
+    else
+    {
+        */
+        for (int i = 1; i < 5; i++)
+        {
+            if (movePossible(plateau, fantX, fantY, i, -1, NULL))
+            {
+                int newHeuri = 0;
+                switch (i)
+                {
+                case 1:
+                    newHeuri = heuristique[(fantX + 1)%23][fantY];
+                    break;
+                case 2:
+                    newHeuri = heuristique[fantX][(fantY - 1+23)%23];
+                    break;
+                case 3:
+                    newHeuri = heuristique[(fantX - 1+23)%23][fantY];
+                    break;
+                case 4:
+                    newHeuri = heuristique[fantX][(fantY + 1)%23];
+                    break;
+
+                default:
+                    break;
+                }
+                if (pacman->super==0)
+                {
+                    if (heuri == -1 || heuri > newHeuri)
+                    {
+                        heuri = newHeuri;
+                        dir = i;
+                    }
+                }
+                if (pacman->super==1)
+                {
+                    if (heuri ==-1 || heuri < newHeuri)
+                    {
+                        heuri = newHeuri;
+                        dir =i ;
+                    }
+                }
+            }
+        }
+    //}
     return dir;
 }
 
@@ -263,6 +291,7 @@ int moveRandom(int **plateau, SDL_Window* window, perso_t *Clyde)
     }
     return i;
 }
+
 // fonction blinky : plus court chemin vers pac-man
 /**
  * @brief déplace Blinky dans la direction du plus court chemin trouvé
