@@ -93,6 +93,8 @@ int main()
     int tempsMortFantome[nbFan];
     tempsMortFantome[0] = 0;
     tempsMortFantome[1] = 0;
+    tempsMortFantome[2] = 0;
+    tempsMortFantome[3] = 0;
 
     if (Blinky->posX != 0)
     {
@@ -194,17 +196,21 @@ int main()
                 }
             }
         }
-
+        int temp;
         if (collision(rectPac, tabRectPerso, nbFan, tabPerso) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
         {
             if (move == 0)
             {
-                compt = 0;
+                
                 dir[0] = movePacmanIA(plateau, Pac_man);
-                oldDir = dir[0];
-                movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, dir[0], &mort, &Pac_man->super);
-                dir[0] = movePacmanIA(plateau, Pac_man);
-                int temp = dir[0];
+                if(Pac_man->super == 1)
+                {
+                    oldDir = dir[0];
+                    compt = 0;
+                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, dir[0], &mort, &Pac_man->super);
+                    dir[0] = movePacmanIA(plateau, Pac_man);
+                    temp = dir[0];
+                }
 
                 // dir[0]=direction;
                 if (Blinky->posX != 0)
@@ -227,9 +233,12 @@ int main()
                 {
                     movePersoInPlateau(plateau, &tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id, dir[j], &mort, &tabPerso[j]->super);
                 }
-                dir[0] = oldDir;
-                switchDirection(dir[0], Pac_man);
-                oldDir = temp;
+                if(Pac_man->super == 1)
+                {
+                    dir[0] = oldDir;
+                    switchDirection(dir[0], Pac_man);
+                    oldDir = temp;
+                }
                 direction = 0;
                 if (Pac_man->super == 1)
                 {
@@ -241,7 +250,7 @@ int main()
                     }
                 }
             }
-            if (compt == 5)
+            if (compt == 5 && Pac_man->super==1)
             {
                 dir[0] = oldDir;
                 switchDirection(dir[0], Pac_man);
@@ -249,10 +258,14 @@ int main()
             move = (move + 1) % speedMove;
             if (animeF == 0)
             {
-                compt++;
+                
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
                 animeFluide(tabRectPerso, 5, dir, WINDOWW, WINDOWL);
-                animeFluide(tabRectPerso, 1, dir, WINDOWW, WINDOWL);
+                if(Pac_man->super == 1)
+                {
+                    compt++;
+                    animeFluide(tabRectPerso, 1, dir, WINDOWW, WINDOWL);
+                }
                 // SDL_RenderPresent(renderer);
             }
             animeF = (animeF + 1) % speedDep;
@@ -311,16 +324,8 @@ int main()
                     }
                 }
                 reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso);
-                if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
-                {
-                    SDL_Color couleurGameOver = {219, 0, 0, 255};
-                    afficherTexteFin(window, renderer, font, couleurGameOver, "Game Over", WINDOWW / 8, WINDOWL / 2 - 62);
-                }
-                if (gom_exist(plateau, w, h) != 0)
-                {
-                    SDL_Color couleurBravo = {0, 219, 0, 255};
-                    afficherTexteFin(window, renderer, font, couleurBravo, "Bravo", WINDOWW / 3.5, WINDOWL / 2 - 62);
-                }
+                finDeJeu(rectPac, tabRectPerso, nbFan, tabPerso, WINDOWW, WINDOWL, font, plateau, window, renderer, w, h);
+
                 SDL_RenderPresent(renderer);
             }
             i = (i + 1) % speed;
