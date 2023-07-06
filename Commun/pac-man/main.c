@@ -93,6 +93,8 @@ int main()
     int tempsMortFantome[nbFan];
     tempsMortFantome[0] = 0;
     tempsMortFantome[1] = 0;
+    tempsMortFantome[2] = 0;
+    tempsMortFantome[3] = 0;
 
     if (Blinky->posX != 0)
     {
@@ -256,11 +258,12 @@ int main()
             move = (move + 1) % speedMove;
             if (animeF == 0)
             {
-                compt++;
+                
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
                 animeFluide(tabRectPerso, 5, dir, WINDOWW, WINDOWL);
                 if(Pac_man->super == 1)
                 {
+                    compt++;
                     animeFluide(tabRectPerso, 1, dir, WINDOWW, WINDOWL);
                 }
                 // SDL_RenderPresent(renderer);
