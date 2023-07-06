@@ -34,8 +34,8 @@ int deplacement(int move, perso_t *Pac_man, int **plateau, SDL_Rect **tabRectPer
     return direction;
 }
 
-void destroyAllSDL(SDL_Texture* textBlin, SDL_Texture* textBlinNormal, SDL_Texture* textPac, SDL_Texture* textPacNormal, SDL_Texture* textPacSuper, SDL_Texture* textCly, SDL_Texture* textClyNormal,
-    SDL_Texture* textInk, SDL_Texture* textInkNormal, SDL_Texture* textPin, SDL_Texture* textPinNormal, SDL_Texture* textFanSuper, SDL_Renderer* renderer, SDL_Window* window)
+void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Texture *textPac, SDL_Texture *textPacNormal, SDL_Texture *textPacSuper, SDL_Texture *textCly, SDL_Texture *textClyNormal,
+                   SDL_Texture *textInk, SDL_Texture *textInkNormal, SDL_Texture *textPin, SDL_Texture *textPinNormal, SDL_Texture *textFanSuper, SDL_Renderer *renderer, SDL_Window *window)
 {
     SDL_DestroyTexture(textBlin);
     SDL_DestroyTexture(textBlinNormal);
@@ -56,4 +56,18 @@ void destroyAllSDL(SDL_Texture* textBlin, SDL_Texture* textBlinNormal, SDL_Textu
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+}
+
+void finDeJeu(SDL_Rect rectPac, SDL_Rect **tabRectPerso, int nbFan, perso_t **tabPerso, int WINDOWW, int WINDOWL, TTF_Font* font, int**plateau, SDL_Window* window, SDL_Renderer*  renderer, int w, int h)
+{
+    if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && tabPerso[0]->super == 0)
+    {
+        SDL_Color couleurGameOver = {219, 0, 0, 255};
+        afficherTexteFin(window, renderer, font, couleurGameOver, "Game Over", WINDOWW / 8, WINDOWL / 2 - 62);
+    }
+    if (gom_exist(plateau, w, h) != 0)
+    {
+        SDL_Color couleurBravo = {0, 219, 0, 255};
+        afficherTexteFin(window, renderer, font, couleurBravo, "Bravo", WINDOWW / 3.5, WINDOWL / 2 - 62);
+    }
 }
