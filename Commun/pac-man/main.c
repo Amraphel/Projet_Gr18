@@ -227,7 +227,7 @@ int main()
                     temp = dir[0];
                 }
 
-                dir[0]=direction;
+                //dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
                     dir[1] = moveBlinky(window, plateau, w, h, Blinky, Pac_man);
@@ -340,7 +340,7 @@ int main()
                         tempsMortFantome[3]++;
                     }
                 }
-                reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso);
+                reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso, dir);
                 finDeJeu(rectPac, tabRectPerso, nbFan, tabPerso, WINDOWW, WINDOWL, font, plateau, window, renderer, w, h);
 
                 SDL_RenderPresent(renderer);

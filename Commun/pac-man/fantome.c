@@ -399,7 +399,7 @@ int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, p
  * @param [in] tabPerso tableau qui contient tous les personnages
  * @param [in] nbFan nombre de fantomes
  */ 
-void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, SDL_Rect **rectFan)
+void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, SDL_Rect **rectFan, int* dir)
 {
     int i;
     for(i = 1; i<=nbFan; i++)
@@ -408,10 +408,11 @@ void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, S
         {
             tabPerso[i]->super = 0;
             tempsMortFantome[i-1]=0;
-            tabPerso[i]->posX = tabPerso[i]->coordY;
-            tabPerso[i]->posY = tabPerso[i]->coordX;
+            tabPerso[i]->posX = tabPerso[i]->coordX;
+            tabPerso[i]->posY = tabPerso[i]->coordY;
             rectFan[i]->x = rectFan[i]->w*tabPerso[i]->coordY;
             rectFan[i]->y = rectFan[i]->h*tabPerso[i]->coordX;
+            dir[i]=0;
         }
     }
 }
