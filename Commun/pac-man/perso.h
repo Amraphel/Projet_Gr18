@@ -20,13 +20,13 @@
 
 typedef struct perso
 {
-    int id;
-    int posX;
-    int posY;
-    int etat;
-    int super;
-    int coordX;
-    int coordY;
+    int id; //numéro grace auquel on le repère dans la matrice
+    int posX; //la ligne sur laquelle se trouve pac-man
+    int posY; //la colonne sur laquelle se trouve pac-man
+    int etat; //sens dans lequel pac-man est tourné
+    int super; //indicateur qui donne si pac-Man est en mode super pac-man et si un fantome est mort
+    int coordX; //ligne sur laquelle se trouve pac-man au début du jeu
+    int coordY; //colonne sur laquelle se trouve pac-man au début du jeu
 }perso_t;
 
 perso_t* initPac_man(int ** plateau, int w, int h);

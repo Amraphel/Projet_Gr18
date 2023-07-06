@@ -142,7 +142,7 @@ int main()
     }
 
 
-    int speedMove = 10000;
+    int speedMove = 100000;
     int speed = speedMove / 10;
     int speedDep = speedMove / 10;
     int i = 0;
@@ -234,15 +234,15 @@ int main()
                 }
                 if (Clyde->posX != 0)
                 {
-                    dir[2] = 0; //moveClyde(window, plateau, w, h, Clyde, Pac_man);
+                    dir[2] = moveClyde(window, plateau, w, h, Clyde, Pac_man);
                 }
                 if (Inky->posX != 0)
                 {
-                    dir[3] = 0; //moveClyde(window, plateau, w, h, Inky, Pac_man);
+                    dir[3] = moveClyde(window, plateau, w, h, Inky, Pac_man);
                 }
                 if (Pinky->posX != 0)
                 {
-                    dir[4] = 0; //moveClyde(window, plateau, w, h, Pinky, Pac_man);
+                    dir[4] = moveClyde(window, plateau, w, h, Pinky, Pac_man);
                 }
                 for (int j = 0; j < 5; j++)
                 {

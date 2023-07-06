@@ -190,6 +190,11 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
     return dir;
 }
 
+/**
+ * @brief tourne pac-man dans la direction vers laquelle il va
+ * @param [in] direction direction que prend pac-man
+ * @param [in] Pac_man personnage à tourner
+ */ 
 void switchDirection(int direction, perso_t* Pac_man)
 {
     switch (direction)

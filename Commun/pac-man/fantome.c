@@ -95,11 +95,11 @@ perso_t *initPinky(int **plateau, int w, int h)
 
 /**
  * @brief créer une heuristique pour trouver un chemin le plus court possible entre un fantome et Pac-man
- * @param [in] heuri 
+ * @param [in] heuri tableau contenant l'heuristique des cases du plateau
  * @param [in] plateau tableau contenant les id des objets et personnages du jeu
- * @param [in] x
- * @param [in] y
- * @param [in] val
+ * @param [in] x ligne de départ de l'heuristique
+ * @param [in] y colonne de départ de l'heuristique
+ * @param [in] val valeur d'heuristique de la case de départ
  */ 
 void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
 {
@@ -140,8 +140,8 @@ void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
 /**
  * @brief 
  * @param [in] plateau tableau contenant les id des objets et personnages du jeu
- * @param [in] pacX 
- * @param [in] pacY
+ * @param [in] pacX  ligne où se trouve pac-man
+ * @param [in] pacY colonne où se trouve pac-man
  * @param [in] w largeur du plateau (nombre de colonnes)
  * @param [in] h hauteur du plateau (nombre de lignes)
  */ 
@@ -188,7 +188,7 @@ void freeHeuri(int **heuri, int w)
 /**
  * @brief trouve le prochain déplacement à faire pour le fantome 
  * @param [in] plateau tableau contenant les id des objets et personnages du jeu
- * @param [in] heuristique
+ * @param [in] heuristique tableau contenant les valeurs d'heuristique des cases du plateau
  * @param [in] fantX numéro de la ligne sur laquelle se trouve le fantome
  * @param [in] fantY numéro de la colonne sur laquelle se trouve le fantome
  * @param [in] pacman structure du personnage Pac-man

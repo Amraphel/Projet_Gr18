@@ -1,5 +1,12 @@
 #include "SDLBasic.h"
 
+/**
+ * @brief fonction qui permet de quitter la SDL
+ * @param [in] ok 
+ * @param [in] msg message d'erreur à afficher
+ * @param [in] window fenêtre d'affichage
+ * @param [in] renderer renderer de la fenêtre de jeu
+ */ 
 void end_sdl(char ok,
              char const *msg,
              SDL_Window *window,
@@ -36,6 +43,15 @@ void end_sdl(char ok,
     }
 }
 
+/**
+ * @brief permet de créer une fenêtre de dimension donnée
+ * @param [in] x abscisse du coin haut gauche de la fenêtre à créer
+ * @param [in] y ordonnée du coin haut gauche de la fenêtre à créer
+ * @param [in] w largeur de la fenêtre à créer
+ * @param [in] h hauteur de la fenêtre à créer
+ * @return la fenêtre créée
+ */ 
+
 SDL_Window *initWindow(int x, int y, int w, int h)
 {
     SDL_Window *window = NULL;
@@ -57,6 +73,11 @@ SDL_Window *initWindow(int x, int y, int w, int h)
     return window;
 }
 
+/**
+ * @brief créé le renderer dans le fenêtre de jeu
+ * @param [in] window fenêtre de jeu
+ * @return le renderer créé
+ */ 
 SDL_Renderer *initRenderer(SDL_Window *window)
 {
     SDL_Renderer *renderer = NULL;
@@ -72,6 +93,13 @@ SDL_Renderer *initRenderer(SDL_Window *window)
     return renderer;
 }
 
+/**
+ * @brief charge une image sur une texture
+ * @param [in] file_image_name nom du fichier contenant l'image
+ * @param [in] window fenêtre de jeu
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @return la texture créée 
+ */ 
 SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, SDL_Renderer *renderer)
 {
     SDL_Surface *my_image = NULL;
@@ -89,18 +117,3 @@ SDL_Texture *load_texture_from_image(char *file_image_name, SDL_Window *window, 
     return my_texture;
 }
 
-
-int getMaxSize(int *w, int *h)
-{
-    SDL_DisplayMode dm;
-
-    if (SDL_GetDesktopDisplayMode(0, &dm) != 0)
-    {
-        SDL_Log("SDL_GetDesktopDisplayMode failed: %s", SDL_GetError());
-        return 1;
-    }
-    *w = dm.w;
-    *h = dm.h;
-
-    return 0;
-}
