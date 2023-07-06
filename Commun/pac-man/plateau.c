@@ -1,5 +1,14 @@
 #include "plateau.h"
 
+/**
+ * @brief trouve les coordonnées dans le plateau d'un objet d'id val
+ * @param [in] plateau matrice contenant les id de tous les objets du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @param [in] val id de l'objet dont on cherche les coordonnées
+ * @param [in] x numéro de la ligne où se trouve l'objet recherché
+ * @param [in] y colonne où se trouve l'objet recherché 
+ */
 void coordPlat(int **plateau, int w, int h, int val, int *x, int *y)
 {
     *x = 0;
@@ -17,12 +26,28 @@ void coordPlat(int **plateau, int w, int h, int val, int *x, int *y)
     }
 }
 
+/**
+ * @brief allocation de l'espace nécessaire pour construire le plateau
+ * @param [in] width largeur du plateau (nombre de colonnes)
+ * @param [in] height hauteur du plateau (nombre de lignes)
+ * @return un tableau d'int
+ */ 
 int **create_plateau(int width, int height)
 {
     int **plateau = malloc(sizeof(int *) * width);
+    if(plateau == NULL)
+    {
+        printf("Erreur de malloc plateau\n");
+        exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < width; i++)
     {
         int *ligne = malloc(sizeof(int) * height);
+        if(ligne == NULL)
+    {
+        printf("Erreur de malloc ligne\n");
+        exit(EXIT_FAILURE);
+    }
         plateau[i] = ligne;
         for (int j = 0; j < height; j++)
         {
@@ -32,6 +57,12 @@ int **create_plateau(int width, int height)
     return plateau;
 }
 
+/**
+ * @brief affichage du plateau dans le terminal
+ * @param [in] mat plateau à afficher
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ */ 
 void printPlateau(int **mat, int w, int h)
 {
     for (int i = 0; i < w; i++)
@@ -44,6 +75,14 @@ void printPlateau(int **mat, int w, int h)
     }
 }
 
+
+ /**
+  * @brief création d'un plateau et insertion des valeurs contenues dans un fichier texte
+  * @param [in] lvl fichier texte contenant les valeurs à insérer dans le plateau
+  * @param [in] w largeur du plateau (nombre de colonnes)
+  * @param [in] h hauteur du plateau (nombre de lignes)
+  * @return un tableau de valeurs 
+  */ 
 int **loadPlateau(char *lvl, int *w, int *h)
 {
     int **plateau = NULL;
@@ -67,42 +106,74 @@ int **loadPlateau(char *lvl, int *w, int *h)
     return plateau;
 }
 
-// return 0 -> ne peux pas
-// return 1 -> peux
-int movePossible(int **plateau, int xPerso, int yPerso, int direction)
+
+/**
+ * @brief vérifie qu'un mouvement pécifique est possible dans une position donnée
+ * @param [in] plateau tableau contenant les id de plusieurs objets
+ * @param [in] xPerso numéro de la ligne où se trouve le personnage à déplacer
+ * @param [in] yPerso numéro de la colonne où se trouve le personnage à déplacer
+ * @param [in] direction direction dans laquelle on veut faire aller le personnage
+ * @param [in] id id du personnage à déplacer
+ * @param [in] super indicateur de si Pac-man est en mode super Pac-man
+ * @return
+ *       -0 si le mouvement n'est pas possible
+ *       -1 si le mouvement est possible
+ */  
+int movePossible(int **plateau, int xPerso, int yPerso, int direction, int id, int* super)
 {
     int DeplacementPossible = 0;
     int xd, yh, xg, yb;
+    int plat = 0;
     switch (direction)
     {
     case 1: // droite
         xd = xPerso + 1;
-        if (plateau[xd][yPerso] == 0 || plateau[xd][yPerso] == -1 || plateau[xd][yPerso] >= 150 || plateau[xd][yPerso] == 99)
+        plat = plateau[xd][yPerso];
+        if ( plat == 0 || plat == -1 || plat >= 150 || plat == 99 || plat == 20)
         {
             DeplacementPossible = 1;
+            if(plat == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
 
     case 2: // haut
         yh = yPerso - 1;
-        if (plateau[xPerso][yh] == 0 || plateau[xPerso][yh] == -1 || plateau[xPerso][yh] >= 150 || plateau[xPerso][yh] == 99)
+        plat = plateau[xPerso][yh];
+        if (plat == 0 || plat == -1 || plat >= 150 || plat == 99 || plat == 20)
         {
             DeplacementPossible = 1;
+            if(plat == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
 
     case 3: // gauche
         xg = xPerso - 1;
-        if (plateau[xg][yPerso] == 0 || plateau[xg][yPerso] == -1 || plateau[xg][yPerso] >= 150 || plateau[xg][yPerso] == 99)
+        plat = plateau[xg][yPerso];
+        if ( plat == 0 || plat == -1 || plat >= 150 || plat == 99 || plat == 20)
         {
             DeplacementPossible = 1;
+            if(plat == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
     case 4: // bas
         yb = yPerso + 1;
-        if (plateau[xPerso][yb] == 0 || plateau[xPerso][yb] == -1 || plateau[xPerso][yb] >= 150 || plateau[xPerso][yb] == 99)
+        plat = plateau[xPerso][yb];
+        if (plat == 0 || plat == -1 || plat >= 150 || plat == 99 ||plat == 20)
         {
             DeplacementPossible = 1;
+            if(plat == 20 && id == 99)
+            {
+                etatSuperPac(id, super);
+            }
         }
         break;
     default:
@@ -111,13 +182,24 @@ int movePossible(int **plateau, int xPerso, int yPerso, int direction)
     return DeplacementPossible;
 }
 
-void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, int direction, int *mort)
+
+/**
+ * @brief vérifie si le mouvement demandé est possible et si oui déplace l'id du personnage dans le tableau vers l'endroit demandé 
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] xPerso numéro de la ligne où se trouve le personnage à déplacer
+ * @param [in] yPerso numéro de la colonne où se trouve le personnage à déplacer
+ * @param [in] idPerso id du personnage à déplacer
+ * @param [in] direction direction dans laquelle on veut déplacer le personnage
+ * @param [in] mort valeur qui indique si Pac-man est vivant ou non 
+ * @param [in] super valeur qui indique si Pac-man est en mode super Pac-man 
+ */ 
+void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, int direction, int *mort, int* super)
 {
 
     int xDeplacement = *xPerso;
     int yDeplacement = *yPerso;
 
-    if (movePossible(plateau, *xPerso, *yPerso, direction) == 1)
+    if (movePossible(plateau, *xPerso, *yPerso, direction, idPerso, super) == 1)
     {
 
         switch (direction)
@@ -138,6 +220,16 @@ void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, in
         default:
             break;
         }
+        
+        if (xDeplacement==11 && yDeplacement==-1)
+        {
+            yDeplacement=22;
+        }
+        else if (xDeplacement==11 && yDeplacement==23)
+        {
+            yDeplacement=0;
+        }
+        
         if (idPerso == 99)
         {
 
@@ -146,18 +238,31 @@ void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, in
         }
         else
         {
-            if (plateau[xDeplacement][yDeplacement] == 99)
+            if(idPerso != 99 && *super == 0)
             {
-                *mort = 1;
+                if (plateau[xDeplacement][yDeplacement] == 99 && *super == 0)
+                {
+                    *mort = 1;
+                }
+                plateau[*xPerso][*yPerso] -= idPerso;
+                plateau[xDeplacement][yDeplacement] += idPerso;
             }
-            plateau[*xPerso][*yPerso] -= idPerso;
-            plateau[xDeplacement][yDeplacement] += idPerso;
         }
         *xPerso = xDeplacement;
         *yPerso = yDeplacement;
     }
 }
 
+//cette fonction vérifie s'il reste encore des pac-gommes, comme les pac-gommes sont sur les cases qui valent 0
+/**
+ * @brief vérifie s'il reste des pac-gommes
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @return 
+ *       -0 s'il reste au moins une pac-gomme
+ *       -autre chose s'il n'y a plus de pac-gommes
+ */ 
 int gom_exist(int **plateau, int w, int h)
 {
     int rep = 1;
@@ -178,6 +283,12 @@ int gom_exist(int **plateau, int w, int h)
     return rep;
 }
 
+/**
+ * @brief sauvegarde l'état actuel du tableau dans un fichier texte
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ */ 
 void savePlateau(int **plateau, int w, int h)
 {
     FILE *file = fopen("./source/save.txt", "w");
@@ -193,6 +304,11 @@ void savePlateau(int **plateau, int w, int h)
     fclose(file);
 }
 
+/**
+ * @brief libère l'espace alloué pour le plateau
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ */ 
 void freePlateau(int **plateau, int w)
 {
     for (int i = 0; i < w; i++)
@@ -201,4 +317,17 @@ void freePlateau(int **plateau, int w)
         plateau[i] = NULL;
     }
     free(plateau);
+}
+
+/**
+ * @brief donne à super la valeur 1 indiquant que Pac-man est en mode super Pac-man
+ * @param [in] id id du personnage
+ * @param [in] super valeur indiquant si Pac-man est en mode super Pac-man ou non
+ */ 
+void etatSuperPac(int id, int* super)
+{
+    if(id == 99 && *super == 0)
+    {
+        *super = 1;
+    }
 }
