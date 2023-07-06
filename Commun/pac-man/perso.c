@@ -2,15 +2,15 @@
 
 /**
  * @brief initialisation du perso pac man
- * @param [in] plateau plateau du jeu  
- * @param [in] w coordonnee sur la longueur 
+ * @param [in] plateau plateau du jeu
+ * @param [in] w coordonnee sur la longueur
  * @param [in] h coordonne sur la largeur
  * @return un perso_t pac man
  */
 perso_t *initPac_man(int **plateau, int w, int h)
 {
     perso_t *Pac_man = malloc(sizeof(perso_t));
-    if(Pac_man == NULL)
+    if (Pac_man == NULL)
     {
         printf("Erreur de malloc Pac_man\n");
         exit(EXIT_FAILURE);
@@ -21,7 +21,6 @@ perso_t *initPac_man(int **plateau, int w, int h)
     coordPlat(plateau, w, h, Pac_man->id, &Pac_man->posX, &Pac_man->posY);
     return Pac_man;
 }
-
 
 /**
  * @brief deplacement de pac man dans le jeu attention matrice transposee
@@ -66,16 +65,16 @@ int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
                 switch (j)
                 {
                 case 1:
-                    newHeuri += heuriBasiquePac(plateau, x + 1, y, 3, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, (x + 1) % 23, y, 3, ite - 1) / 2;
                     break;
                 case 2:
-                    newHeuri += heuriBasiquePac(plateau, x, y - 1, 4, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, x, (y - 1 + 23) % 23, 4, ite - 1) / 2;
                     break;
                 case 3:
-                    newHeuri += heuriBasiquePac(plateau, x - 1, y, 1, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, (x - 1 + 23) % 23, y, 1, ite - 1) / 2;
                     break;
                 case 4:
-                    newHeuri += heuriBasiquePac(plateau, x, y + 1, 2, ite - 1)/2;
+                    newHeuri += heuriBasiquePac(plateau, x, (y + 1) % 23, 2, ite - 1) / 2;
                     break;
 
                 default:
@@ -84,10 +83,14 @@ int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
             }
         }
     }
-    if(plateau[x][y]>100){
-        newHeuri= newHeuri - plateau[x][y];
-    } else {
-        newHeuri= newHeuri + plateau[x][y]+1;
+
+    if (plateau[x][y] > 100)
+    {
+        newHeuri = newHeuri - plateau[x][y];
+    }
+    else
+    {
+        newHeuri = newHeuri + plateau[x][y] + 1;
     }
     return newHeuri;
 }
@@ -133,18 +136,18 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
                 break;
             }
             // fprintf(stderr, "heuri = %d\n", newHeuri);
-            if (Pac_man->super==0)
+            if (Pac_man->super == 0)
             {
-                if ((heuri == -1) || newHeuri > heuri )
+                if ((heuri == -1) || newHeuri > heuri)
                 {
                     // fprintf(stderr, "rentre\n");
                     heuri = newHeuri;
                     dir = i;
                 }
             }
-            if (Pac_man->super==1)
+            if (Pac_man->super == 1)
             {
-                if ((heuri==-1) || newHeuri < heuri)
+                if ((heuri == -1) || newHeuri < heuri)
                 {
                     heuri = newHeuri;
                     dir = i;
@@ -166,8 +169,8 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
  * @brief tourne pac-man dans la direction vers laquelle il va
  * @param [in] direction direction que prend pac-man
  * @param [in] Pac_man personnage à tourner
- */ 
-void switchDirection(int direction, perso_t* Pac_man)
+ */
+void switchDirection(int direction, perso_t *Pac_man)
 {
     switch (direction)
     {
@@ -187,4 +190,3 @@ void switchDirection(int direction, perso_t* Pac_man)
         break;
     }
 }
-

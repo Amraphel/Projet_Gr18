@@ -217,15 +217,7 @@ int main()
             {
 
                 dir[0] = movePacmanIA(plateau, Pac_man);
-                if (Pac_man->super == 1)
-                {
-                    oldDir = dir[0];
-                    compt = 0;
-                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, dir[0], &mort, &Pac_man->super);
-                    dir[0] = movePacmanIA(plateau, Pac_man);
-                    temp = dir[0];
-                }
-
+                
                 //dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
@@ -247,6 +239,17 @@ int main()
                 {
                     movePersoInPlateau(plateau, &tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id, dir[j], &mort, &tabPerso[j]->super);
                 }
+
+                if (Pac_man->super == 1)
+                {
+                    oldDir = dir[0];
+                    compt = 0;
+                    dir[0] = movePacmanIA(plateau, Pac_man);
+                    movePersoInPlateau(plateau, &Pac_man->posX, &Pac_man->posY, Pac_man->id, dir[0], &mort, &Pac_man->super);
+                    
+                    temp = dir[0];
+                }
+
                 if (Pac_man->super == 1)
                 {
                     dir[0] = oldDir;
@@ -339,7 +342,7 @@ int main()
                         tempsMortFantome[3]++;
                     }
                 }
-                reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso, dir);
+                reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso, dir, plateau);
                 finDeJeu(rectPac, tabRectPerso, nbFan, tabPerso, WINDOWW, WINDOWL, font, plateau, window, renderer, w, h);
 
                 SDL_RenderPresent(renderer);
