@@ -124,6 +124,7 @@ int main()
         end_sdl(0, "Can't load font", window, renderer);
     }
 
+
     int speedMove = 100000;
     int speed = speedMove / 10;
     int speedDep = speedMove / 10;
@@ -294,7 +295,7 @@ int main()
                     }
                     else
                     {
-                        tempsMortFantome[1]++;
+                        tempsMortFantome[2]++;
                     }
                 }
                 if (Pinky->posX != 0)
@@ -306,10 +307,10 @@ int main()
                     }
                     else
                     {
-                        tempsMortFantome[1]++;
+                        tempsMortFantome[3]++;
                     }
                 }
-                reapparitionFantome(tempsMortFantome, tabPerso, nbFan);
+                reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso);
                 if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
                 {
                     SDL_Color couleurGameOver = {219, 0, 0, 255};

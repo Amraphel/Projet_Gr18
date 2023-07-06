@@ -13,7 +13,8 @@ perso_t *initBlinky(int **plateau, int w, int h)
     blinky->id = 200;
     blinky->super = 0;
     coordPlat(plateau, w, h, blinky->id, &blinky->posX, &blinky->posY);
-
+    blinky->coordX=blinky->posX;
+    blinky->coordY=blinky->posY;
     return blinky;
 }
 
@@ -30,7 +31,8 @@ perso_t *initClyde(int **plateau, int w, int h)
     clyde->id = 210;
     clyde->super = 0;
     coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
-
+    clyde->coordX=clyde->posX;
+    clyde->coordY=clyde->posY;
     return clyde;
 }
 
@@ -47,7 +49,8 @@ perso_t *initInky(int **plateau, int w, int h)
     inky->id = 220;
     inky->super = 0;
     coordPlat(plateau, w, h, inky->id, &inky->posX, &inky->posY);
-
+    inky->coordX=inky->posX;
+    inky->coordY=inky->posY;
     return inky;
 }
 
@@ -64,7 +67,8 @@ perso_t *initPinky(int **plateau, int w, int h)
     pinky->id = 230;
     pinky->super = 0;
     coordPlat(plateau, w, h, pinky->id, &pinky->posX, &pinky->posY);
-
+    pinky->coordX=pinky->posX;
+    pinky->coordY=pinky->posY;
     return pinky;
 }
 
@@ -347,14 +351,14 @@ int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, p
 int moveInky(SDL_Window *window, int **plateau, int w, int h, perso_t* Inky, perso_t *Pac_man)
 {
     int dir;
-    dir=moveBlinky(window,plateau,w,h,Inky, Pac_man);
+    dir=moveClyde(window,plateau,w,h,Inky, Pac_man);
     return dir;
 }
 
 int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, perso_t *Pac_man)
 {
     int dir;
-    dir=moveBlinky(window,plateau,w,h,Pinky, Pac_man);
+    dir=moveClyde(window,plateau,w,h,Pinky, Pac_man);
     return dir;
 }
 
@@ -364,15 +368,19 @@ int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, p
  * @param [in] tabPerso tableau qui contient tous les personnages
  * @param [in] nbFan nombre de fantomes
  */ 
-void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan)
+void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, SDL_Rect **rectFan)
 {
     int i;
     for(i = 1; i<=nbFan; i++)
     {
-        if(tempsMortFantome[i-1]>=40)
+        if(tempsMortFantome[i-1]>=250)
         {
             tabPerso[i]->super = 0;
             tempsMortFantome[i-1]=0;
+            tabPerso[i]->posX = tabPerso[i]->coordY;
+            tabPerso[i]->posY = tabPerso[i]->coordX;
+            rectFan[i]->x = rectFan[i]->w*tabPerso[i]->coordY;
+            rectFan[i]->y = rectFan[i]->h*tabPerso[i]->coordX;
         }
     }
 }

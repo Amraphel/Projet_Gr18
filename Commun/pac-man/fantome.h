@@ -15,4 +15,4 @@ perso_t *initInky(int **plateau, int w, int h);
 int moveInky(SDL_Window *window, int **plateau, int w, int h, perso_t* Inky, perso_t *Pac_man);
 perso_t *initPinky(int **plateau, int w, int h);
 int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, perso_t *Pac_man);
-void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan);
+void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, SDL_Rect **rectFan);
