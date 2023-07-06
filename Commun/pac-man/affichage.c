@@ -92,6 +92,18 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     SDL_DestroyTexture(supergom);
 }
 
+/**
+ * @brief charge une texture dans le renderer de la fenêtre de jeu
+ * @param [in] texture texture à charger
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] nb_images nombre d'images dont est composée une ligne de la texture
+ * @param [in] tabRect tableau de SDL_Rect
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] i ligne du plateau où on veut afficher la texture
+ * @param [in] j colonne du plateau où on veut afficher la texture
+ * @param [in] type type de texture à afficher (mur, pac-gomme, ou personnage)
+ * @param [in] etatAnim état du personnage (sens dans lequel il est tourné)
+ */ 
 void chargerTextureMap(SDL_Texture *texture,int **plateau, int nb_images, SDL_Rect **tabRect, SDL_Renderer* renderer, int i, int j, int type, int *etatAnim)
 {
     SDL_Rect
@@ -179,7 +191,21 @@ void animePerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *re
 }
 
 
-
+/**
+ * @brief termine le jeu avec les conditions de victoire et de défaite
+ * @param [in] rectPac SDL_Rect de Pac-man
+ * @param [in] tabRectPerso tableau contenant les SDL_Rect de tous les personnages du jeu
+ * @param [in] nbFan nombre de fantomes
+ * @param [in] tabPerso tableau contenant les perso_t de tous les personnages du jeu
+ * @param [in] WINDOWW largeur de la fenêtre de jeu
+ * @param [in] WINDOWL hauteur de la fenêtre de jeu
+ * @param [in] font
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] window fenêtre de jeu
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] w nombre de colonne du plateau
+ * @param [in] h nombre de ligne du plateau
+ */ 
 void finDeJeu(SDL_Rect rectPac, SDL_Rect **tabRectPerso, int nbFan, perso_t **tabPerso, int WINDOWW, int WINDOWL, TTF_Font* font, int**plateau, SDL_Window* window, SDL_Renderer*  renderer, int w, int h)
 {
     if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && tabPerso[0]->super == 0)
@@ -370,6 +396,23 @@ SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNor
 
 }
 
+/**
+ * @brief detruit les textures, le renderer et la fenêtre créés
+ * @param [in] textBlin texture du personnage Blinky affichée
+ * @param [in] textBlinNormal texture de Blinky dans son état normal
+ * @param [in] textPac texture de Pac-man affichée
+ * @param [in] textPacNormal texture de pac-man dans son état normal
+ * @param [in] textPacSuper texture de pac-man dans son état super
+ * @param [in] textCly texture de Clyde affichée
+ * @param [in] textClyNormal texture de Clyde dans son état normal
+ * @param [in] textInk texture de Inky affichée
+ * @param [in] textInkNormal texture de Inky dans son état normal
+ * @param [in] textPin texture de Pinky affichée
+ * @param [in] textPinNormal texture de Pinky dans son état normal
+ * @param [in] textFanSuper texture des fantomes dans leur état chassé
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] window fenêtre de jeu
+ */ 
 void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Texture *textPac, SDL_Texture *textPacNormal, SDL_Texture *textPacSuper, SDL_Texture *textCly, SDL_Texture *textClyNormal,
                    SDL_Texture *textInk, SDL_Texture *textInkNormal, SDL_Texture *textPin, SDL_Texture *textPinNormal, SDL_Texture *textFanSuper, SDL_Renderer *renderer, SDL_Window *window)
 {

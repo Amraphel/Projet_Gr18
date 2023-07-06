@@ -2,7 +2,7 @@
 
 /**
  * @brief fonction qui permet de quitter la SDL
- * @param [in] ok 
+ * @param [in] ok int indiquant s'il y a une erreur
  * @param [in] msg message d'erreur à afficher
  * @param [in] window fenêtre d'affichage
  * @param [in] renderer renderer de la fenêtre de jeu

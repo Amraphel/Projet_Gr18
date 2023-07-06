@@ -1,5 +1,11 @@
 #include "regleInky.h"
 
+/**
+ * @brief modifie les règles 
+ * @param [in] tabRegle tableau de règles
+ * @param [in] nbRegle nombre de règles
+ * @param nbContrainte nombre de contraintes
+ */ 
 void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
 {
     int numRegle = rand() % nbRegle;
@@ -57,6 +63,12 @@ void modifRegle(regles_t **tabRegle, int nbRegle, int nbContrainte)
     }
 }
 
+/**
+ * @brief initialise un tableau de règles
+ * @param [in] nbRegle nombre de règles
+ * @param [in] nbContrainte nombre de contraintes
+ * @return un tableau de règles
+ */ 
 regles_t** initCervau(int nbRegle, int nbContrainte)
 {
     regles_t** tabRegle = malloc(sizeof(regles_t)*nbRegle);
@@ -95,6 +107,11 @@ regles_t** initCervau(int nbRegle, int nbContrainte)
     return tabRegle;
 }
 
+/**
+ * @brief libère le tableau de règles
+ * @param [in] tabRegle tableau de règles à libérer
+ * @param [in] nbRegle nombre de règles
+ */ 
 void freeCerveau(regles_t** tabRegle, int nbRegle)
 {
     int i = 0;
