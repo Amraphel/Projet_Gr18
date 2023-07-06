@@ -11,6 +11,11 @@
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
 {
     SDL_Rect **tabRect = malloc(sizeof(SDL_Rect *) * w);
+    if(tabRect == NULL)
+    {
+        printf("Erreur de malloc tabrect\n");
+        exit(EXIT_FAILURE);
+    }
     int fondW, fondH;
     SDL_GetWindowSize(window, &fondW, &fondH);
     int larg = fondW / w;
@@ -19,6 +24,11 @@ SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
     {
 
         SDL_Rect *ligneRect = malloc(sizeof(SDL_Rect) * w);
+        if (ligneRect == NULL)
+        {
+            printf("Erreur de malloc ligneRect\n");
+            exit(EXIT_FAILURE);
+        }
         tabRect[i] = ligneRect;
         for (int j = 0; j < h; j++)
         {
@@ -168,6 +178,21 @@ void animePerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *re
     *etatAnim = (*etatAnim) % nbw;
 }
 
+
+
+void finDeJeu(SDL_Rect rectPac, SDL_Rect **tabRectPerso, int nbFan, perso_t **tabPerso, int WINDOWW, int WINDOWL, TTF_Font* font, int**plateau, SDL_Window* window, SDL_Renderer*  renderer, int w, int h)
+{
+    if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && tabPerso[0]->super == 0)
+    {
+        SDL_Color couleurGameOver = {219, 0, 0, 255};
+        afficherTexteFin(window, renderer, font, couleurGameOver, "Game Over", WINDOWW / 8, WINDOWL / 2 - 62);
+    }
+    if (gom_exist(plateau, w, h) != 0)
+    {
+        SDL_Color couleurBravo = {0, 219, 0, 255};
+        afficherTexteFin(window, renderer, font, couleurBravo, "Bravo", WINDOWW / 3.5, WINDOWL / 2 - 62);
+    }
+}
 
 /**
  * @brief Affiche Game Over a la fin du jeu si perdu
@@ -343,4 +368,30 @@ SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNor
     } 
     return *textPerso;  
 
+}
+
+void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Texture *textPac, SDL_Texture *textPacNormal, SDL_Texture *textPacSuper, SDL_Texture *textCly, SDL_Texture *textClyNormal,
+                   SDL_Texture *textInk, SDL_Texture *textInkNormal, SDL_Texture *textPin, SDL_Texture *textPinNormal, SDL_Texture *textFanSuper, SDL_Renderer *renderer, SDL_Window *window)
+{
+    SDL_DestroyTexture(textBlin);
+    SDL_DestroyTexture(textBlinNormal);
+
+    SDL_DestroyTexture(textPac);
+    SDL_DestroyTexture(textPacNormal);
+    SDL_DestroyTexture(textPacSuper);
+
+
+    SDL_DestroyTexture(textCly);
+    SDL_DestroyTexture(textClyNormal);
+
+    SDL_DestroyTexture(textInk);
+    SDL_DestroyTexture(textInkNormal);
+
+    SDL_DestroyTexture(textPin);
+    SDL_DestroyTexture(textPinNormal);
+
+    SDL_DestroyTexture(textFanSuper);
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
 }

@@ -1,9 +1,19 @@
 // int ** createMatRegles(int width, int height)
 // {
-//     int **matRegles = malloc(sizeof(int *) * width);
+// //     int **matRegles = malloc(sizeof(int *) * width);
+// if(matRegles == NULL)
+//     {
+//         printf("Erreur de malloc matRegles\n");
+//         exit(EXIT_FAILURE);
+//     }
 //     for (int i = 0; i < width; i++)
 //     {
 //         int *ligne = malloc(sizeof(int) * height);
+// if(ligne == NULL)
+//     {
+//         printf("Erreur de malloc ligne\n");
+//         exit(EXIT_FAILURE);
+//     }
 //         matRegles[i] = ligne;
 //         for (int j = 0; j < height; j++)
 //         {

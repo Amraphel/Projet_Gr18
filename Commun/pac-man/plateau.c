@@ -35,9 +35,19 @@ void coordPlat(int **plateau, int w, int h, int val, int *x, int *y)
 int **create_plateau(int width, int height)
 {
     int **plateau = malloc(sizeof(int *) * width);
+    if(plateau == NULL)
+    {
+        printf("Erreur de malloc plateau\n");
+        exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < width; i++)
     {
         int *ligne = malloc(sizeof(int) * height);
+        if(ligne == NULL)
+    {
+        printf("Erreur de malloc ligne\n");
+        exit(EXIT_FAILURE);
+    }
         plateau[i] = ligne;
         for (int j = 0; j < height; j++)
         {
