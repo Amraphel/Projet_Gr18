@@ -140,16 +140,16 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
             switch (i)
             {
             case 1:
-                newHeuri = heuriBasiquePac(plateau, Pac_man->posX + 1, Pac_man->posY, 3, 10);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX + 1, Pac_man->posY, 3, 6);
                 break;
             case 2:
-                newHeuri = heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY - 1, 4, 10);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY - 1, 4, 6);
                 break;
             case 3:
-                newHeuri = heuriBasiquePac(plateau, Pac_man->posX - 1, Pac_man->posY, 1, 10);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX - 1, Pac_man->posY, 1, 6);
                 break;
             case 4:
-                newHeuri = heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY + 1, 2, 10);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY + 1, 2, 6);
                 break;
 
             default:

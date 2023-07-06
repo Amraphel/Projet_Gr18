@@ -28,6 +28,9 @@ perso.o : perso.c
 regleIncky.o : regleIncky.c
 	$(CC) $(CFLAGS) -c $<
 
+touche.o : touche.c
+	$(CC) $(CFLAGS) -c $<
+
 
 .PHONY: clean reclean
 

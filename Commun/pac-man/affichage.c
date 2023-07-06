@@ -284,6 +284,7 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
  */
 void animeFluide(SDL_Rect **rectPerso, int nbPerso, int *direction, int w, int h)
 {
+
     for (int k = 0; k < nbPerso; k++)
     {
 
