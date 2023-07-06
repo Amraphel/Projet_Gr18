@@ -202,7 +202,6 @@ int getNextMove(int **plateau, int **heuristique, int fantX, int fantY, perso_t 
 {
     int dir = 0;
     int heuri = -1;
-    int pass=0;
     for (int i = 1; i < 5; i++)
     {
         if (movePossible(plateau, fantX, fantY, i, -1, NULL))

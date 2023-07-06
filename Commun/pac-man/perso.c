@@ -84,34 +84,6 @@ int heuriBasiquePac(int **plateau, int x, int y, int dir, int ite)
             }
         }
     }
-    // else
-    // {
-    //     for (int i = 1; i < 5; i++)
-    //     {
-    //         if (i != dir && movePossible(plateau, x, y, i))
-    //         {
-
-    //             switch (i)
-    //             {
-    //             case 1:
-    //                 newHeuri += plateau[x + 1][y];
-    //                 break;
-    //             case 2:
-    //                 newHeuri += plateau[x][y - 1];
-    //                 break;
-    //             case 3:
-    //                 newHeuri += plateau[x - 1][y];
-    //                 break;
-    //             case 4:
-    //                 newHeuri += plateau[x][y + 1];
-    //                 break;
-
-    //             default:
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
     if(plateau[x][y]>100){
         newHeuri= newHeuri - plateau[x][y];
     } else {

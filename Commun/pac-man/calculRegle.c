@@ -223,14 +223,14 @@ regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
 int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t **tabPerso, int nbRegles, double s, int idFantome)
 {
     int dir = 0;
-
+    int super = 0;
     int nbPossibilite = 0;
     int *tabPoss = malloc(sizeof(int) * nbRegles);
     for (int i = 0; i < nbRegles; i++)
     {
         if (compareRegle(regles[i], etatPlateau) == 0)
         {
-            if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY, regles[i]->action))
+            if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY,regles[i]->action,tabPerso[idFantome]->id , &super))
             {
                 tabPoss[nbPossibilite] = i;
                 nbPossibilite++;
@@ -278,16 +278,17 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
     return dir;
 }
 
-int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, int h, double s)
+int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w,int h,double s)
 {
     int nbIter = 0;
     int mort = 0;
     int distMin = -1;
+    int super =0;
     while (nbIter < 100 && mort != 1)
     {
 
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
-        movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort);
+        movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort, &super);
         int **heuri = heuristique(plateau, tabPerso[0]->posX, tabPerso[0]->posY, w, h);
         int dist = 0;
         for (int i = 1; i < 5; i++)
@@ -295,7 +296,7 @@ int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int
             regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
 
-            movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
+            movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort, &super);
             dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY] * 100 + nbIter;
 
             free(etatPlat);
@@ -311,20 +312,21 @@ int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int
     return distMin;
 }
 
-int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, int h, double s)
+int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, double s)
 {
     int nbIter = 0;
     int mort = 0;
+    int super=0;
     while (nbIter < 600 && mort != 1)
     {
 
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
-        movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort);
+        movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort, &super);
         for (int i = 1; i < 5; i++)
         {
             regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
-            movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort);
+            movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort,&super);
 
             free(etatPlat);
         }
@@ -353,13 +355,13 @@ int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
 
     if (type == 0)
     {
-        dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w, h, s);
+        dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w,h, s);
     }
     else
     {
-        dist = testParcoursFinLevel(tabRegle, nbRegle, tabPerso, plateau, w, h, s);
+        dist = testParcoursFinLevel(tabRegle, nbRegle, tabPerso, plateau, w, s);
+    
     }
-
     for (int i = 0; i < 5; i++)
     {
         free(tabPerso[i]);

@@ -79,12 +79,6 @@ int possibilite(int numContrainte)
 
 void initCerveau(regles_t **tabRegle, int nbRegle)
 {
-    regles_t** tabRegle = malloc(sizeof(regles_t)*nbRegle);
-    if(tabRegle == NULL)
-    {
-        printf("Erreur de malloc tabRegle\n");
-        exit(EXIT_FAILURE);
-    }
     int i = 0;
     for (i = 0; i < 4; i++)
     {
