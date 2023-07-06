@@ -126,7 +126,6 @@ int main()
         end_sdl(0, "Can't load font", window, renderer);
     }
 
-
     int speedMove = 100000;
     int speed = speedMove / 10;
     int speedDep = speedMove / 10;
@@ -201,9 +200,9 @@ int main()
         {
             if (move == 0)
             {
-                
+
                 dir[0] = movePacmanIA(plateau, Pac_man);
-                if(Pac_man->super == 1)
+                if (Pac_man->super == 1)
                 {
                     oldDir = dir[0];
                     compt = 0;
@@ -233,24 +232,15 @@ int main()
                 {
                     movePersoInPlateau(plateau, &tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id, dir[j], &mort, &tabPerso[j]->super);
                 }
-                if(Pac_man->super == 1)
+                if (Pac_man->super == 1)
                 {
                     dir[0] = oldDir;
                     switchDirection(dir[0], Pac_man);
                     oldDir = temp;
                 }
                 direction = 0;
-                if (Pac_man->super == 1)
-                {
-                    timer += 1;
-                    if (timer >= 20)
-                    {
-                        Pac_man->super = 0;
-                        timer = 0;
-                    }
-                }
             }
-            if (compt == 5 && Pac_man->super==1)
+            if (compt == 5 && Pac_man->super == 1)
             {
                 dir[0] = oldDir;
                 switchDirection(dir[0], Pac_man);
@@ -258,14 +248,25 @@ int main()
             move = (move + 1) % speedMove;
             if (animeF == 0)
             {
-                
+
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
                 animeFluide(tabRectPerso, 5, dir, WINDOWW, WINDOWL);
-                if(Pac_man->super == 1)
+                if (Pac_man->super == 1)
                 {
                     compt++;
+                    if (Pac_man->super == 1)
+                    {
+                        timer += 1;
+                    }
                     animeFluide(tabRectPerso, 1, dir, WINDOWW, WINDOWL);
+                    if (timer >= 100)
+                    {
+
+                        Pac_man->super = 0;
+                        timer = 0;
+                    }
                 }
+
                 // SDL_RenderPresent(renderer);
             }
             animeF = (animeF + 1) % speedDep;
@@ -335,7 +336,7 @@ int main()
     freePlateau(plateau, w);
 
     free(tabRectPerso);
-   
+
     destroyAllSDL(textBlin, textBlinNormal, textPac, textPacNormal, textPacSuper, textCly, textClyNormal, textInk, textInkNormal, textPin, textPinNormal, textFanSuper, renderer, window);
     end_sdl(1, "Normal ending", window, renderer);
     for (int i = 0; i < 5; i++)
