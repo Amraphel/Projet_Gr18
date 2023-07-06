@@ -5,18 +5,21 @@
 #endif
 
 #define NBREGLE 16
-#define S 5
+#define S 4
 
 int main()
 {
     time_t t;
     time(&t);
     srand(t);
-    char *source = "./source/regles/regle3.txt";
-    char *dest = "./source/regles/regle4.txt";
+    char *source = "./source/regles/regle4.txt";
+    char *dest = "./source/regles/regleTemp.txt";
     int valOpti = -1;
     int type = 1;
-    // regles_t **regle = loadRegles(source, &valOpti);
+    // regles_t **regle = createMatRegles(NBREGLE);
+    // initCerveau(regle, NBREGLE);
+    // ecrireRegle(regle, source, NBREGLE, -1);
+    // freeCerveau(regle, NBREGLE);
     // parcours(regle,NBREGLE, 1, S);
     int *ordreRegle = initRegle(NBREGLE, 10);
     int parcOrdre = 0;
@@ -43,10 +46,6 @@ int main()
         int *listPos = createListePos(nbPoss, numContrainte);
         int *valSortie = malloc(sizeof(int) * nbPoss);
         regles_t **regle = loadRegles(source, &valOpti);
-        if (!regle)
-        {
-            initCerveau(regle, NBREGLE);
-        }
         int valRand = rand() % nbPoss;
         regles_t **regle2 = loadRegles(source, &valOpti);
         int *changeOpti = malloc(sizeof(int) * nbPoss);
@@ -56,19 +55,14 @@ int main()
             compt = 0;
         }
         compt++;
-        fprintf(stderr, "compt %d\n", compt);
+        printf("compt %d\n", compt);
         if (compt > NBREGLE * 10)
         {
             for (int i = 0; i < nbPoss; i++)
             {
-                if (numContrainte == 8)
-                {
-                    modifRegle(regle2[numRegle], numContrainte, (valRand + i) % nbPoss);
-                }
-                else if (numContrainte == 9)
+                if (numContrainte == 8 || numContrainte == 9)
                 {
                     modifRegle(regle2[numRegle], numContrainte, (valRand + i) % nbPoss + 1);
-                    ;
                 }
                 else
                 {
@@ -85,7 +79,7 @@ int main()
                     bonneRegle = i;
                 }
             }
-            // fprintf(stderr, "regle : %d et %d ", numRegle, numContrainte);
+
             if (bonneRegle != -1)
             {
                 regle[numRegle] = regle2[numRegle];

@@ -35,3 +35,4 @@ int testParcours(regles_t **tabRegle,int nbRegle, perso_t** tabPerso, int ** pla
 int recuit(int NBREGLE, char * source, char * dest);
 int parcours(regles_t **tabRegle,int nbregle, int type, double s);
 int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int* valSortieG);
+int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t **tabPerso, int nbRegles, double s, int idFantome);

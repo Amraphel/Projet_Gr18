@@ -93,17 +93,122 @@ void initCerveau(regles_t **tabRegle, int nbRegle)
         tabRegle[i]->priorite = 0;
         tabRegle[i]->action = i + 1;
     }
-    for (i = 4; i < nbRegle; i++)
+    for (int i = 4; i < 8; i++)
     {
-        tabRegle[i]->droite = rand() % 5 - 1;
-        tabRegle[i]->haut = rand() % 5 - 1;
-        tabRegle[i]->gauche = rand() % 5 - 1;
-        tabRegle[i]->bas = rand() % 5 - 1;
-        tabRegle[i]->distance_fantome = rand() % 5;
-        tabRegle[i]->distance_pacman = rand() % 5;
-        tabRegle[i]->dir_fantome = rand() % 4;
-        tabRegle[i]->dir_pacman = rand() % 4;
-        tabRegle[i]->priorite = rand() % 6 + 1;
+        tabRegle[i]->droite = -1;
+        tabRegle[i]->haut = -1;
+        tabRegle[i]->gauche = -1;
+        tabRegle[i]->bas = -1;
+        switch (i)
+        {
+        case 4:
+            tabRegle[i]->droite = 1;
+            tabRegle[i]->dir_pacman = 1;
+            tabRegle[i]->action = 1;
+            break;
+        case 5:
+            tabRegle[i]->haut = 1;
+            tabRegle[i]->dir_pacman = 0;
+            tabRegle[i]->action = 2;
+            break;
+        case 6:
+            tabRegle[i]->gauche = 1;
+            tabRegle[i]->dir_pacman = 3;
+            tabRegle[i]->action = 3;
+            break;
+        case 7:
+            tabRegle[i]->bas = 1;
+            tabRegle[i]->dir_pacman = 2;
+            tabRegle[i]->action = 4;
+            break;
+        default:
+            break;
+        }
+        tabRegle[i]->distance_fantome = -1;
+        tabRegle[i]->distance_pacman = -1;
+        tabRegle[i]->dir_fantome = -1;
+        tabRegle[i]->priorite = 4;
+    }
+    for (i = 8; i < nbRegle; i++)
+    {
+        int random = rand() % 100;
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->droite = -1;
+        }
+        else
+        {
+            tabRegle[i]->droite = rand() % 4;
+        }
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->haut = -1;
+        }
+        else
+        {
+            tabRegle[i]->haut = rand() % 4;
+        }
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->gauche = -1;
+        }
+        else
+        {
+            tabRegle[i]->gauche = rand() % 4;
+        }
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->bas = -1;
+        }
+        else
+        {
+            tabRegle[i]->bas = rand() % 4;
+        }
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->distance_fantome = -1;
+        }
+        else
+        {
+            tabRegle[i]->distance_fantome = rand() % 5;
+        }
+
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->distance_pacman = -1;
+        }
+        else
+        {
+            tabRegle[i]->distance_pacman = rand() % 5;
+        }
+
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->dir_fantome = -1;
+        }
+        else
+        {
+            tabRegle[i]->dir_fantome = rand() % 4;
+        }
+
+        random = rand() % 100;
+        if (random < 70)
+        {
+            tabRegle[i]->dir_pacman = -1;
+        }
+        else
+        {
+            tabRegle[i]->dir_pacman = rand() % 4;
+        }
+
+        tabRegle[i]->priorite = rand() % 5 + 1;
         tabRegle[i]->action = rand() % 4 + 1;
     }
 }

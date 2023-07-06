@@ -28,10 +28,12 @@ regles_t **loadRegles(char* regles, int* valObj)
                                                     ,(int*) (&(matRegles[i]->bas)),(int*) (&(matRegles[i]->distance_fantome)),(int*) (&(matRegles[i]->distance_pacman)),
                                                     (int*) (&(matRegles[i]->dir_fantome)),(int*) (&(matRegles[i]->dir_pacman)), (int*) (&(matRegles[i]->action)), (int*) (&(matRegles[i]->priorite)));
         }
+         fclose(file);
+    } else{
+        exit(EXIT_FAILURE);
     }
     free(nbRegle);
-    nbRegle=NULL;
-    fclose(file);
+   
     return matRegles;
 }
 
@@ -49,8 +51,9 @@ void ecrireRegle(regles_t ** matRegles,char* regles,int nbRegle, int valObj)
                                                     , (matRegles[i]->bas), (matRegles[i]->distance_fantome),(matRegles[i]->distance_pacman),
                                                     (matRegles[i]->dir_fantome), (matRegles[i]->dir_pacman), (matRegles[i]->action), (matRegles[i]->priorite));
         }
+        fclose(file);
     }
-    fclose(file);
+    
 
 }
 
