@@ -293,18 +293,18 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
         {
             double nextMove = (double)rand() / (double)RAND_MAX;
             if (idFantome == 1)
-            // {
-            //     fprintf(stderr, "nextMove2 : %f\n", nextMove);
-            // }
-            while (nextMove >= 0)
-            {
-                nextMove -= pow(regles[tabPoss[mouv]]->priorite, s) / poidsMax;
-                // if (idFantome == 1)
                 // {
-                //     fprintf(stderr, "nextMove2-- : %f\n", nextMove);
+                //     fprintf(stderr, "nextMove2 : %f\n", nextMove);
                 // }
-                mouv++;
-            }
+                while (nextMove >= 0)
+                {
+                    nextMove -= pow(regles[tabPoss[mouv]]->priorite, s) / poidsMax;
+                    // if (idFantome == 1)
+                    // {
+                    //     fprintf(stderr, "nextMove2-- : %f\n", nextMove);
+                    // }
+                    mouv++;
+                }
             mouv--;
         }
         // if (idFantome == 1)
@@ -357,7 +357,7 @@ int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, i
 {
     int nbIter = 0;
     int mort = 0;
-    while (nbIter < 500 && mort != 1)
+    while (nbIter < 600 && mort != 1)
     {
 
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
@@ -464,6 +464,10 @@ int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int t
         {
             modifRegle(regleParam[numRegle], numContrainte, (valRand + i) % nbPoss);
         }
+        else if (numContrainte == 9)
+        {
+            modifRegle(regleParam[numRegle], numContrainte, (valRand + i) % nbPoss+1);;
+        }
         else
         {
             modifRegle(regleParam[numRegle], numContrainte, (valRand + i) % nbPoss - 1);
@@ -505,6 +509,10 @@ int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int t
         *valOpti = valmin;
 
         if (numContrainte == 8)
+        {
+            valRetour = (valRand + next) % nbPoss;
+        }
+        else if (numContrainte == 9)
         {
             valRetour = (valRand + next) % nbPoss + 1;
         }

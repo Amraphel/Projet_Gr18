@@ -13,7 +13,7 @@ int main()
     time(&t);
     srand(t);
     char *source = "./source/regles/regle3.txt";
-    char *dest = "./source/regles/regle3.txt";
+    char *dest = "./source/regles/regle4.txt";
     int valOpti = -1;
     int type = 1;
     // regles_t **regle = loadRegles(source, &valOpti);
@@ -22,25 +22,25 @@ int main()
     int parcOrdre = 0;
     int compt = 0;
     int oldOpti = 0;
-    for (int k = 0; k < 1000; k++)
+    for (int k = 0; k < 100000; k++)
     {
 
-        if (parcOrdre % (NBREGLE * 10) == 0)
+        if (parcOrdre >= (NBREGLE * 10))
         {
             shuffleRegle(NBREGLE, 10, ordreRegle);
             parcOrdre = 0;
         }
-        if (k == 500)
-        {
-            type = 1;
-        }
+        // if (k == 500)
+        // {
+        //     type = 1;
+        // }
 
         int numRegle = ordreRegle[parcOrdre] / 10;
         int numContrainte = ordreRegle[parcOrdre] % 10;
         parcOrdre++;
 
         int nbPoss = possibilite(numContrainte);
-        int *listPos = createListePos(nbPoss,numContrainte);
+        int *listPos = createListePos(nbPoss, numContrainte);
         int *valSortie = malloc(sizeof(int) * nbPoss);
         regles_t **regle = loadRegles(source, &valOpti);
         if (!regle)
@@ -63,14 +63,19 @@ int main()
             {
                 if (numContrainte == 8)
                 {
-                    modifRegle(regle2[numRegle], numContrainte, (valRand + i) % nbPoss );
+                    modifRegle(regle2[numRegle], numContrainte, (valRand + i) % nbPoss);
+                }
+                else if (numContrainte == 9)
+                {
+                    modifRegle(regle2[numRegle], numContrainte, (valRand + i) % nbPoss + 1);
+                    ;
                 }
                 else
                 {
                     modifRegle(regle2[numRegle], numContrainte, (valRand + i) % nbPoss - 1);
                 }
                 ecrireRegle(regle2, dest, NBREGLE, valOpti);
-                changeOpti[i] = compareRes(&valOpti, parcOrdre, ordreRegle, source, type, NBREGLE, i, valSortie);
+                changeOpti[i] = compareRes(&valOpti, parcOrdre, ordreRegle, dest, type, NBREGLE, i, valSortie);
             }
             int bonneRegle = -1;
             for (int i = 0; i < nbPoss; i++)
@@ -99,7 +104,7 @@ int main()
             }
         }
 
-        ecrireRegle(regle, dest, NBREGLE, valOpti);
+        ecrireRegle(regle, source, NBREGLE, valOpti);
         free(valSortie);
         free(changeOpti);
         free(listPos);
