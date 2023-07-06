@@ -16,34 +16,31 @@ int main()
     char *dest = "./source/regles/regleTemp.txt";
     int valOpti = -1;
     int type = 1;
-    // regles_t **regle = createMatRegles(NBREGLE);
-    // initCerveau(regle, NBREGLE);
-    // ecrireRegle(regle, source, NBREGLE, -1);
-    // freeCerveau(regle, NBREGLE);
+    regles_t **regle = createMatRegles(NBREGLE);
+    initCerveau(regle, NBREGLE);
+    ecrireRegle(regle, source, NBREGLE, -1);
+    freeCerveau(regle, NBREGLE);
     // parcours(regle,NBREGLE, 1, S);
     int *ordreRegle = initRegle(NBREGLE, 10);
     int parcOrdre = 0;
     int compt = 0;
     int oldOpti = 0;
-    for (int k = 0; k < 100000; k++)
+    for (int k = 0; k < 1000; k++)
     {
-
+        // Si on a pas encore parcouru notre tableau de règle
         if (parcOrdre >= (NBREGLE * 10))
         {
             shuffleRegle(NBREGLE, 10, ordreRegle);
             parcOrdre = 0;
         }
-        // if (k == 500)
-        // {
-        //     type = 1;
-        // }
-
         int numRegle = ordreRegle[parcOrdre] / 10;
         int numContrainte = ordreRegle[parcOrdre] % 10;
         parcOrdre++;
 
         int nbPoss = possibilite(numContrainte);
         int *listPos = createListePos(nbPoss, numContrainte);
+
+
         int *valSortie = malloc(sizeof(int) * nbPoss);
         regles_t **regle = loadRegles(source, &valOpti);
         int valRand = rand() % nbPoss;
@@ -104,6 +101,8 @@ int main()
         free(listPos);
         freeCerveau(regle, NBREGLE);
     }
+
+    free(ordreRegle);
 
     return 0;
 }

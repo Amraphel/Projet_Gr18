@@ -380,10 +380,12 @@ int treatment(void *parameters)
     for (int i = 0; i < 100; i++)
     {
         val = parcours(p->listeRegle, 16, p->type, S);
+        sommeCarr+= pow(val,2);
         sortie += val;
     }
     sortie = sortie / 100;
-    p->valSortie[p->id] = sortie;
+    variance= sommeCarr/100 - pow(sortie,2);
+    p->valSortie[p->id] = sortie+ sqrt(variance);
     return 0;
 }
 
