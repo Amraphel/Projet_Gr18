@@ -395,3 +395,19 @@ void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Textu
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 }
+
+void animeFantome(perso_t** tabPerso, int numFan, SDL_Texture* textFantome, SDL_Texture* textFantomeNormal, SDL_Texture* textFantomSuper, int* etatAnim, SDL_Renderer* renderer, int* tempsMortFantome, SDL_Rect* rectFan)
+{
+    if (tabPerso[numFan]->posX != 0)
+    {
+        if (tabPerso[numFan]->super == 0)
+        {
+            textFantome = spriteSuperPerso(&textFantome, textFantomeNormal, textFantomSuper, tabPerso[0]->super);
+            animePerso(textFantome, renderer, rectFan, etatAnim, tabPerso[numFan]->etat);
+        }
+        else
+        {
+            tempsMortFantome[numFan-1]++;
+        }
+    }
+}

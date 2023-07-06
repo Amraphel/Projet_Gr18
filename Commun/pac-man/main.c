@@ -193,14 +193,7 @@ int main()
                     direction = deplacement(2, Pac_man, plateau, tabRectPerso, tabPerso, nbFan, rectPac, w, h, pause, keyPressed);
                     break;
                 case SDLK_p:
-                    if (pause == 1)
-                    {
-                        pause = 2;
-                    }
-                    else
-                    {
-                        pause = 1;
-                    }
+                    pause = enPause(pause);
                     break;
                 case SDLK_s:
                     savePlateau(plateau, w, h);
@@ -292,56 +285,14 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
+                
                 textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, Pac_man->super);
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
-                if (Blinky->posX != 0)
-                {
-                    if (tabPerso[1]->super == 0)
-                    {
-                        textBlin = spriteSuperPerso(&textBlin, textBlinNormal, textFanSuper, Pac_man->super);
-                        animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[0]++;
-                    }
-                }
-                if (Clyde->posX != 0)
-                {
-                    if (tabPerso[2]->super == 0)
-                    {
-                        textCly = spriteSuperPerso(&textCly, textClyNormal, textFanSuper, Pac_man->super);
-                        animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[1]++;
-                    }
-                }
-                if (Inky->posX != 0)
-                {
-                    if (tabPerso[3]->super == 0)
-                    {
-                        textInk = spriteSuperPerso(&textInk, textInkNormal, textFanSuper, Pac_man->super);
-                        animePerso(textInk, renderer, &rectInk, &etatAnim, Inky->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[2]++;
-                    }
-                }
-                if (Pinky->posX != 0)
-                {
-                    if (tabPerso[4]->super == 0)
-                    {
-                        textPin = spriteSuperPerso(&textPin, textPinNormal, textFanSuper, Pac_man->super);
-                        animePerso(textPin, renderer, &rectPin, &etatAnim, Pinky->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[3]++;
-                    }
-                }
+
+                animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
+                animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
+                animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);
+                animeFantome(tabPerso, 4, textPin, textPinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectPin);
                 reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso, dir, plateau);
                 finDeJeu(rectPac, tabRectPerso, nbFan, tabPerso, WINDOWW, WINDOWL, font, plateau, window, renderer, w, h);
 

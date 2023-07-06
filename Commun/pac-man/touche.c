@@ -33,3 +33,16 @@ int deplacement(int move, perso_t *Pac_man, int **plateau, SDL_Rect **tabRectPer
 
     return direction;
 }
+
+int enPause(int pause)
+{
+    if (pause == 1)
+    {
+        pause = 2;
+    }
+    else
+    {
+        pause = 1;
+    }
+    return pause;
+}
