@@ -235,19 +235,19 @@ int main()
                 dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                   dir[1]= moveBlinky(window, plateau, w, h, Blinky, Pac_man);
+                   dir[1]= 0;//moveBlinky(window, plateau, w, h, Blinky, Pac_man);
                 }
                 if (Clyde->posX != 0)
                 {
-                   dir[2]= moveClyde(window, plateau, w, h, Clyde, Pac_man);
+                   dir[2]= 0;//moveClyde(window, plateau, w, h, Clyde, Pac_man);
                 }
                 if (Inky->posX != 0)
                 {
-                   dir[3]= moveInky(window, plateau, w, h, Inky, Pac_man);
+                   dir[3]=0;// moveInky(window, plateau, w, h, Inky, Pac_man);
                 }
                 if (Pinky->posX != 0)
                 {
-                   dir[4]= movePinky(window, plateau, w, h, Pinky, Pac_man);
+                   dir[4]= 0;//movePinky(window, plateau, w, h, Pinky, Pac_man);
                 }
                 for(int j=0; j<5; j++){
                     movePersoInPlateau(plateau,&tabPerso[j]->posX, &tabPerso[j]->posY, tabPerso[j]->id,dir[j], &mort, &tabPerso[j]->super);
@@ -309,7 +309,7 @@ int main()
                     }
                     else
                     {
-                        tempsMortFantome[1]++;
+                        tempsMortFantome[2]++;
                     }
                 }
                 if (Pinky->posX != 0)
@@ -321,10 +321,10 @@ int main()
                     }
                     else
                     {
-                        tempsMortFantome[1]++;
+                        tempsMortFantome[3]++;
                     }
                 }
-                reapparitionFantome(tempsMortFantome, tabPerso, nbFan);
+                reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso);
                 if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && Pac_man->super == 0)
                 {
                     SDL_Color couleurGameOver = {219, 0, 0, 255};

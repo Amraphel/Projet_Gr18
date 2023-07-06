@@ -254,6 +254,11 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
                 else
                 {
                     tabPerso[j]->super = 1;
+                    tabPerso[j]->posX = 11;
+                    tabPerso[j]->posY = 11;
+                    rectFan[j]->x = rectFan[j]->w*23/2-rectFan[j]->w/2;
+                    rectFan[j]->y = rectFan[j]->h*23/2-rectFan[j]->h/2;
+
                 }
             }
         }
@@ -270,6 +275,10 @@ int collision(SDL_Rect rectPac, SDL_Rect **rectFan, int nbFan, perso_t ** tabPer
                 else
                 {
                     tabPerso[j]->super = 1;
+                    tabPerso[j]->posX = 11;
+                    tabPerso[j]->posY = 11;
+                    rectFan[j]->x = rectFan[j]->w*23/2-rectFan[j]->w/2;
+                    rectFan[j]->y = rectFan[j]->h*23/2-rectFan[j]->h/2;
                 }
             }
         }
