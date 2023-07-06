@@ -10,6 +10,11 @@
 perso_t *initPac_man(int **plateau, int w, int h)
 {
     perso_t *Pac_man = malloc(sizeof(perso_t));
+    if(Pac_man == NULL)
+    {
+        printf("Erreur de malloc Pac_man\n");
+        exit(EXIT_FAILURE);
+    }
     Pac_man->id = 99;
     Pac_man->etat = 0;
     Pac_man->super = 0;

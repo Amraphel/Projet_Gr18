@@ -44,6 +44,11 @@ int main()
     perso_t *Inky = initInky(plateau, w, h);
     perso_t *Pinky = initPinky(plateau, w, h);
     perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
+    if(tabPerso == NULL)
+    {
+        printf("Erreur de malloc tabPerso\n");
+        exit(EXIT_FAILURE);
+    }
     tabPerso[0] = Pac_man;
     tabPerso[1] = Blinky;
     tabPerso[2] = Clyde;
@@ -51,6 +56,11 @@ int main()
     tabPerso[4] = Pinky;
 
     int *dir = malloc(sizeof(int) * 5);
+    if(dir == NULL)
+    {
+        printf("Erreur de malloc dir\n");
+        exit(EXIT_FAILURE);
+    }
     dir[0] = 0;
     dir[1] = 0;
     dir[2] = 0;
@@ -84,6 +94,11 @@ int main()
 
     int nbFan = 4;
     SDL_Rect **tabRectPerso = malloc(sizeof(SDL_Rect *) * 5);
+    if(tabRectPerso == NULL)
+    {
+        printf("Erreur de malloc tabRectPerso\n");
+        exit(EXIT_FAILURE);
+    }
     tabRectPerso[0] = &rectPac;
     tabRectPerso[1] = &rectBlin;
     tabRectPerso[2] = &rectCly;

@@ -11,6 +11,11 @@
 SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
 {
     SDL_Rect **tabRect = malloc(sizeof(SDL_Rect *) * w);
+    if(tabRect == NULL)
+    {
+        printf("Erreur de malloc tabrect\n");
+        exit(EXIT_FAILURE);
+    }
     int fondW, fondH;
     SDL_GetWindowSize(window, &fondW, &fondH);
     int larg = fondW / w;
@@ -19,6 +24,11 @@ SDL_Rect **createTabRect(SDL_Window *window, int w, int h)
     {
 
         SDL_Rect *ligneRect = malloc(sizeof(SDL_Rect) * w);
+        if (ligneRect == NULL)
+        {
+            printf("Erreur de malloc ligneRect\n");
+            exit(EXIT_FAILURE);
+        }
         tabRect[i] = ligneRect;
         for (int j = 0; j < h; j++)
         {

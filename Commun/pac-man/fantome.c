@@ -10,6 +10,11 @@
 perso_t *initBlinky(int **plateau, int w, int h)
 {
     perso_t *blinky = malloc(sizeof(perso_t));
+    if(blinky == NULL)
+    {
+        printf("Erreur de malloc blinky\n");
+        exit(EXIT_FAILURE);
+    }
     blinky->id = 200;
     blinky->super = 0;
     coordPlat(plateau, w, h, blinky->id, &blinky->posX, &blinky->posY);
@@ -28,6 +33,11 @@ perso_t *initBlinky(int **plateau, int w, int h)
 perso_t *initClyde(int **plateau, int w, int h)
 {
     perso_t *clyde = malloc(sizeof(perso_t));
+    if(clyde == NULL)
+    {
+        printf("Erreur de malloc clyde\n");
+        exit(EXIT_FAILURE);
+    }
     clyde->id = 210;
     clyde->super = 0;
     coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
@@ -46,6 +56,11 @@ perso_t *initClyde(int **plateau, int w, int h)
 perso_t *initInky(int **plateau, int w, int h)
 {
     perso_t *inky = malloc(sizeof(perso_t));
+    if(inky == NULL)
+    {
+        printf("Erreur de malloc inky\n");
+        exit(EXIT_FAILURE);
+    }
     inky->id = 220;
     inky->super = 0;
     coordPlat(plateau, w, h, inky->id, &inky->posX, &inky->posY);
@@ -64,6 +79,11 @@ perso_t *initInky(int **plateau, int w, int h)
 perso_t *initPinky(int **plateau, int w, int h)
 {
     perso_t *pinky = malloc(sizeof(perso_t));
+    if(pinky == NULL)
+    {
+        printf("Erreur de malloc pinky\n");
+        exit(EXIT_FAILURE);
+    }
     pinky->id = 230;
     pinky->super = 0;
     coordPlat(plateau, w, h, pinky->id, &pinky->posX, &pinky->posY);
@@ -128,9 +148,19 @@ void creerHeuri(int **heuri, int **plateau, int x, int y, int val)
 int **heuristique(int **plateau, int pacX, int pacY, int w, int h)
 {
     int **heuri = malloc(sizeof(int *) * w);
+    if(heuri == NULL)
+    {
+        printf("Erreur de malloc heuri\n");
+        exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < w; i++)
     {
         int *ligne = malloc(sizeof(int) * h);
+        if(ligne == NULL)
+    {
+        printf("Erreur de malloc ligne\n");
+        exit(EXIT_FAILURE);
+    }
         heuri[i] = ligne;
         for (int j = 0; j < h; j++)
         {
