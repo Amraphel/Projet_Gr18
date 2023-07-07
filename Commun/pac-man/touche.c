@@ -40,7 +40,7 @@ int deplacement(int move, perso_t *Pac_man, int **plateau, SDL_Rect **tabRectPer
 
     if (collision(rectPac, tabRectPerso, nbFan, tabPerso) != 1 && gom_exist(plateau, w, h) == 0 && pause != 1)
     {
-        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, dir, Pac_man->id, &Pac_man->super) && !keyPressed)
+        if (movePossible(plateau, Pac_man->posX, Pac_man->posY, dir) && !keyPressed)
         {
             direction = dir;
         }

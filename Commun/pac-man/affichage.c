@@ -463,6 +463,8 @@ void animeFantome(perso_t** tabPerso, int numFan, SDL_Texture* textFantome, SDL_
         else
         {
             tempsMortFantome[numFan-1]++;
+            *etatAnim += 1;
+            *etatAnim = (*etatAnim) % 4;
         }
     }
 }

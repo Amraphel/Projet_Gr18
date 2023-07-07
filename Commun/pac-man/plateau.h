@@ -18,7 +18,7 @@ int **loadPlateau(char *lvl, int*w, int* h);
 
 void coordPlat(int **plateau,int w, int h, int val, int *x, int *y);
 
-int movePossible(int** plateau, int xPerso, int yPerso, int direction, int id, int* super);
+int movePossible(int** plateau, int xPerso, int yPerso, int direction);
 
 void movePersoInPlateau(int ** plateau, int* xPerso, int* yPerso, int idPerso,int direction, int* mort, int* super);
 
