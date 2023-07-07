@@ -1,5 +1,8 @@
 #include "fantome.h"
-
+#ifndef REGLE
+#define REGLE
+#include "calculRegle.h"
+#endif
 /**
  * @brief initialisation du fantome blinky
  * @param [in] plateau tableau contenant les id des objets et personnages du jeu
@@ -415,4 +418,17 @@ void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, S
             plateau[tabPerso[i]->coordX][tabPerso[i]->coordY]+= tabPerso[i]->id;
         }
     }
+}
+
+int getMoveRegle(regles_t** regle, int ** plateau,perso_t** tabPerso, int idFant, int NBREGLE, double S, int w){
+    regles_t* etat = calculEtat(plateau,tabPerso, w, idFant);
+    int nextMove= getMoveOpti(regle, etat, plateau,tabPerso,NBREGLE,S,idFant);
+    free(etat);
+    return nextMove;
+}
+
+int movePersoRegle(regles_t** regle, int ** plateau,perso_t** tabPerso, int idFant, int NBREGLE, double S, int w){
+    int move=getMoveRegle(regle,plateau,tabPerso,idFant,NBREGLE,S,w);
+    switchDirection(move, tabPerso[idFant]);
+    return move;
 }

@@ -219,6 +219,10 @@ void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, in
             {
                 etatSuperPac(99, super);
             }
+            if (plateau[xDeplacement][yDeplacement] >150 && *super == 0)
+            {
+                *mort = 1;
+            }
             plateau[xDeplacement][yDeplacement] = 99;
         }
         else

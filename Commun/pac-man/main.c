@@ -5,9 +5,16 @@
 #define PLATEAU
 #include "plateau.h"
 #endif
+#ifndef REGLE
+#define REGLE
+#include "calculRegle.h"
+#endif
+
 
 // #define WINDOWL 700
 // #define WINDOWW 700
+#define NBREGLE 20
+#define S 4
 
 int main()
 {
@@ -15,9 +22,11 @@ int main()
     int h;
     time_t t;
     time(&t);
-
+    int valObj=0;
     srand(t);
-    int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
+    int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
+    printPlateau(plateau,w,h);
+    regles_t** regle =loadRegles("./source/regles/regleOri.txt",&valObj);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
     // printPlateau(plateau, w, h);
@@ -142,7 +151,7 @@ int main()
     }
 
 
-    int speedMove = 100000;
+    int speedMove = 1000;
     int speed = speedMove / 10;
     int speedDep = speedMove / 10;
     int i = 0;
@@ -221,19 +230,23 @@ int main()
                 //dir[0]=direction;
                 if (Blinky->posX != 0)
                 {
-                    dir[1] = moveBlinky(window, plateau, w, h, Blinky, Pac_man);
+                    //dir[1] = moveBlinky(window, plateau, w, h, Blinky, Pac_man);
+                    dir[1]= movePersoRegle(regle, plateau,tabPerso,1,NBREGLE,S,w);
                 }
                 if (Clyde->posX != 0)
                 {
-                    dir[2] = moveClyde(window, plateau, w, h, Clyde, Pac_man);
+                    // dir[2] = moveClyde(window, plateau, w, h, Clyde, Pac_man);
+                    dir[2]= movePersoRegle(regle, plateau,tabPerso,2,NBREGLE,S,w);
                 }
                 if (Inky->posX != 0)
                 {
-                    dir[3] = moveClyde(window, plateau, w, h, Inky, Pac_man);
+                    // dir[3] = moveClyde(window, plateau, w, h, Inky, Pac_man);
+                    dir[3]= movePersoRegle(regle, plateau,tabPerso,3,NBREGLE,S,w);
                 }
                 if (Pinky->posX != 0)
                 {
-                    dir[4] = moveClyde(window, plateau, w, h, Pinky, Pac_man);
+                    // dir[4] = moveClyde(window, plateau, w, h, Pinky, Pac_man);
+                    dir[4]= movePersoRegle(regle, plateau,tabPerso,4,NBREGLE,S,w);
                 }
                 for (int j = 0; j < 5; j++)
                 {
@@ -365,6 +378,7 @@ int main()
     free(tabPerso);
     free(tabRect);
     free(dir);
+    freeCerveau(regle, NBREGLE);
 
     return 0;
 }

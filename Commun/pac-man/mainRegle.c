@@ -4,7 +4,7 @@
 // #include "regles.h"
 // #endif
 
-// #define NBREGLE 16
+// #define NBREGLE 20
 // #define S 4
 
 // int main()
@@ -16,10 +16,11 @@
 //     char *dest = "./source/regles/regleTemp.txt";
 //     int valOpti = -1;
 //     int type = 1;
-//     regles_t **regle = createMatRegles(NBREGLE);
-//     initCerveau(regle, NBREGLE);
-//     ecrireRegle(regle, source, NBREGLE, -1);
-//     freeCerveau(regle, NBREGLE);
+//     //  regles_t **regle = loadRegles(source, &valOpti);
+//     // regles_t **regle = createMatRegles(NBREGLE);
+//     // initCerveau(regle, NBREGLE);
+//     // ecrireRegle(regle, source, NBREGLE, -1);
+//     // freeCerveau(regle, NBREGLE);
 //     // parcours(regle,NBREGLE, 1, S);
 //     int *ordreRegle = initRegle(NBREGLE, 10);
 //     int parcOrdre = 0;

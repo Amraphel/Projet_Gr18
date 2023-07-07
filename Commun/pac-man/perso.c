@@ -120,27 +120,25 @@ int movePacmanIA(int **plateau, perso_t *Pac_man)
             switch (i)
             {
             case 1:
-                newHeuri += heuriBasiquePac(plateau, Pac_man->posX + 1, Pac_man->posY, 3, 6);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX + 1, Pac_man->posY, 3, 3);
                 break;
             case 2:
-                newHeuri += heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY - 1, 4, 6);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY - 1, 4, 3);
                 break;
             case 3:
-                newHeuri += heuriBasiquePac(plateau, Pac_man->posX - 1, Pac_man->posY, 1, 6);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX - 1, Pac_man->posY, 1, 3);
                 break;
             case 4:
-                newHeuri += heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY + 1, 2, 6);
+                newHeuri += heuriBasiquePac(plateau, Pac_man->posX, Pac_man->posY + 1, 2, 3);
                 break;
 
             default:
                 break;
             }
-            // fprintf(stderr, "heuri = %d\n", newHeuri);
             if (Pac_man->super == 0)
             {
                 if ((heuri == -1) || newHeuri > heuri)
                 {
-                    // fprintf(stderr, "rentre\n");
                     heuri = newHeuri;
                     dir = i;
                 }

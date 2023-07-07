@@ -80,56 +80,56 @@ int possibilite(int numContrainte)
 void initCerveau(regles_t **tabRegle, int nbRegle)
 {
     int i = 0;
-    for (i = 0; i < 4; i++)
-    {
-        tabRegle[i]->droite = -1;
-        tabRegle[i]->haut = -1;
-        tabRegle[i]->gauche = -1;
-        tabRegle[i]->bas = -1;
-        tabRegle[i]->distance_fantome = -1;
-        tabRegle[i]->distance_pacman = -1;
-        tabRegle[i]->dir_fantome = -1;
-        tabRegle[i]->dir_pacman = -1;
-        tabRegle[i]->priorite = 0;
-        tabRegle[i]->action = i + 1;
-    }
-    for (int i = 4; i < 8; i++)
-    {
-        tabRegle[i]->droite = -1;
-        tabRegle[i]->haut = -1;
-        tabRegle[i]->gauche = -1;
-        tabRegle[i]->bas = -1;
-        switch (i)
-        {
-        case 4:
-            tabRegle[i]->droite = 1;
-            tabRegle[i]->dir_pacman = 1;
-            tabRegle[i]->action = 1;
-            break;
-        case 5:
-            tabRegle[i]->haut = 1;
-            tabRegle[i]->dir_pacman = 0;
-            tabRegle[i]->action = 2;
-            break;
-        case 6:
-            tabRegle[i]->gauche = 1;
-            tabRegle[i]->dir_pacman = 3;
-            tabRegle[i]->action = 3;
-            break;
-        case 7:
-            tabRegle[i]->bas = 1;
-            tabRegle[i]->dir_pacman = 2;
-            tabRegle[i]->action = 4;
-            break;
-        default:
-            break;
-        }
-        tabRegle[i]->distance_fantome = -1;
-        tabRegle[i]->distance_pacman = -1;
-        tabRegle[i]->dir_fantome = -1;
-        tabRegle[i]->priorite = 4;
-    }
-    for (i = 8; i < nbRegle; i++)
+    // for (i = 0; i < 4; i++)
+    // {
+    //     tabRegle[i]->droite = -1;
+    //     tabRegle[i]->haut = -1;
+    //     tabRegle[i]->gauche = -1;
+    //     tabRegle[i]->bas = -1;
+    //     tabRegle[i]->distance_fantome = -1;
+    //     tabRegle[i]->distance_pacman = -1;
+    //     tabRegle[i]->dir_fantome = -1;
+    //     tabRegle[i]->dir_pacman = -1;
+    //     tabRegle[i]->priorite = 0;
+    //     tabRegle[i]->action = i + 1;
+    // }
+    // for (int i = 4; i < 8; i++)
+    // {
+    //     tabRegle[i]->droite = -1;
+    //     tabRegle[i]->haut = -1;
+    //     tabRegle[i]->gauche = -1;
+    //     tabRegle[i]->bas = -1;
+    //     switch (i)
+    //     {
+    //     case 4:
+    //         tabRegle[i]->droite = 1;
+    //         tabRegle[i]->dir_pacman = 1;
+    //         tabRegle[i]->action = 1;
+    //         break;
+    //     case 5:
+    //         tabRegle[i]->haut = 1;
+    //         tabRegle[i]->dir_pacman = 0;
+    //         tabRegle[i]->action = 2;
+    //         break;
+    //     case 6:
+    //         tabRegle[i]->gauche = 1;
+    //         tabRegle[i]->dir_pacman = 3;
+    //         tabRegle[i]->action = 3;
+    //         break;
+    //     case 7:
+    //         tabRegle[i]->bas = 1;
+    //         tabRegle[i]->dir_pacman = 2;
+    //         tabRegle[i]->action = 4;
+    //         break;
+    //     default:
+    //         break;
+    //     }
+    //     tabRegle[i]->distance_fantome = -1;
+    //     tabRegle[i]->distance_pacman = -1;
+    //     tabRegle[i]->dir_fantome = -1;
+    //     tabRegle[i]->priorite = 4;
+    // }
+    for (i = 12; i < nbRegle; i++)
     {
         int random = rand() % 100;
         random = rand() % 100;

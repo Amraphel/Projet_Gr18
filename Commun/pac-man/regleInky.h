@@ -11,7 +11,8 @@
 #include <threads.h>
 #endif
 
-
+// 2 -> gauche du coup 2
+// 3 -> bas du coup 1
 typedef enum
 {
     JOKERc = -1,
@@ -43,7 +44,7 @@ typedef enum
 
 typedef enum
 {
-    DROITE,
+    DROITE = 1 ,
     HAUT,
     GAUCHE,
     BAS

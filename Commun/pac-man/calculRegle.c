@@ -1,5 +1,7 @@
 #include "calculRegle.h"
 
+// #include "fantome.h"
+
 int compareRegle(regles_t *regleOrigin, regles_t *etatPlateau)
 {
     int i = 0;
@@ -170,26 +172,26 @@ regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
         }
 
         // Calcul de la direction où se trouve Pacman
-        if (abs(tabPerso[idFantome]->posX - tabPerso[0]->posX) < abs(tabPerso[idFantome]->posY - tabPerso[0]->posY))
+        if (abs(tabPerso[idFantome]->posX - tabPerso[0]->posX) >= abs(tabPerso[idFantome]->posY - tabPerso[0]->posY))
         {
             if (tabPerso[idFantome]->posX - tabPerso[0]->posX < 0)
-            {
-                etat->dir_pacman = E;
-            }
-            else
-            {
-                etat->dir_pacman = O;
-            }
-        }
-        else
-        {
-            if (tabPerso[idFantome]->posY - tabPerso[0]->posY < 0)
             {
                 etat->dir_pacman = S;
             }
             else
             {
                 etat->dir_pacman = N;
+            }
+        }
+        else
+        {
+            if (tabPerso[idFantome]->posY - tabPerso[0]->posY < 0)
+            {
+                etat->dir_pacman = E;
+            }
+            else
+            {
+                etat->dir_pacman = O;
             }
         }
 
@@ -278,46 +280,46 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
     return dir;
 }
 
-int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w,int h,double s)
-{
-    int nbIter = 0;
-    int mort = 0;
-    int distMin = -1;
-    int super =0;
-    while (nbIter < 100 && mort != 1)
-    {
+// int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w,int h,double s)
+// {
+//     int nbIter = 0;
+//     int mort = 0;
+//     int distMin = -1;
+//     int super =0;
+//     while (nbIter < 100 && mort != 1)
+//     {
 
-        int dirPac = movePacmanIA(plateau, tabPerso[0]);
-        movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort, &super);
-        int **heuri = heuristique(plateau, tabPerso[0]->posX, tabPerso[0]->posY, w, h);
-        int dist = 0;
-        for (int i = 1; i < 5; i++)
-        {
-            regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
-            int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
+//         int dirPac = movePacmanIA(plateau, tabPerso[0]);
+//         movePersoInPlateau(plateau, &tabPerso[0]->posX, &tabPerso[0]->posY, tabPerso[0]->id, dirPac, &mort, &super);
+//         int **heuri = heuristique(plateau, tabPerso[0]->posX, tabPerso[0]->posY, w, h);
+//         int dist = 0;
+//         for (int i = 1; i < 5; i++)
+//         {
+//             regles_t *etatPlat = calculEtat(plateau, tabPerso, w, i);
+//             int dir = getMoveOpti(tabRegle, etatPlat, plateau, tabPerso, nbRegle, s, i);
 
-            movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort, &super);
-            dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY] * 100 + nbIter;
+//             movePersoInPlateau(plateau, &tabPerso[i]->posX, &tabPerso[i]->posY, tabPerso[i]->id, dir, &mort, &super);
+//             dist += heuri[tabPerso[i]->posX][tabPerso[i]->posY] * 100 + nbIter;
 
-            free(etatPlat);
-        }
-        dist = dist / 4;
-        if (distMin == -1 || distMin > dist)
-        {
-            distMin = dist;
-        }
-        freeHeuri(heuri, w);
-        nbIter++;
-    }
-    return distMin;
-}
+//             free(etatPlat);
+//         }
+//         dist = dist / 4;
+//         if (distMin == -1 || distMin > dist)
+//         {
+//             distMin = dist;
+//         }
+//         freeHeuri(heuri, w);
+//         nbIter++;
+//     }
+//     return distMin;
+// }
 
 int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, double s)
 {
     int nbIter = 0;
     int mort = 0;
     int super=0;
-    while (nbIter < 600 && mort != 1)
+    while (nbIter < 500 && mort != 1)
     {
 
         int dirPac = movePacmanIA(plateau, tabPerso[0]);
@@ -355,7 +357,7 @@ int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
 
     if (type == 0)
     {
-        dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w,h, s);
+        // dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w,h, s);
     }
     else
     {
@@ -372,112 +374,113 @@ int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
     return dist;
 }
 
-int treatment(void *parameters)
-{
-    param_t *p = (param_t *)parameters;
-    int sortie = 0;
-    int sommeCarr = 0;
-    int val = 0;
-    int variance = 0;
-    for (int i = 0; i < 100; i++)
-    {
-        val = parcours(p->listeRegle, 16, p->type, S);
-        sommeCarr+= pow(val,2);
-        sortie += val;
-    }
-    sortie = sortie / 100;
-    variance= sommeCarr/100 - pow(sortie,2);
-    p->valSortie[p->id] = sortie+ sqrt(variance);
-    return 0;
-}
+// int treatment(void *parameters)
+// {
+//     param_t *p = (param_t *)parameters;
+//     int sortie = 0;
+//     int val = 0;
+//     // int somC =0;
+//     for (int i = 0; i < 500; i++)
+//     {
+//         val = parcours(p->listeRegle, 20, p->type, S);
+//         // printf("val : %d\n", val);
+//         sortie += val;
+//         // somC+= pow(val,2);
+//     }
+//     sortie = sortie / 500;
+//     // int variance = somC/500 - pow(sortie, 2);
+//     // printf("ecart type : %f", sqrt(variance));
+//     p->valSortie[p->id] = sortie;
+//     return 0;
+// }
 
-int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int *valSortieG)
-{
+// int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int *valSortieG)
+// {
 
-    int numRegle = ordreRegle[parcOrdre] / 10;
-    int numContrainte = ordreRegle[parcOrdre] % 10;
-    int nbPoss = possibilite(numContrainte);
-    int *listPos = createListePos(nbPoss, numContrainte);
-    int *valSortie = malloc(sizeof(int) * nbPoss);
+//     int numRegle = ordreRegle[parcOrdre] / 10;
+//     int numContrainte = ordreRegle[parcOrdre] % 10;
+//     int nbPoss = possibilite(numContrainte);
+//     int *listPos = createListePos(nbPoss, numContrainte);
+//     int *valSortie = malloc(sizeof(int) * nbPoss);
 
-    thrd_t *tabThread = malloc(sizeof(thrd_t) * nbPoss);
-    param_t **tabParam = malloc(sizeof(param_t *) * nbPoss);
+//     thrd_t *tabThread = malloc(sizeof(thrd_t) * nbPoss);
+//     param_t **tabParam = malloc(sizeof(param_t *) * nbPoss);
 
-    int valRetour = 10;
+//     int valRetour = 10;
 
-    // Création du tableau de paramètres
-    for (int i = 0; i < nbPoss; i++)
-    {
-        param_t *param = malloc(sizeof(param_t));
-        regles_t **regleParam = loadRegles(source, valOpti);
-        if (numContrainte == 8 || numContrainte == 9)
-        {
-            modifRegle(regleParam[numRegle], numContrainte, i + 1);
-        }
-        else
-        {
-            modifRegle(regleParam[numRegle], numContrainte, i - 1);
-        }
+//     // Création du tableau de paramètres
+//     for (int i = 0; i < nbPoss; i++)
+//     {
+//         param_t *param = malloc(sizeof(param_t));
+//         regles_t **regleParam = loadRegles(source, valOpti);
+//         if (numContrainte == 8 || numContrainte == 9)
+//         {
+//             modifRegle(regleParam[numRegle], numContrainte, i + 1);
+//         }
+//         else
+//         {
+//             modifRegle(regleParam[numRegle], numContrainte, i - 1);
+//         }
 
-        valSortie[i] = 10001;
-        param->type = type;
-        param->id = i;
-        param->listeRegle = regleParam;
-        param->valSortie = valSortie;
-        tabParam[i] = param;
-    }
-    // Creation des Thread
-    for (int i = 0; i < nbPoss; i++)
-    {
-        thrd_create(&tabThread[i], treatment, tabParam[i]);
-    }
-    for (int i = 0; i < nbPoss; i++)
-    {
-        int error_code_of_thread = 0;
-        thrd_join(tabThread[i], &error_code_of_thread);
-    }
-    int next = 0;
-    int valmin = 10001;
+//         valSortie[i] = 10001;
+//         param->type = type;
+//         param->id = i;
+//         param->listeRegle = regleParam;
+//         param->valSortie = valSortie;
+//         tabParam[i] = param;
+//     }
+//     // Creation des Thread
+//     for (int i = 0; i < nbPoss; i++)
+//     {
+//         thrd_create(&tabThread[i], treatment, tabParam[i]);
+//     }
+//     for (int i = 0; i < nbPoss; i++)
+//     {
+//         int error_code_of_thread = 0;
+//         thrd_join(tabThread[i], &error_code_of_thread);
+//     }
+//     int next = 0;
+//     int valmin = 10001;
 
-    // Récuperation de de la valeur minimum calculé par les threads
-    for (int i = 0; i < nbPoss; i++)
-    {
+//     // Récuperation de de la valeur minimum calculé par les threads
+//     for (int i = 0; i < nbPoss; i++)
+//     {
 
-        if (valSortie[i] < valmin)
-        {
-            valmin = valSortie[i];
-            next = i;
-        }
-    }
-    valSortieG[id] = valmin;
-    if (*valOpti == -1 || valmin < *valOpti)
-    {
-        *valOpti = valmin;
+//         if (valSortie[i] < valmin)
+//         {
+//             valmin = valSortie[i];
+//             next = i;
+//         }
+//     }
+//     valSortieG[id] = valmin;
+//     if (*valOpti == -1 || valmin < *valOpti)
+//     {
+//         *valOpti = valmin;
 
-        if (numContrainte == 8 || numContrainte == 9)
-        {
-            valRetour = next + 1;
-        }
-        else
-        {
-            valRetour = next - 1;
-        }
-    }
-    printf("val : %d\n", valmin);
-    printf("opti : %d\n", *valOpti);
-    for (int i = 0; i < nbPoss; i++)
-    {
-        freeCerveau(tabParam[i]->listeRegle, NBREGLE);
-        free(tabParam[i]);
-        tabParam[i] = NULL;
-    }
-    free(tabParam);
-    tabParam = NULL;
-    free(valSortie);
-    valSortie = NULL;
+//         if (numContrainte == 8 || numContrainte == 9)
+//         {
+//             valRetour = next + 1;
+//         }
+//         else
+//         {
+//             valRetour = next - 1;
+//         }
+//     }
+//     printf("val : %d\n", valmin);
+//     printf("opti : %d\n", *valOpti);
+//     for (int i = 0; i < nbPoss; i++)
+//     {
+//         freeCerveau(tabParam[i]->listeRegle, NBREGLE);
+//         free(tabParam[i]);
+//         tabParam[i] = NULL;
+//     }
+//     free(tabParam);
+//     tabParam = NULL;
+//     free(valSortie);
+//     valSortie = NULL;
 
-    free(listPos);
-    listPos = NULL;
+//     free(listPos);
+//     listPos = NULL;
 
-    return valRetour;
-}
+//     return valRetour;
+// }
