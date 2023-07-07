@@ -29,7 +29,6 @@ int main()
     regles_t** regle =loadRegles("./source/regles/regleOri.txt",&valObj);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
-    // printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         SDL_Log("Error : SDL initialisation - %s\n",
@@ -48,10 +47,10 @@ int main()
     SDL_Renderer *renderer = initRenderer(window);
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
-    perso_t *Blinky = initBlinky(plateau, w, h);
-    perso_t *Clyde = initClyde(plateau, w, h);
-    perso_t *Inky = initInky(plateau, w, h);
-    perso_t *Pinky = initPinky(plateau, w, h);
+    perso_t *Blinky = initFantome(plateau, w, h, 200);
+    perso_t *Clyde = initFantome(plateau, w, h, 210);
+    perso_t *Inky = initFantome(plateau, w, h, 220);
+    perso_t *Pinky = initFantome(plateau, w, h, 230);
     perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
     if(tabPerso == NULL)
     {
@@ -76,7 +75,6 @@ int main()
     dir[3] = 0;
     dir[4] = 0;
 
-    // int super = 0;
     SDL_Texture *textPacNormal = load_texture_from_image("./source/Pac-man.png", window, renderer);
     SDL_Texture *textPacSuper = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
     SDL_Texture *textPac = NULL;
@@ -114,30 +112,8 @@ int main()
     tabRectPerso[3] = &rectInk;
     tabRectPerso[4] = &rectPin;
 
-    int tempsMortFantome[nbFan];
-    tempsMortFantome[0] = 0;
-    tempsMortFantome[1] = 0;
-    tempsMortFantome[2] = 0;
-    tempsMortFantome[3] = 0;
-
-    if (Blinky->posX != 0)
-    {
-        afficherPerso(textBlin, renderer, &rectBlin);
-    }
-
-    afficherPerso(textPacNormal, renderer, &rectPac);
-    if (Clyde->posX != 0)
-    {
-        afficherPerso(textCly, renderer, &rectCly);
-    }
-    if (Inky->posX != 0)
-    {
-        afficherPerso(textInk, renderer, &rectInk);
-    }
-    if (Pinky->posX != 0)
-    {
-        afficherPerso(textPin, renderer, &rectPin);
-    }
+    int* tempsMortFantome;
+    tempsMortFantome = initTabTempsMortFantome(nbFan);
 
     if (TTF_Init() < 0)
         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
@@ -167,6 +143,13 @@ int main()
     int oldDir = 0;
     int direction=0;
     int pause = 0;
+    
+    afficherPerso(textPacNormal, renderer, &rectPac);
+    animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
+    animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
+    animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);
+    animeFantome(tabPerso, 4, textPin, textPinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectPin);
+
     SDL_RenderPresent(renderer);
 
     while (program_on)
@@ -202,14 +185,7 @@ int main()
                     direction = deplacement(2, Pac_man, plateau, tabRectPerso, tabPerso, nbFan, rectPac, w, h, pause, keyPressed);
                     break;
                 case SDLK_p:
-                    if (pause == 1)
-                    {
-                        pause = 2;
-                    }
-                    else
-                    {
-                        pause = 1;
-                    }
+                    pause = enPause(pause);
                     break;
                 case SDLK_s:
                     savePlateau(plateau, w, h);
@@ -297,64 +273,17 @@ int main()
                         timer = 0;
                     }
                 }
-
-                // SDL_RenderPresent(renderer);
             }
             animeF = (animeF + 1) % speedDep;
 
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
-                textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, Pac_man->super);
-                animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
-                if (Blinky->posX != 0)
-                {
-                    if (tabPerso[1]->super == 0)
-                    {
-                        textBlin = spriteSuperPerso(&textBlin, textBlinNormal, textFanSuper, Pac_man->super);
-                        animePerso(textBlin, renderer, &rectBlin, &etatAnim, Blinky->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[0]++;
-                    }
-                }
-                if (Clyde->posX != 0)
-                {
-                    if (tabPerso[2]->super == 0)
-                    {
-                        textCly = spriteSuperPerso(&textCly, textClyNormal, textFanSuper, Pac_man->super);
-                        animePerso(textCly, renderer, &rectCly, &etatAnim, Clyde->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[1]++;
-                    }
-                }
-                if (Inky->posX != 0)
-                {
-                    if (tabPerso[3]->super == 0)
-                    {
-                        textInk = spriteSuperPerso(&textInk, textInkNormal, textFanSuper, Pac_man->super);
-                        animePerso(textInk, renderer, &rectInk, &etatAnim, Inky->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[2]++;
-                    }
-                }
-                if (Pinky->posX != 0)
-                {
-                    if (tabPerso[4]->super == 0)
-                    {
-                        textPin = spriteSuperPerso(&textPin, textPinNormal, textFanSuper, Pac_man->super);
-                        animePerso(textPin, renderer, &rectPin, &etatAnim, Pinky->etat);
-                    }
-                    else
-                    {
-                        tempsMortFantome[3]++;
-                    }
-                }
+                animePacMan(Pac_man, textPac, textPacNormal, textPacSuper,&etatAnim, renderer, &rectPac);
+                animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
+                animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
+                animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);
+                animeFantome(tabPerso, 4, textPin, textPinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectPin);
                 reapparitionFantome(tempsMortFantome, tabPerso, nbFan, tabRectPerso, dir, plateau);
                 finDeJeu(rectPac, tabRectPerso, nbFan, tabPerso, WINDOWW, WINDOWL, font, plateau, window, renderer, w, h);
 
@@ -367,6 +296,7 @@ int main()
     freePlateau(plateau, w);
 
     free(tabRectPerso);
+    free(tempsMortFantome);
 
     destroyAllSDL(textBlin, textBlinNormal, textPac, textPacNormal, textPacSuper, textCly, textClyNormal, textInk, textInkNormal, textPin, textPinNormal, textFanSuper, renderer, window);
     end_sdl(1, "Normal ending", window, renderer);

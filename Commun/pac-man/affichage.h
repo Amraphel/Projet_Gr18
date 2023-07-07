@@ -21,3 +21,5 @@ void chargerTextureMap(SDL_Texture *texture,int **plateau, int nb_images, SDL_Re
 void finDeJeu(SDL_Rect rectPac, SDL_Rect **tabRectPerso, int nbFan, perso_t **tabPerso, int WINDOWW, int WINDOWL, TTF_Font* font, int**plateau, SDL_Window* window, SDL_Renderer*  renderer, int w, int h);
 void destroyAllSDL(SDL_Texture* textBlin, SDL_Texture* textBlinNormal, SDL_Texture* textPac, SDL_Texture* textPacNormal, SDL_Texture* textPacSuper, SDL_Texture* textCly, SDL_Texture* textClyNormal,
     SDL_Texture* textInk, SDL_Texture* textInkNormal, SDL_Texture* textPin, SDL_Texture* textPinNormal, SDL_Texture* textFanSuper, SDL_Renderer* renderer, SDL_Window* window);
+void animeFantome(perso_t** tabPerso, int numFan, SDL_Texture* textFantome, SDL_Texture* textFantomeNormal, SDL_Texture* textFantomSuper, int* etatAnim, SDL_Renderer* renderer, int* tempsMortFantome, SDL_Rect* rectFan);
+void animePacMan(perso_t* pac_Man, SDL_Texture* textPac, SDL_Texture* textPacNormal, SDL_Texture* textPacSuper, int* etatAnim, SDL_Renderer* renderer, SDL_Rect* rectPac);

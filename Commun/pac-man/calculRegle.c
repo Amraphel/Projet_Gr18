@@ -2,6 +2,14 @@
 
 // #include "fantome.h"
 
+/**
+ * @brief compare une règle avec l'état du plateau
+ * @param [in] regleOrigin règle à comparer
+ * @param [in] etatPlateau état du plateau 
+ * @return 
+ *       -0 si la règle peut s'appliquer
+ *       -1 si la règle ne peut pas s'appliquer
+ */ 
 int compareRegle(regles_t *regleOrigin, regles_t *etatPlateau)
 {
     int i = 0;
@@ -40,6 +48,14 @@ int compareRegle(regles_t *regleOrigin, regles_t *etatPlateau)
     return i;
 }
 
+/**
+ * @brief calcule l'état du plateau et trouve des règles correspondantes pour un fantome
+ * @param [in] tableau tableau contenant les id des objets et personnages du jeu
+ * @param [in] tabPerso tableau contenant les perso_t des personnages du jeu
+ * @param [in] w largeur du plateau
+ * @param [in] idFantome id du fantome
+ * @return l'état du plateau 
+ */ 
 regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
 {
     int idAutreFant = 0;
@@ -222,17 +238,27 @@ regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
     return etat;
 }
 
+/**
+ * @brief trouve le mouvement optimal pour un fantome
+ * @param [in] regles tableau de règles
+ * @param [in] etatPlateau état du plateau
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] tabPerso tableau contenant les perso_t des personnages
+ * @param [in] nbRegles nombre de règles
+ * @param [in] s exposant qui donne du poids aux priorités
+ * @param [in] idFantome id du fantome
+ * @return direction à prendre
+ */ 
 int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t **tabPerso, int nbRegles, double s, int idFantome)
 {
     int dir = 0;
-    int super = 0;
     int nbPossibilite = 0;
     int *tabPoss = malloc(sizeof(int) * nbRegles);
     for (int i = 0; i < nbRegles; i++)
     {
         if (compareRegle(regles[i], etatPlateau) == 0)
         {
-            if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY,regles[i]->action,tabPerso[idFantome]->id , &super))
+            if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY,regles[i]->action))
             {
                 tabPoss[nbPossibilite] = i;
                 nbPossibilite++;
@@ -280,6 +306,17 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
     return dir;
 }
 
+/**
+ * @brief calcule la distance moyenne minimum entre les fantomes et pac-man
+ * @param [in] tabRegle tableau de règles
+ * @param [in] nbRegle nombre de règles
+ * @param [in] tabPerso tableau contenant les perso_t des personnages du jeu
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau 
+ * @param [in] h hauteur du plateau
+ * @param [in] s exposant qui donne du poids aux priorités
+ * @return distance moyenne minimum entre les fantomes et pac-man
+ */ 
 // int testParcoursProche(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w,int h,double s)
 // {
 //     int nbIter = 0;
@@ -314,6 +351,16 @@ int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t
 //     return distMin;
 // }
 
+/**
+ * @brief joue jusqu'à la mort de pac-man ou jusqu'à un certains nombre d'itération et calcule le nombre d'itérations
+ * @param [in] tabRegle tableau de règles
+ * @param [in] nbRegle nombre de règles
+ * @param [in] tabPerso tableau contenant les perso_t des personnages du jeu
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] w largeur du plateau
+ * @param [in] s exposant qui donne du poids aux priorités
+ * @return nombre d'itération à la fin du jeu
+ */ 
 int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, int **plateau, int w, double s)
 {
     int nbIter = 0;
@@ -337,16 +384,23 @@ int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, i
     return nbIter;
 }
 
+/**
+ * @brief trouve le percours en fonction du type demandé
+ * @param [in] tabRegle tableau de règles 
+ * @param [in] nbRegle nombre de règles 
+ * @param [in] type type de parcours demandé (0 = proche, autre = fin)
+ * @return parcours
+ */ 
 int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
 {
 
     int w, h;
     int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
-    perso_t *Blinky = initBlinky(plateau, w, h);
-    perso_t *Clyde = initClyde(plateau, w, h);
-    perso_t *Inky = initInky(plateau, w, h);
-    perso_t *Pinky = initPinky(plateau, w, h);
+    perso_t *Blinky = initFantome(plateau, w, h, 200);
+    perso_t *Clyde = initFantome(plateau, w, h, 210);
+    perso_t *Inky = initFantome(plateau, w, h, 220);
+    perso_t *Pinky = initFantome(plateau, w, h, 230);
     perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
     tabPerso[0] = Pac_man;
     tabPerso[1] = Blinky;
@@ -374,7 +428,11 @@ int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
     return dist;
 }
 
-// int treatment(void *parameters)
+/**
+ * @brief permet à chaque thread de faire son parcours
+ * @param [in] parameters paramètres envoyés au thread
+ */ 
+//int treatment(void *parameters)
 // {
 //     param_t *p = (param_t *)parameters;
 //     int sortie = 0;
@@ -394,7 +452,19 @@ int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
 //     return 0;
 // }
 
-// int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int *valSortieG)
+/**
+ * @brief compare les résultats des threads et choisit la meilleure
+ * @param [in] valOpti valeur optimale actuelle
+ * @param [in] parcOrdre indice pour le tableau règles contrainte
+ * @param [in] ordreRegle tableau de règles contraintes
+ * @param [in] source fichier où trouver les règles
+ * @param [in] type type de parcours à effectuer
+ * @param [in] NBREGLE nombre de règles
+ * @param [in] id indice dans le tableau valeurs sorties
+ * @param [in] valSortieG tableau de valeurs sorties optimal
+ * @return renvoie la valeur à mettre dans la contrainte pour obtenir le meilleur score
+ */ 
+//int compareRes(int *valOpti, int parcOrdre, int *ordreRegle, char *source, int type, int NBREGLE, int id, int *valSortieG)
 // {
 
 //     int numRegle = ordreRegle[parcOrdre] / 10;

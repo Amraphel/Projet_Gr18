@@ -20,4 +20,6 @@ perso_t *initPinky(int **plateau, int w, int h);
 int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, perso_t *Pac_man);
 void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, SDL_Rect **rectFan, int* dir, int** plateau);
 int **heuristique(int **plateau, int pacX, int pacY, int w, int h);
+int* initTabTempsMortFantome(int nbFan);
+perso_t *initFantome(int **plateau, int w, int h, int id);
 int movePersoRegle(regles_t** regle, int ** plateau,perso_t** tabPerso, int idFant, int NBREGLE, double S, int w);
