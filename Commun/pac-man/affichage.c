@@ -92,6 +92,18 @@ void afficherPlateau(SDL_Rect **tabRect, int **plateau, int w, int h, SDL_Window
     SDL_DestroyTexture(supergom);
 }
 
+/**
+ * @brief charge une texture dans le renderer de la fenêtre de jeu
+ * @param [in] texture texture à charger
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] nb_images nombre d'images dont est composée une ligne de la texture
+ * @param [in] tabRect rectangle dans lequel on charge la texture
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] i ligne du plateau où on veut charger la texture
+ * @param [in] j colonne du plateau où on veut charger la texture
+ * @param [in] type type de texture à afficher (mur, pac-gomme, personnage)
+ * @param [in] etatAnim état de l'animation d'un personnage
+ */ 
 void chargerTextureMap(SDL_Texture *texture,int **plateau, int nb_images, SDL_Rect **tabRect, SDL_Renderer* renderer, int i, int j, int type, int *etatAnim)
 {
     SDL_Rect
@@ -179,7 +191,21 @@ void animePerso(SDL_Texture *texture_perso, SDL_Renderer *renderer, SDL_Rect *re
 }
 
 
-
+/**
+ * @brief termine le jeu en fonction des conditions de victoire et de défaite
+ * @param [in] rectPac SDL_Rect de pac-man
+ * @param [in] tabRectPerso tableau contenant les SDL_Rect des personnages du jeu
+ * @param [in] nbFan nombre de fantomes
+ * @param [in] tabPerso tableau contenant les perso_t des personnages du jeu 
+ * @param [in] WINDOWW largeur de la fenêtre de jeu
+ * @param [in] WINDOWL hauteur de la fenêtre de jeu
+ * @param [in] font police d'écriture du texte
+ * @param [in] plateau tableau contenant les id des objets et personnages du jeu
+ * @param [in] window fenêtre du jeu
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] w nombre de colonnes du plateau
+ * @param [in] h nombre de lignes du plateau
+ */ 
 void finDeJeu(SDL_Rect rectPac, SDL_Rect **tabRectPerso, int nbFan, perso_t **tabPerso, int WINDOWW, int WINDOWL, TTF_Font* font, int**plateau, SDL_Window* window, SDL_Renderer*  renderer, int w, int h)
 {
     if (collision(rectPac, tabRectPerso, nbFan, tabPerso) == 1 && tabPerso[0]->super == 0)
@@ -370,6 +396,23 @@ SDL_Texture* spriteSuperPerso(SDL_Texture **textPerso, SDL_Texture *textPersoNor
 
 }
 
+/**
+ * @brief détruit les textures, le renderer et la fenêtre du jeu
+ * @param [in] textBlin texture de blinky affichée
+ * @param [in] textBlinNormal texture de blinky dans son état normal
+ * @param [in] textPac texture de pac-man affichée
+ * @param [in] textPacNormal texture de pac-man dans son état normal
+ * @param [in] textPacSuper texture de pac-man dans son état super
+ * @param [in] textCly texture de clyde affichée
+ * @param [in] textClyNormal texture de clyde dans son état normal
+ * @param [in] textInk texture de inky affichée
+ * @param [in] textInkNormal texture de inky dans son état normal
+ * @param [in] textPin texture de pinky affichée 
+ * @param [in] textPinNormal texture de pinky dans son état normal
+ * @param [in] textFanSuper texture des fantomes dans leur état super
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] window fenêtre de jeu
+ */ 
 void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Texture *textPac, SDL_Texture *textPacNormal, SDL_Texture *textPacSuper, SDL_Texture *textCly, SDL_Texture *textClyNormal,
                    SDL_Texture *textInk, SDL_Texture *textInkNormal, SDL_Texture *textPin, SDL_Texture *textPinNormal, SDL_Texture *textFanSuper, SDL_Renderer *renderer, SDL_Window *window)
 {
@@ -396,6 +439,18 @@ void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Textu
     SDL_DestroyWindow(window);
 }
 
+/**
+ * @brief anime un fnatome avec le bon état
+ * @param [in] tabPerso tableau contenant les perso_t des personnages du jeu
+ * @param [in] numFan numéro du fantome à animer
+ * @param [in] textFantome texture du fantome affichée
+ * @param [in] textFantomeNormal texture du fantome dans son état normal
+ * @param [in] textFantomeSuper texture du fantome dans son état super
+ * @param [in] etatAnim état de l'animation du fantome
+ * @param [in] renderer renderer de la fenêtre du jeu
+ * @param [in] tempsMortFantome temps pendant lequel un fantome n'est pas apparu après s'être fait tuer
+ * @param [in] rectFan SDL_Rect du fantome à animer
+ */ 
 void animeFantome(perso_t** tabPerso, int numFan, SDL_Texture* textFantome, SDL_Texture* textFantomeNormal, SDL_Texture* textFantomSuper, int* etatAnim, SDL_Renderer* renderer, int* tempsMortFantome, SDL_Rect* rectFan)
 {
     if (tabPerso[numFan]->posX != 0)
