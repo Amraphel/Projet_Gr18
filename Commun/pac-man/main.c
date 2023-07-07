@@ -106,8 +106,6 @@ int main()
     int* tempsMortFantome;
     tempsMortFantome = initTabTempsMortFantome(nbFan);
 
-    
-
     if (TTF_Init() < 0)
         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
 
@@ -136,9 +134,8 @@ int main()
     int oldDir = 0;
     int direction=0;
     int pause = 0;
-
+    
     afficherPerso(textPacNormal, renderer, &rectPac);
-
     animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
     animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
     animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);
