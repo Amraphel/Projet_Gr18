@@ -1,5 +1,11 @@
 #include "regleInky.h"
 
+/**
+ * @brief modifie des règles
+ * @param [in] regle règle à modifier
+ * @param [in] numContrainte numéro de la contrainte
+ * @param [in] valeur nouvelle valeur
+ */ 
 void modifRegle(regles_t *regle, int numContrainte, int valeur)
 {
     switch (numContrainte)
@@ -44,6 +50,11 @@ void modifRegle(regles_t *regle, int numContrainte, int valeur)
     }
 }
 
+/**
+ * @brief donne le nobre de possiblités pour une contrainte
+ * @param [in] numContrainte numéro de la contrainte
+ * @return le nombre de possibilités
+ */ 
 int possibilite(int numContrainte)
 {
     int possible = 0;
@@ -77,6 +88,11 @@ int possibilite(int numContrainte)
     return possible;
 }
 
+/**
+ * @brief initialise un tableau de règles
+ * @param [in] tabRegle tableau de règles
+ * @param [in] nbRegle nombre de règle
+ */ 
 void initCerveau(regles_t **tabRegle, int nbRegle)
 {
     int i = 0;
@@ -213,6 +229,11 @@ void initCerveau(regles_t **tabRegle, int nbRegle)
     }
 }
 
+/**
+ * @brief libère le tableau de règles
+ * @param [in] tabRegle tableau de règles
+ * @param [in] nbRegle nombre de règles
+ */ 
 void freeCerveau(regles_t **tabRegle, int nbRegle)
 {
     int i = 0;
@@ -225,6 +246,12 @@ void freeCerveau(regles_t **tabRegle, int nbRegle)
     tabRegle = NULL;
 }
 
+/**
+ * @brief créer une liste de possibilités
+ * @param [in] nbPos nombre de possibilités
+ * @param [in] numContrainte numéro de la contrainte
+ * @return une liste de possibilités
+ */ 
 int *createListePos(int nbPos, int numContrainte)
 {
     int *listpost = malloc(sizeof(int) * nbPos);

@@ -172,9 +172,9 @@ int **heuristique(int **plateau, int pacX, int pacY, int w, int h)
 }
 
 /**
- * @brief 
- * @param [in] heuri
- * @param [in] w
+ * @brief libère le tableau contenant l'heuristique des cases du plateau
+ * @param [in] heuri tableau contenant l'heuristique des cases du plateau
+ * @param [in] w largeur du tableau heuri
  */ 
 void freeHeuri(int **heuri, int w)
 {
@@ -378,6 +378,20 @@ int moveClyde(SDL_Window *window, int **plateau, int w, int h, perso_t *Clyde, p
 
 }
 
+/**
+ * @brief déplace inky dans la direction du plus court chemin trouvé et parfois dans une direction aléatoire
+ * @param [in] window fenêtre d'affichage
+ * @param [in] plateau tableau contenant les id des objets et des personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @param [in] Inky structure du personnage inky
+ * @param [in] Pac_man structure du personnage Pac-man
+ * @return 
+ *       -1 pour aller à droite
+ *       -2 pour aller en haut
+ *       -3 pour aller à gauche
+ *       -4 pour aller en bas
+ */ 
 int moveInky(SDL_Window *window, int **plateau, int w, int h, perso_t* Inky, perso_t *Pac_man)
 {
     int dir;
@@ -385,6 +399,20 @@ int moveInky(SDL_Window *window, int **plateau, int w, int h, perso_t* Inky, per
     return dir;
 }
 
+/**
+ * @brief déplace Pinky dans la direction du plus court chemin trouvé et parfois dans une direction aléatoire
+ * @param [in] window fenêtre d'affichage
+ * @param [in] plateau tableau contenant les id des objets et des personnages du jeu
+ * @param [in] w largeur du plateau (nombre de colonnes)
+ * @param [in] h hauteur du plateau (nombre de lignes)
+ * @param [in] Pinky structure du personnage pinky
+ * @param [in] Pac_man structure du personnage Pac-man
+ * @return 
+ *       -1 pour aller à droite
+ *       -2 pour aller en haut
+ *       -3 pour aller à gauche
+ *       -4 pour aller en bas
+ */ 
 int movePinky(SDL_Window *window, int **plateau, int w, int h, perso_t* Pinky, perso_t *Pac_man)
 {
     int dir;
@@ -417,6 +445,11 @@ void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, S
     }
 }
 
+/**
+ * @brief initialise un tableau contenant les tempsMortFantome de tous les fantomes
+ * @param [in] nbFan nombre de fantomes
+ * @return un tableau contenant les tempsMortFantome de tous les fantomes
+ */ 
 int* initTabTempsMortFantome(int nbFan)
 {
     int* tabTempsMort = malloc(sizeof(int)*nbFan);

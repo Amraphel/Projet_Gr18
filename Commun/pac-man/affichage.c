@@ -440,7 +440,7 @@ void destroyAllSDL(SDL_Texture *textBlin, SDL_Texture *textBlinNormal, SDL_Textu
 }
 
 /**
- * @brief anime un fnatome avec le bon état
+ * @brief anime un fantome avec le bon état
  * @param [in] tabPerso tableau contenant les perso_t des personnages du jeu
  * @param [in] numFan numéro du fantome à animer
  * @param [in] textFantome texture du fantome affichée
@@ -467,6 +467,16 @@ void animeFantome(perso_t** tabPerso, int numFan, SDL_Texture* textFantome, SDL_
     }
 }
 
+/**
+ * @brief anime pac-man avec le bon état 
+ * @param [in] pac_man perso_t de pac-man
+ * @param [in] textPac texture de pac-man affichée
+ * @param [in] textPacNormal texture de pac-man dans état normal  
+ * @param [in] textPacSuper texture de pac-man dans état super
+ * @param [in] etatAnim état de l'animation de pac-man
+ * @param [in] renderer renderer de la fenêtre de jeu
+ * @param [in] rectPac SDL_Rect de pac-man
+ */ 
 void animePacMan(perso_t* pac_man, SDL_Texture* textPac, SDL_Texture* textPacNormal, SDL_Texture* textPacSuper, int* etatAnim, SDL_Renderer* renderer, SDL_Rect* rectPac)
 {
     textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, pac_man->super);
