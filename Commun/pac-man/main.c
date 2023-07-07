@@ -279,10 +279,7 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
-
-                textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, Pac_man->super);
-                animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
-
+                animePacMan(Pac_man, textPac, textPacNormal, textPacSuper,&etatAnim, renderer, &rectPac);
                 animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
                 animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
                 animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);

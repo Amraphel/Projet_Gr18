@@ -411,3 +411,9 @@ void animeFantome(perso_t** tabPerso, int numFan, SDL_Texture* textFantome, SDL_
         }
     }
 }
+
+void animePacMan(perso_t* pac_man, SDL_Texture* textPac, SDL_Texture* textPacNormal, SDL_Texture* textPacSuper, int* etatAnim, SDL_Renderer* renderer, SDL_Rect* rectPac)
+{
+    textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, pac_man->super);
+    animePerso(textPac, renderer, rectPac, etatAnim, pac_man->etat);
+}
