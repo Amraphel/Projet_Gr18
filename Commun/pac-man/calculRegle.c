@@ -391,42 +391,42 @@ int testParcoursFinLevel(regles_t **tabRegle, int nbRegle, perso_t **tabPerso, i
  * @param [in] type type de parcours demandé (0 = proche, autre = fin)
  * @return parcours
  */ 
-int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
-{
+// int parcours(regles_t **tabRegle, int nbRegle, int type, double s)
+// {
 
-    int w, h;
-    int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
-    perso_t *Pac_man = initPac_man(plateau, w, h);
-    perso_t *Blinky = initFantome(plateau, w, h, 200);
-    perso_t *Clyde = initFantome(plateau, w, h, 210);
-    perso_t *Inky = initFantome(plateau, w, h, 220);
-    perso_t *Pinky = initFantome(plateau, w, h, 230);
-    perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
-    tabPerso[0] = Pac_man;
-    tabPerso[1] = Blinky;
-    tabPerso[2] = Clyde;
-    tabPerso[3] = Inky;
-    tabPerso[4] = Pinky;
-    int dist = 0;
+//     int w, h;
+//     int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
+//     perso_t *Pac_man = initPac_man(plateau, w, h);
+//     perso_t *Blinky = initFantome(plateau, w, h, 200);
+//     perso_t *Clyde = initFantome(plateau, w, h, 210);
+//     perso_t *Inky = initFantome(plateau, w, h, 220);
+//     perso_t *Pinky = initFantome(plateau, w, h, 230);
+//     perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
+//     tabPerso[0] = Pac_man;
+//     tabPerso[1] = Blinky;
+//     tabPerso[2] = Clyde;
+//     tabPerso[3] = Inky;
+//     tabPerso[4] = Pinky;
+//     int dist = 0;
 
-    if (type == 0)
-    {
-        // dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w,h, s);
-    }
-    else
-    {
-        dist = testParcoursFinLevel(tabRegle, nbRegle, tabPerso, plateau, w, s);
+//     if (type == 0)
+//     {
+//         // dist = testParcoursProche(tabRegle, nbRegle, tabPerso, plateau, w,h, s);
+//     }
+//     else
+//     {
+//         dist = testParcoursFinLevel(tabRegle, nbRegle, tabPerso, plateau, w, s);
     
-    }
-    for (int i = 0; i < 5; i++)
-    {
-        free(tabPerso[i]);
-    }
-    free(tabPerso);
-    freePlateau(plateau, w);
+//     }
+//     for (int i = 0; i < 5; i++)
+//     {
+//         free(tabPerso[i]);
+//     }
+//     free(tabPerso);
+//     freePlateau(plateau, w);
 
-    return dist;
-}
+//     return dist;
+// }
 
 /**
  * @brief permet à chaque thread de faire son parcours

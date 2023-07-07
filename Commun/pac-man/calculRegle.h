@@ -21,7 +21,7 @@
 #define REGLES
 #include "regles.h"
 #endif
-#include "fantome.h"
+// #include "fantome.h"
 
 typedef struct param{
     int id;
