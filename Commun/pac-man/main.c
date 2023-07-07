@@ -25,8 +25,8 @@ int main()
     int valObj=0;
     srand(t);
     int **plateau = loadPlateau("./source/lvl/lvl3.txt", &w, &h);
-    printPlateau(plateau,w,h);
-    regles_t** regle =loadRegles("./source/regles/regleOri.txt",&valObj);
+    // printPlateau(plateau,w,h);
+    regles_t** regle =loadRegles("./source/regles/regle4.txt",&valObj);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -127,7 +127,7 @@ int main()
     }
 
 
-    int speedMove = 1000;
+    int speedMove = 500;
     int speed = speedMove / 10;
     int speedDep = speedMove / 10;
     int i = 0;
