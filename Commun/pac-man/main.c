@@ -20,7 +20,6 @@ int main()
     int **plateau = loadPlateau("./source/lvl/lvl1.txt", &w, &h);
     int WINDOWW = w * (700 / w);
     int WINDOWL = h * (700 / h);
-    // printPlateau(plateau, w, h);
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         SDL_Log("Error : SDL initialisation - %s\n",
@@ -67,7 +66,6 @@ int main()
     dir[3] = 0;
     dir[4] = 0;
 
-    // int super = 0;
     SDL_Texture *textPacNormal = load_texture_from_image("./source/Pac-man.png", window, renderer);
     SDL_Texture *textPacSuper = load_texture_from_image("./source/SuperPac-man.png", window, renderer);
     SDL_Texture *textPac = NULL;
@@ -105,18 +103,16 @@ int main()
     tabRectPerso[3] = &rectInk;
     tabRectPerso[4] = &rectPin;
 
-    int tempsMortFantome[nbFan];
-    tempsMortFantome[0] = 0;
-    tempsMortFantome[1] = 0;
-    tempsMortFantome[2] = 0;
-    tempsMortFantome[3] = 0;
+    int* tempsMortFantome;
+    tempsMortFantome = initTabTempsMortFantome(nbFan);
+
+    afficherPerso(textPacNormal, renderer, &rectPac);
+
 
     if (Blinky->posX != 0)
     {
         afficherPerso(textBlin, renderer, &rectBlin);
     }
-
-    afficherPerso(textPacNormal, renderer, &rectPac);
     if (Clyde->posX != 0)
     {
         afficherPerso(textCly, renderer, &rectCly);
@@ -277,15 +273,13 @@ int main()
                         timer = 0;
                     }
                 }
-
-                // SDL_RenderPresent(renderer);
             }
             animeF = (animeF + 1) % speedDep;
 
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
-                
+
                 textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, Pac_man->super);
                 animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
 
@@ -305,6 +299,7 @@ int main()
     freePlateau(plateau, w);
 
     free(tabRectPerso);
+    free(tempsMortFantome);
 
     destroyAllSDL(textBlin, textBlinNormal, textPac, textPacNormal, textPacSuper, textCly, textClyNormal, textInk, textInkNormal, textPin, textPinNormal, textFanSuper, renderer, window);
     end_sdl(1, "Normal ending", window, renderer);

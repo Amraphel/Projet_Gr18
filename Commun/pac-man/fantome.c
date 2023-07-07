@@ -416,3 +416,19 @@ void reapparitionFantome(int* tempsMortFantome, perso_t** tabPerso, int nbFan, S
         }
     }
 }
+
+int* initTabTempsMortFantome(int nbFan)
+{
+    int* tabTempsMort = malloc(sizeof(int)*nbFan);
+    if(tabTempsMort == NULL)
+    {
+        printf("Erreur de malloc tabTempsMort\n");
+        exit(EXIT_FAILURE);
+    }
+    int i;
+    for(i=0; i<nbFan; i++)
+    {
+        tabTempsMort[i]=0;
+    }
+    return tabTempsMort;
+}
