@@ -223,14 +223,13 @@ regles_t *calculEtat(int **tableau, perso_t **tabPerso, int w, int idFantome)
 int getMoveOpti(regles_t **regles, regles_t *etatPlateau, int **plateau, perso_t **tabPerso, int nbRegles, double s, int idFantome)
 {
     int dir = 0;
-    int super = 0;
     int nbPossibilite = 0;
     int *tabPoss = malloc(sizeof(int) * nbRegles);
     for (int i = 0; i < nbRegles; i++)
     {
         if (compareRegle(regles[i], etatPlateau) == 0)
         {
-            if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY,regles[i]->action,tabPerso[idFantome]->id , &super))
+            if (movePossible(plateau, tabPerso[idFantome]->posX, tabPerso[idFantome]->posY,regles[i]->action))
             {
                 tabPoss[nbPossibilite] = i;
                 nbPossibilite++;

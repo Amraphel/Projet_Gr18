@@ -111,13 +111,11 @@ int **loadPlateau(char *lvl, int *w, int *h)
  * @param [in] xPerso numéro de la ligne où se trouve le personnage à déplacer
  * @param [in] yPerso numéro de la colonne où se trouve le personnage à déplacer
  * @param [in] direction direction dans laquelle on veut faire aller le personnage
- * @param [in] id id du personnage à déplacer
- * @param [in] super indicateur de si Pac-man est en mode super Pac-man
  * @return
  *       -0 si le mouvement n'est pas possible
  *       -1 si le mouvement est possible
  */
-int movePossible(int **plateau, int xPerso, int yPerso, int direction, int id, int *super)
+int movePossible(int **plateau, int xPerso, int yPerso, int direction)
 {
     int DeplacementPossible = 0;
     int xd, yh, xg, yb;
@@ -180,7 +178,7 @@ void movePersoInPlateau(int **plateau, int *xPerso, int *yPerso, int idPerso, in
     int xDeplacement = *xPerso;
     int yDeplacement = *yPerso;
 
-    if (movePossible(plateau, *xPerso, *yPerso, direction, idPerso, super) == 1)
+    if (movePossible(plateau, *xPerso, *yPerso, direction) == 1)
     {
 
         switch (direction)
