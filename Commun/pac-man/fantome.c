@@ -1,97 +1,28 @@
 #include "fantome.h"
 
 /**
- * @brief initialisation du fantome blinky
+ * @brief initialisation d'un fantome
  * @param [in] plateau tableau contenant les id des objets et personnages du jeu
  * @param [in] w largeur du plateau (nombre de colonnes)
  * @param [in] h hauteur du plateau (nombre de lignes)
+ * @param [in] id id du fantome au moins 200
  * @return fantome blinky
  */ 
-perso_t *initBlinky(int **plateau, int w, int h)
+perso_t *initFantome(int **plateau, int w, int h, int id)
 {
-    perso_t *blinky = malloc(sizeof(perso_t));
-    if(blinky == NULL)
+    perso_t *fantome = malloc(sizeof(perso_t));
+    if(fantome == NULL)
     {
-        printf("Erreur de malloc blinky\n");
+        printf("Erreur de malloc fantome\n");
         exit(EXIT_FAILURE);
     }
-    blinky->id = 200;
-    blinky->super = 0;
-    coordPlat(plateau, w, h, blinky->id, &blinky->posX, &blinky->posY);
-    blinky->coordX=blinky->posX;
-    blinky->coordY=blinky->posY;
-    return blinky;
+    fantome->id = id;
+    fantome->super = 0;
+    coordPlat(plateau, w, h, fantome->id, &fantome->posX, &fantome->posY);
+    fantome->coordX=fantome->posX;
+    fantome->coordY=fantome->posY;
+    return fantome;
 }
-
-/**
- * @brief initialisation du fantome clyde
- * @param [in] plateau tableau contenant les id des objets et personnages du jeu
- * @param [in] w largeur du plateau (nombre de colonnes)
- * @param [in] h hauteur du plateau (nombre de lignes)
- * @return fantome clyde
- */ 
-perso_t *initClyde(int **plateau, int w, int h)
-{
-    perso_t *clyde = malloc(sizeof(perso_t));
-    if(clyde == NULL)
-    {
-        printf("Erreur de malloc clyde\n");
-        exit(EXIT_FAILURE);
-    }
-    clyde->id = 210;
-    clyde->super = 0;
-    coordPlat(plateau, w, h, clyde->id, &clyde->posX, &clyde->posY);
-    clyde->coordX=clyde->posX;
-    clyde->coordY=clyde->posY;
-    return clyde;
-}
-
-/**
- * @brief initialisation du fantome Inky
- * @param [in] plateau tableau contenant les id des objets et personnages du jeu
- * @param [in] w largeur du plateau (nombre de colonnes)
- * @param [in] h hauteur du plateau (nombre de lignes)
- * @return fantome Inky
- */ 
-perso_t *initInky(int **plateau, int w, int h)
-{
-    perso_t *inky = malloc(sizeof(perso_t));
-    if(inky == NULL)
-    {
-        printf("Erreur de malloc inky\n");
-        exit(EXIT_FAILURE);
-    }
-    inky->id = 220;
-    inky->super = 0;
-    coordPlat(plateau, w, h, inky->id, &inky->posX, &inky->posY);
-    inky->coordX=inky->posX;
-    inky->coordY=inky->posY;
-    return inky;
-}
-
-/**
- * @brief initialisation du fantome Pinky
- * @param [in] plateau tableau contenant les id des objets et personnages du jeu
- * @param [in] w largeur du plateau (nombre de colonnes)
- * @param [in] h hauteur du plateau (nombre de lignes)
- * @return fantome Pinky
- */ 
-perso_t *initPinky(int **plateau, int w, int h)
-{
-    perso_t *pinky = malloc(sizeof(perso_t));
-    if(pinky == NULL)
-    {
-        printf("Erreur de malloc pinky\n");
-        exit(EXIT_FAILURE);
-    }
-    pinky->id = 230;
-    pinky->super = 0;
-    coordPlat(plateau, w, h, pinky->id, &pinky->posX, &pinky->posY);
-    pinky->coordX=pinky->posX;
-    pinky->coordY=pinky->posY;
-    return pinky;
-}
-
 
 /**
  * @brief créer une heuristique pour trouver un chemin le plus court possible entre un fantome et Pac-man

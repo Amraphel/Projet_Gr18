@@ -38,10 +38,10 @@ int main()
     SDL_Renderer *renderer = initRenderer(window);
     SDL_Rect **tabRect = createTabRect(window, w, h);
     perso_t *Pac_man = initPac_man(plateau, w, h);
-    perso_t *Blinky = initBlinky(plateau, w, h);
-    perso_t *Clyde = initClyde(plateau, w, h);
-    perso_t *Inky = initInky(plateau, w, h);
-    perso_t *Pinky = initPinky(plateau, w, h);
+    perso_t *Blinky = initFantome(plateau, w, h, 200);
+    perso_t *Clyde = initFantome(plateau, w, h, 210);
+    perso_t *Inky = initFantome(plateau, w, h, 220);
+    perso_t *Pinky = initFantome(plateau, w, h, 230);
     perso_t **tabPerso = malloc(sizeof(perso_t *) * 5);
     if(tabPerso == NULL)
     {
