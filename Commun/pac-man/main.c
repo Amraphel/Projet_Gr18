@@ -106,26 +106,6 @@ int main()
     int* tempsMortFantome;
     tempsMortFantome = initTabTempsMortFantome(nbFan);
 
-    afficherPerso(textPacNormal, renderer, &rectPac);
-
-
-    if (Blinky->posX != 0)
-    {
-        afficherPerso(textBlin, renderer, &rectBlin);
-    }
-    if (Clyde->posX != 0)
-    {
-        afficherPerso(textCly, renderer, &rectCly);
-    }
-    if (Inky->posX != 0)
-    {
-        afficherPerso(textInk, renderer, &rectInk);
-    }
-    if (Pinky->posX != 0)
-    {
-        afficherPerso(textPin, renderer, &rectPin);
-    }
-
     if (TTF_Init() < 0)
         end_sdl(0, "Couldn't initialize SDL TTF", window, renderer);
 
@@ -154,6 +134,13 @@ int main()
     int oldDir = 0;
     int direction=0;
     int pause = 0;
+    
+    afficherPerso(textPacNormal, renderer, &rectPac);
+    animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
+    animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
+    animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);
+    animeFantome(tabPerso, 4, textPin, textPinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectPin);
+
     SDL_RenderPresent(renderer);
 
     while (program_on)
@@ -279,10 +266,7 @@ int main()
             if (i == 0)
             {
                 afficherPlateau(tabRect, plateau, w, h, window, renderer, &etatAnimPlat);
-
-                textPac = spriteSuperPerso(&textPac, textPacNormal, textPacSuper, Pac_man->super);
-                animePerso(textPac, renderer, &rectPac, &etatAnim, Pac_man->etat);
-
+                animePacMan(Pac_man, textPac, textPacNormal, textPacSuper,&etatAnim, renderer, &rectPac);
                 animeFantome(tabPerso, 1, textBlin, textBlinNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectBlin);
                 animeFantome(tabPerso, 2, textCly, textClyNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectCly);
                 animeFantome(tabPerso, 3, textInk, textInkNormal, textFanSuper, &etatAnim, renderer,tempsMortFantome, &rectInk);
